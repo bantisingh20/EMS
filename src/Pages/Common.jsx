@@ -1,0 +1,117 @@
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+//import TextField from '@mui/material/TextField';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//import { Transition } from "@headlessui/react";
+//import { Toaster, ToastIcon, toast, resolveValue } from "react-hot-toast";
+
+function FormLabels(label){
+    return(
+        <Form.Label className={label.className} >{label.label}</Form.Label>
+    );
+}
+
+function FormControl(formfield){
+    return(
+        <Form.Control
+         type={formfield.type} 
+         placeholder={formfield.placeholder} 
+         className={formfield.className}
+         required={formfield.required == 1 ? true : false} 
+         onChange={formfield.onChange}
+         name={formfield.name} />
+    );
+}
+
+
+function TextFields({ label, name, onchangefunction, value }) {
+    return (
+      <>
+        {/* <TextField
+          id="outlined-basic"
+          label={label}
+          variant="outlined"
+          name={name} 
+          
+          //value={}
+          onChange={(e) => onchangefunction({ ...value, [e.target.name]: e.target.value })}
+        /> */}
+      </>
+    );
+  }
+
+  function Buttons(Fields){
+    return(
+      // <Button type={Fields.type} className={Fields.className}>{Fields.text}</Button>
+      <Button 
+        variant="outline-success"
+        type={Fields.type} 
+        className={Fields.className}
+        onClick={Fields.onClick}
+        >{Fields.text}</Button> 
+    );
+  }
+
+function handleSuccess(message){
+  toast.success(message)
+}
+
+function handleError(message){
+  toast.error(message)
+}
+
+function handlewarning(message){
+  toast.warning(message)
+}
+
+function DashboardCards(fields){
+  return(
+    <div className='rounded flex bg-white'>
+      <div className={`text-3xl flex justify-center items-center ${fields.color} text-white px-4`}>
+        {fields.icons}
+      </div>
+      <div className='pl-4 py-1'>
+        <p className='text-lg font-semibold'>{fields.text}</p>
+        <p className='text-xl  font-semibold'>{fields.number}</p>
+      </div>
+    </div>
+  )
+}
+
+
+const Page500 = () =>{
+  return(
+    <section className="bg-white dark:bg-gray-900">
+      <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
+        <div className="mx-auto max-w-screen-sm text-center">
+          <h1 className="dark:text-primary-500 mb-4 text-7xl font-extrabold tracking-tight text-blue-600 lg:text-9xl">500</h1>
+          <p className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">Internal Server Error.</p>
+          <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Sorry something went wrong.</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+const WorkUnderProgress = () =>{
+  return(
+    <div className="bg-white dark:bg-gray-700">
+      <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
+        <div className="mx-auto max-w-screen-sm text-center">
+          <h1 className="dark:text-primary-500 mb-4 text-7xl font-extrabold tracking-tight text-blue-600 lg:text-9xl">Sorry..</h1>
+          <p className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">Under Development .</p>
+          <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Explore Other Features.</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+export {FormLabels ,FormControl , Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress}
