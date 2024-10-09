@@ -4,11 +4,11 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-//import TextField from '@mui/material/TextField';
+import { Input } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-//import { Transition } from "@headlessui/react";
-//import { Toaster, ToastIcon, toast, resolveValue } from "react-hot-toast";
+import 'react-toastify/dist/ReactToastify.css'; 
+import { Select, Option } from "@material-tailwind/react";
+ 
 
 function FormLabels(label){
     return(
@@ -29,18 +29,22 @@ function FormControl(formfield){
 }
 
 
-function TextFields({ label, name, onchangefunction, value }) {
+function TextFields({type,label, name, onChange,className, value,required,placeholder }) {
     return (
       <>
-        {/* <TextField
-          id="outlined-basic"
-          label={label}
-          variant="outlined"
-          name={name} 
-          
-          //value={}
-          onChange={(e) => onchangefunction({ ...value, [e.target.name]: e.target.value })}
-        /> */}
+      <Input 
+        variant="static" 
+        color="teal" 
+        label={label}
+        placeholder={placeholder} 
+        // labelProps={{ className: "hidden",}}
+        containerProps={{ className: "min-w-[100px]" }}
+        type={type}
+        onChange={onChange}
+        name={name}
+        value={value}
+      />
+ 
       </>
     );
   }
@@ -113,5 +117,31 @@ const WorkUnderProgress = () =>{
   )
 }
 
+// function BasicSelectTag({label,name,onChange,Data}){
 
-export {FormLabels ,FormControl , Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress}
+//   return(
+//     <Select variant="static" label={label} name={name} onChange={onChange}>
+       
+//       {Data.map(option => (
+//           <Option key={option.key} value={option.key}>
+//             {option.name}
+//           </Option>
+//         ))}
+//     </Select>
+//   );
+// }
+
+
+function BasicSelectTag({ label, name, onChange, Data }) {
+  return (
+    <Select variant="static" label={label} name={name} onChange={onChange}>
+      {Data.map(option => (
+        <Option key={option.key} value={option.key}>
+          {option.name}
+        </Option>
+      ))}
+    </Select>
+  );
+}
+
+export {FormLabels,TextFields ,FormControl ,BasicSelectTag, Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress}

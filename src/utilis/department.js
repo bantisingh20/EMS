@@ -3,6 +3,7 @@ import {config ,Token } from '../../config';
 
 
 export class DepartmentsClass {
+     
     
     constructor(departmentid=0, departmentname='', mode='new', disabled='n', statusdate=Date.Now) {
         this.departments = {
@@ -42,10 +43,10 @@ export class DepartmentsClass {
     }
 
 
-    async SaveNewDepartment() {
+    async SaveNewDepartment(SubmitDepartmentData) {
         try {
-            console.log(this.departments);
-            const response = await axios.post(`${config}/api/department/save-department`,this.departments,{
+             
+            const response = await axios.post(`${config}/api/department/save-department`,SubmitDepartmentData,{
                 headers: {
                   "Authorization":`Bearer ${Token}`
                 }
@@ -59,19 +60,39 @@ export class DepartmentsClass {
     }
 
 
-    async DeleteDepartmentById(_id) {
-        try{
-            console.log(_id);
-            const response = await axios.delete(`${config}/api/department/deleteDepartmentByID/${_id}`,{
+    async UpdateDepartment(SubmitDepartmentData) {
+        try {
+             
+            const response = await axios.post(`${config}/api/department/UpdateDepartment`,SubmitDepartmentData,{
                 headers: {
-                    "Authorization":`Bearer ${Token}`
-                  }
+                  "Authorization":`Bearer ${Token}`
+                }
             });
 
-            return response.data;
-        }
-        catch(error){
+            return response.data;  
+        } catch (error) {
+            console.error("Error fetching departments:", error);
             throw error.response.data;
         }
+    }
+    
+    async DeleteDepartmentById(_id) {
+        const userConfirmed = await confirm("Are you sure ?");
+        if(userConfirmed){
+            try{
+                console.log(_id);
+                const response = await axios.delete(`${config}/api/department/deleteDepartmentByID/${_id}`,{
+                    headers: {
+                        "Authorization":`Bearer ${Token}`
+                      }
+                });
+    
+                return response.data;
+            }
+            catch(error){
+                throw error.response.data;
+            }
+        }
+        
     }
 }
