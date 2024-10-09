@@ -2,36 +2,34 @@ import React,{ Children, createContext, useContext, useEffect, useState} from 'r
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {config} from '../../config';
+import { loginClass } from '../utilis/login';
+import {UserDetailsClass} from '../utilis/userdetails'
 
 const UserContext = createContext();
 
-const AuthContext = ({children}) =>{
-
+const AuthContextProvider = ({children}) =>{
+  const login = new loginClass();
+  const UserDetails = new UserDetailsClass()
   const [user,setUser] = useState({}); 
   const [token,setToken] = useState(""); 
   const navigate = useNavigate();
 
   useEffect( () => {
-    //debugger;
-    const token= localStorage.getItem("Token");
-    //console.log("token  "+token);
-     
+    const token= localStorage.getItem("Token"); 
+
     const verifyuser = async() =>{
       if(token){
-        try {  
-          //console.log(token);
+        try {   
           const response = await axios.get(`${config}/auth/verify-user`,{
             headers:{
               "Authorization" :`Bearer ${token}`
             }
    
           })
-          
-          //console.log("res " + response.data)
-          if(response.data.success){
-              //setUser(JSON.stringify(response.data.user))
-              //console.log(response.data.user);
-              LoginSessionStart(response.data.user)           
+           
+          if(response.data.success){ 
+               LoginSessionStart(response.data.user) 
+             await UserDetails.setUserDetails(response.data.user)           
           }
           else{
              navigate('/login')
@@ -51,16 +49,18 @@ const AuthContext = ({children}) =>{
     verifyuser()
   },[])
 
+  
 
 
   const LoginSessionStart =(user) =>{
-    setUser(user);    
-    //console.log(user.name);
+    setUser(user);  
+    UserDetails.setUserDetails(user) 
+    //console.log(user); 
   }
 
 
   const logout =() =>{
-    setUser({});
+    UserDetails.clearUserDetails();
     localStorage.removeItem("Token");
     localStorage.removeItem("session");
     navigate('/login');
@@ -68,13 +68,13 @@ const AuthContext = ({children}) =>{
   }
 
   return(
-     <UserContext.Provider value={{user, LoginSessionStart, logout}}>
+     <UserContext.Provider value={{ user,LoginSessionStart, logout}}>
       {children}
      </UserContext.Provider>
   )
 }
 
 export const sessiondata = () => useContext(UserContext);
-export default AuthContext;
+export default AuthContextProvider;
 
 

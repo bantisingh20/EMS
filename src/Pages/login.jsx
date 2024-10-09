@@ -31,9 +31,9 @@ const LoginPage =() =>{
                 LoginSessionStart(result.user);
                 handleSuccess('login Successfull');
 
-                setTimeout(() => {
-                    navigate('/default');
-                }, 2000);
+               // setTimeout(() => {
+                    navigate('/dashboard');
+               // }, 2000);
             }
         } catch (error) {
             console.log(error);

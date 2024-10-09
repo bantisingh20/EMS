@@ -7,8 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import DefaultPage from "./Pages/default";
 import DashboardPage from "./Pages/Dashboard";
 import AdminSummary from "./Dashboard/AdminSummary";
-import Department from './Masters/Department'
-import Employees from './Masters/Employees'
+import DepartmentPage from './Masters/Department'
+import EmployeesPage from './Masters/Employees'
 import Leave from './Masters/Leave'
 import Salary from './Masters/Salary'
 import Setting from './Masters/Setting' 
@@ -23,11 +23,11 @@ function App() {
           <Route path="/default" element={<DefaultPage />} ></Route>
           <Route path="/dashboard" element={<DashboardPage />} >{/* parent */}
              <Route index element={<AdminSummary />}></Route>
-             <Route path="/dashboard/department" element={<Department />} ></Route>
+             <Route path="/dashboard/department" element={<DepartmentPage />} ></Route>
              <Route path="/dashboard/salary" element={<Salary />} ></Route>
              <Route path="/dashboard/leave" element={<Leave />} ></Route>
              <Route path="/dashboard/setting" element={<Setting />} ></Route>
-             <Route path="/dashboard/employees" element={<Employees />} ></Route>
+             <Route path="/dashboard/employees" element={<EmployeesPage />} ></Route>
               
           </Route>
       </Routes>
