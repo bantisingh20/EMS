@@ -5,9 +5,9 @@ export class EmployeeClass {
    
     constructor(
         employeeid =0
-        ,employeecode= '1'
-        ,firstname='2' 
-        ,lastname='3'
+        ,employeecode= ''
+        ,firstname='' 
+        ,lastname=''
         ,contactno=0
         ,emailid='' 
         ,gender =''
@@ -103,19 +103,14 @@ export class EmployeeClass {
     
     handleInputChange(name, value) { 
          this.employees[name] = value; 
-         console.log(this.employees);   
+        // console.log(this.employees);   
     }
 
     genderOptions = [
         { key: 'g', name: 'Male' },
         { key: 'w', name: 'Female' },
     ];
-
-    departmentOptions = [
-        { key: '1', name: 'Male' },
-        { key: '3', name: 'Female' },
-    ];
-
+ 
     validateInput = (name, value) => {
           console.log(name);
         switch (name) {
@@ -147,7 +142,7 @@ export class EmployeeClass {
         }
     };
     
-    getDepartmentInfo() {
+    getEmployeeInfo() {
         return this.employees;
     }
 
@@ -160,7 +155,8 @@ export class EmployeeClass {
                     "Authorization": `Bearer ${Token}`
                 }
             })
-            console.log(response.data);
+            
+            return response.data;
         }
         catch(error){
             console.error("Error Saving Employee:", error);

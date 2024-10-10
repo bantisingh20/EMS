@@ -24,6 +24,13 @@ const SideBar = () => {
             className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
                 <FaBuilding /> <span>Department</span>
             </NavLink>
+
+            <NavLink to="designation" 
+            className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
+                <FaBuilding /> <span>Designation</span>
+            </NavLink>
+
+
             <NavLink to="salary" className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
                 <FaMoneyBill /> <span>Salary</span>
             </NavLink>

@@ -115,21 +115,7 @@ const WorkUnderProgress = () =>{
       </div>
     </div>
   )
-}
-
-// function BasicSelectTag({label,name,onChange,Data}){
-
-//   return(
-//     <Select variant="static" label={label} name={name} onChange={onChange}>
-       
-//       {Data.map(option => (
-//           <Option key={option.key} value={option.key}>
-//             {option.name}
-//           </Option>
-//         ))}
-//     </Select>
-//   );
-// }
+} 
 
 
 function BasicSelectTag({ label, name, onChange, Data }) {
