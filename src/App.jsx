@@ -8,6 +8,7 @@ import DefaultPage from "./Pages/default";
 import DashboardPage from "./Pages/Dashboard";
 import AdminSummary from "./Dashboard/AdminSummary";
 import DepartmentPage from './Masters/Department'
+import DesignationPage from './Masters/Designation'
 import EmployeesPage from './Masters/Employees'
 import Leave from './Masters/Leave'
 import Salary from './Masters/Salary'
@@ -24,6 +25,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} >{/* parent */}
              <Route index element={<AdminSummary />}></Route>
              <Route path="/dashboard/department" element={<DepartmentPage />} ></Route>
+             <Route path="/dashboard/designation" element={<DesignationPage />} ></Route>
              <Route path="/dashboard/salary" element={<Salary />} ></Route>
              <Route path="/dashboard/leave" element={<Leave />} ></Route>
              <Route path="/dashboard/setting" element={<Setting />} ></Route>

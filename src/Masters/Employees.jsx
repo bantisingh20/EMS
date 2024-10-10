@@ -8,17 +8,40 @@ import DataTable from 'react-data-table-component';
 import { CustomLoader } from '../Pages/loader'
 import { EmployeeClass } from '../utilis/employees'; 
 import { Select, Option } from "@material-tailwind/react";
+import CommonClassComponent from '../Pages/CommonParameter';
  
 
  
 //grid grid-cols-1 md:grid-cols-2 gap-4
 const EmployeesPage = () => { 
   const employee = new EmployeeClass();
+    
   const [showModal, setShowModal] = React.useState(true);
   const [mode,setMode]= useState("new")
   const [employeeSubmitDetails,setEmployees] = useState(employee.employees);
   
-   
+   const handleSubmit = async (e) =>{
+    debugger;
+    e.preventDefault();
+
+    try {
+      const response = await employee.SaveEmployee();
+       
+      if(response.success){
+        setShowModal(false); 
+        //await GetAllDepartment();
+        await handleSuccess('Employee Save Successfully');
+                 
+      }
+      else{
+        handleError(response.message);
+      }
+    } catch (error) { 
+       handleError(error);
+       handleError(error.message);
+    }
+
+   }
   return (
     <div>  
     
@@ -28,7 +51,9 @@ const EmployeesPage = () => {
            <div className='max-w-6xl max-auto mt-10 bg-white p-9 rounded-md shadow-md'>
             <h2 className='text-2xl font-bold mv-6'>Add New Employee</h2>
             <br />
-            <form onSubmit={employee.SaveEmployee()}>
+
+                      
+            <form onSubmit={handleSubmit}>
               <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                <div className='flex flex-row'>               
                 <TextFields 
@@ -141,65 +166,48 @@ const EmployeesPage = () => {
                   Data={employee.genderOptions} 
                 />
                </div>
-
-
-               <div>
-               <BasicSelectTag 
-                  label="Maritial Status"
-                  name="maritialstatus"
-                  value={employeeSubmitDetails.maritialstatus.value}
-                  onChange={(e) => employee.handleInputChange(["maritialstatus"],e)} 
-                  Data={employee.departmentOptions} 
-                /> 
-               </div>
+ 
 
                <div>
-                <BasicSelectTag 
+                {/* <BasicSelectTag 
                 label="Department" 
                 name="department"
                 value={employeeSubmitDetails.department.value}
                 onChange={(e) => employee.handleInputChange(["department"],e)} 
                 Data={employee.departmentOptions}
-                // onChange={(e) => ({...employeeSubmitDetails ,e.target.name:e.target.value})}
-                />
+                 
+                /> */}
+
+              <CommonClassComponent
+                type="department"
+                label="Department"
+                name="department"
+                value={employeeSubmitDetails.department.value}
+                onChange={(e) => employee.handleInputChange(["department"],e)} 
+              />
+
                </div>
 
 
                <div>
-                <BasicSelectTag 
+                {/* <BasicSelectTag 
                   label="Designation"
                   name="designation"
                   value={employeeSubmitDetails.designation.value}
                   onChange={(e) => employee.handleInputChange(["designation"],e)}  
                   Data={employee.departmentOptions}
-                  // onChange={(e) => ({...employeeSubmitDetails ,e.target.name:e.target.value})}
-                /> 
+                   
+                />  */}
+
+              <CommonClassComponent
+                type="designation"
+                label="Designation"
+                name="designation"
+                value={employeeSubmitDetails.designation.value}
+                onChange={(e) => employee.handleInputChange(["designation"],e)} 
+              />
                </div>
-
-
-               <div>
-                <BasicSelectTag 
-                  label="Employee Type" 
-                  name="employeetype"
-                  value={employeeSubmitDetails.employeetype.value}
-                  onChange={(e) => employee.handleInputChange(["employeetype"],e)} 
-                 Data={employee.departmentOptions}
-                  // onChange={(e) => ({...employeeSubmitDetails ,e.target.name:e.target.value})}
-                 />
-               </div>
-
-               <div>
-               <BasicSelectTag 
-                label="Employee Status" 
-                name="activestatus"
-                value={employeeSubmitDetails.activestatus.value}
-                onChange={(e) => employee.handleInputChange(["activestatus"],e)} 
-                Data={employee.departmentOptions}
-                  // onChange={(e) => ({...employeeSubmitDetails ,e.target.name:e.target.value})}
-                />
-               </div>
-
-
+ 
                <div>
                <TextFields 
                   label="Address" 
@@ -210,7 +218,7 @@ const EmployeesPage = () => {
                   className={undefined}
                   required={undefined} 
                   placeholder={undefined} 
-                  // onChange={(e) => ({...employeeSubmitDetails ,e.target.name:e.target.value})}
+                  
                 />
                </div>
 
@@ -224,15 +232,15 @@ const EmployeesPage = () => {
                   className={undefined}
                   required={undefined} 
                   placeholder={undefined} 
-                  // onChange={(e) => ({...employeeSubmitDetails ,e.target.name:e.target.value})}
+                   
                 />
                </div>
               </div>
 
               <Button type="submit" className='w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded'
-                onClick={(e) => ([e.preventDefault()])}      >
-                           Save
-                      </Button>
+                >
+                Save
+              </Button>
             </form>
            </div>
           

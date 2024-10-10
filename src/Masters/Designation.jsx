@@ -6,24 +6,17 @@ import { Button } from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify'; 
 import DataTable from 'react-data-table-component';
 import { CustomLoader } from '../Pages/loader'
-import { DepartmentsClass } from '../utilis/department';
+import { DesignationClass } from '../utilis/designation';
  
 
-const DepartmentPage = () => {
+const DesignationPage = () => {
    
   const navigate = useNavigate();
-  const departments = new DepartmentsClass(); 
-  const [SubmitDepartmentData,setDepartment] = useState(departments.departments);
-  // useState({
-  //   _id:'0'
-  //   ,departmentname:''
-  // });
-
-  
-
+  const designation = new DesignationClass();  
+  const [SubmitDetails,setSubmitDetails] = useState(designation.designation); 
+ 
   const [searchQuery, setSearchQuery] = useState('');
-  const [departmentlist,setDepartmentlist] = useState([]);
-  const location = useLocation();
+  const [designationlist,setdesignationlist] = useState([]);
   const [pending, setPending] = React.useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [showModal, setShowModal] = React.useState(false);
@@ -31,20 +24,17 @@ const DepartmentPage = () => {
   
   const handleOnclickForCommonButton = async () =>{
     setMode("new");
+    setSubmitDetails({});
     setShowModal((prevShowModal) => !prevShowModal);
-    setDepartment({ _id: '0', departmentname: '' });
 
   }
-   
-  //const hash = location.hash;
+    
+  const handleShowModal = async (name,id) => { 
+    designation.designation.designationname=name;
+    designation.designation.designationid=id; 
+    console.log(designation.designation.designationname)     
+    setSubmitDetails(designation.designation); 
  
-  const handleShowModal = async (name,id) => {
-     
-    const departmentData = {
-      _id: id,
-      departmentname: name,
-    };
-    await setDepartment(departmentData); 
     await setMode("old");
     await setShowModal(true);
      
@@ -58,9 +48,9 @@ const DepartmentPage = () => {
       selector:(row) => row.sno
     },
     {
-      name:"Department",
+      name:"Designation",
       sortable: true,
-      selector:(row) => row.departmentname
+      selector:(row) => row.designationname
     },
     {
       name:"Action",
@@ -68,14 +58,14 @@ const DepartmentPage = () => {
         <div className='flex space-x-4'>
           <Link  
             className='px-3 py-1 bg-teal-600 text-white font-bold rounded'
-            onClick={() => handleShowModal(row.departmentname, row._id)} to={''}          >
-              Edit Department
+            onClick={() => handleShowModal(row.designationname, row._id)} to={''}          >
+              Edit Designation
           </Link>
 
           <Button
             className='px-3 py-1 bg-red-600 text-white font-bold rounded'
             onClick={async () => {
-                await departments.DeleteDepartmentById(row._id);  
+                await designation.DeleteDepartmentById(row._id);  
                 await GetAllDepartment();  
             }} >
             Delete
@@ -86,19 +76,19 @@ const DepartmentPage = () => {
     }
   ]
  
-  const filteredData = departmentlist.filter(item => 
-    item.departmentname.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredData = designationlist.filter(item => 
+    item.designationname.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     
     try {
-      const response = await departments.SaveNewDepartment(SubmitDepartmentData);
+      const response = await designation.SaveNewDesignation();
       if(response.success){
         setShowModal(false); 
-        await GetAllDepartment();
-        await handleSuccess('Department Save Successfully');
+        await GetAllDesignation();
+        await handleSuccess('Designation Save Successfully');
                  
       }
       else{
@@ -120,7 +110,7 @@ const DepartmentPage = () => {
       const response = await departments.UpdateDepartment(SubmitDepartmentData);
       if(response.success){
         setShowModal(false); 
-        await GetAllDepartment();
+        await GetAllDesignation();
         await handleSuccess('Update Successfully');
                  
       }
@@ -133,20 +123,20 @@ const DepartmentPage = () => {
     }
   };
 
-  const GetAllDepartment = async() =>{
+  const GetAllDesignation = async() =>{
     
     try{
-      const response = await departments.GetAllDepartmentsNew();
+      const response = await designation.GetAllDesignations();
 
       if(response.success){
         let sno = 1;
         const list = await response.data.map((dep) =>({
-          _id: dep._id,   sno:sno++,       departmentname: dep.departmentname,   disabled:dep.disabled
+          _id: dep._id,   sno:sno++,       designationname: dep.designationname,   disabled:dep.disabled
         })) 
-        setDepartmentlist(list);         
+        setdesignationlist(list);         
       }
       else{
-        setDepartmentlist([]);
+        setdesignationlist([]);
       } 
     }
     catch(error){ 
@@ -157,7 +147,7 @@ const DepartmentPage = () => {
   }
 
   useEffect(() =>{
-    GetAllDepartment();
+    GetAllDesignation();
   },[])
    
   return (
@@ -170,7 +160,7 @@ const DepartmentPage = () => {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">                 
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-3xl font-semibold">
-                    {mode =="new" ? "Add Department" :"Update Department"}   
+                    {mode =="new" ? "Add Designation" :"Update Designation"}   
                   </h3>
                   <button
                     className="p-1 ml-auto bg-red border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -182,16 +172,17 @@ const DepartmentPage = () => {
                 </div>
                  
                 <div className="relative p-6 flex-auto">   
-                    <Form onSubmit={mode =="new" ? handleSubmit : UpdateDepartment}>
-                      <FormLabels label="Department Name:" className='text-sm font-medium text-gray-700' />
+                    <Form onSubmit={handleSubmit}>
+                      <FormLabels label="Designation Name:" className='text-sm font-medium text-gray-700' />
                       <Form.Control
                       type="text" 
-                      placeholder="Enter Department Name" 
+                      placeholder="Enter Designation Name" 
                       className='mt-1 w-full p-2 border border-gray-300 rounded-md' 
                       required={true}
-                      value={SubmitDepartmentData.departmentname}
-                      onChange={(e) => setDepartment({...SubmitDepartmentData,[e.target.name]:e.target.value})} 
-                      name="departmentname" />
+                      value={SubmitDetails.designationname}
+                      onChange={(e) => setSubmitDetails({...SubmitDetails,[e.target.name]:e.target.value})} 
+                      // onChange={(e) => designation.handleInputChange(e.target.name, e.target.value)} 
+                      name="designationname" />
 
                       <Button type="submit" className='w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded'
                         disabled={isDisabled} >
@@ -203,7 +194,7 @@ const DepartmentPage = () => {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                    
-                  <Link to="/dashboard/department" 
+                  <Link to="/dashboard/designation" 
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     onClick={() => handleOnclickForCommonButton()}
                   > Close </Link>
@@ -221,18 +212,18 @@ const DepartmentPage = () => {
       <>
  
         <div className='text-center'>
-          <h3 className='text-2xl font-bold mb-6'>Manage Department</h3>
+          <h3 className='text-2xl font-bold mb-6'>Manage Designation</h3>
         </div>
 
         <div className='flex justify-between items-center px-3'>
           <input 
             type="text" 
-            placeholder='Search Department' 
+            placeholder='Search Designation' 
             className='form-control px-4 py-0.5' 
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <Link to={''} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => handleOnclickForCommonButton()} >
-            Add New Department
+            Add New Designation
           </Link>
         </div>
           <ToastContainer />
@@ -251,4 +242,4 @@ const DepartmentPage = () => {
 };
  
 
-export default DepartmentPage;
+export default DesignationPage;
