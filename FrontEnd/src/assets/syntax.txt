@@ -1,0 +1,23 @@
+ const response = await fetch("",{
+            method:"POST",
+            headers:{'Contest-Type' :'application/json'},
+            body: JSON.stringify(LoginInData)
+
+})
+        
+const result = await response.json();
+
+2. axios method
+
+ try {
+            const response = await axios.post("",{LoginInData});
+            console.log(response)
+    } catch (error) {
+            console.log(error);
+}
+
+
+const handleChange = (e) => {
+        const { name, value } = e.target;
+        SetLoginInData({ ...LoginInData, [name]: value });
+};
