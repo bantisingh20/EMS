@@ -17,6 +17,7 @@ gender :{type:String},
 department : {type: mongoose.Schema.Types.ObjectId,ref:"Department"},
 designation : {type: mongoose.Schema.Types.ObjectId,ref:"Department"},
 address :{ type:String},
+originalpassword: {type:String},
 password:{type:String, required:true },
 role:{type:String, required:true },
 profileImage:{type:String},
@@ -88,6 +89,7 @@ const SaveEmployee = async(req,res) => {
             ,department
             ,designation
             ,address
+            ,originalpassword :password
             ,password:haspassword
             ,role:role.toLowerCase()
             ,profileImage:req.file ? req.file.name : ""

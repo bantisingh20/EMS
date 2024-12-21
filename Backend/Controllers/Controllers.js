@@ -7,7 +7,7 @@ const Login = async(req,res) =>{
     try{
        
         const { email, password } = req.body;
-        console.log(email);
+        console.log(email,password);
 
         if(email == 'admin@gmail.com' && password == 'admin123'){
             const token = jwt.sign({_id: '01', role: 'superadmin' }, process.env.JWT_SECRET,{expiresIn:"1d"})
@@ -22,7 +22,7 @@ const Login = async(req,res) =>{
             return res.status(200).json({success:true, message:"login Successfull", token, user});
         }
 
-        const user = await EmployeeTable.findOne({email});
+        const user = await EmployeeTable.findOne({emailid: email});
         console.log(user);
         if(!user){
             return  res.status(400).json({success:false,message:"User not exists"});

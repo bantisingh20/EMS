@@ -66,7 +66,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
       </div>
 
       {/* Navigation Links */}
-      <div className="px-2">
+      <div className="px-2 py-3">
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
@@ -108,7 +108,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
           {!isCollapsed && <span>Designation</span>}
         </NavLink>
 
-        <NavLink
+        {/* <NavLink
           to="salarynew"
           className={({ isActive }) =>
             `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded `
@@ -116,7 +116,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
         >
           <FaMoneyBill className="text-lg" />
           {!isCollapsed && <span>Salary</span>}
-        </NavLink>
+        </NavLink> */}
 
         <NavLink
           to="leave"

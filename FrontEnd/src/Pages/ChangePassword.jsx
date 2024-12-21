@@ -15,7 +15,7 @@ const validationSchema = Yup.object({
         .required('Confirm password is required'),
 });
 
-const ChangePasswordModal = ({ isOpen=true, closeModal }) => {
+const ChangePasswordModal = ({ isOpen=true }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(validationSchema),
     });
@@ -27,6 +27,9 @@ const ChangePasswordModal = ({ isOpen=true, closeModal }) => {
         closeModal();
     };
 
+    const closeModal = () => {
+        isOpen=false;
+    }
     return (
         // Modal background, appears only when isOpen is true
         isOpen ? (

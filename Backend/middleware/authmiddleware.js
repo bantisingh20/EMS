@@ -2,12 +2,14 @@ const {UserTable} = require("../Schemas/user");
 const bcrypt =require('bcrypt')
 const jwt = require("jsonwebtoken");
 const DefaultUser = require("../index");
+const { EmployeeTable } = require("../Schemas/employeesSchema");
 
 const verifyuser = async(req,res,next) => {
     try {
        
         //console.log(req.headers.authorization);
  
+        debugger;
         const token = req.headers.authorization.split(' ')[1];
         
         if(!token || token == null){
@@ -17,6 +19,9 @@ const verifyuser = async(req,res,next) => {
         }
 
         const decode = await jwt.verify(token, process.env.JWT_SECRET)
+
+        console.log(`decode : ${decode}`);
+        console.log(decode);
         if(!decode){
             console.log("token is not valid");
             return res.status(404).json({success:false, message :"Token not valid"});
@@ -39,7 +44,7 @@ const verifyuser = async(req,res,next) => {
         else{
 
             console.log(decode._id);
-            const user = await UserTable.findById({_id: decode._id}).select('-password');
+            const user = await EmployeeTable.findById({_id: decode._id}).select('-password');
             console.log(user);
             if(!user){
                 console.log("user not found");

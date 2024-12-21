@@ -17,23 +17,20 @@ const LoginPage =() =>{
 
     const LoginUser= async (e) =>{
         e.preventDefault();
-        logout();
+        //logout();
         //console.log(JSON.stringify(LoginInData));
         
         try {
             const response = await axios.post(`${config}/auth/login`,LoginInData);
             
             const result = await response.data;
-           // console.log(result.user);
-
+          
             if(result.success){
                 localStorage.setItem("Token",result.token)
                 LoginSessionStart(result.user);
                 handleSuccess('login Successfull');
-
-               // setTimeout(() => {
-                    navigate('/dashboard');
-               // }, 2000);
+                navigate('/dashboard');
+             
             }
         } catch (error) {
             console.log(error);

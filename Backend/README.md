@@ -1,0 +1,12 @@
+projectroot /
+|-- src/
+|-- config/
+|-- controllers/
+|-- models/
+|-- routes/
+|-- middlewares/
+|-- utils/
+|-- srservice/
+|-- public/
+|-- .env
+|-- service.js

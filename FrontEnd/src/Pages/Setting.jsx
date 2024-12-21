@@ -1,5 +1,5 @@
 import React from 'react'
-import { WorkUnderProgress } from '../Pages/Common'
+import { WorkUnderProgress } from './Common'
 
 const Setting = () => {
   return (

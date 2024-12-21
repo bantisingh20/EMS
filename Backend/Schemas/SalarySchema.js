@@ -46,31 +46,25 @@ const salarySchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-// Create the Salary model
 const SalaryTable = mongoose.model('Salary', salarySchema);
  
 const SaveSalary = async (req, res) => {
     try {
         const { employeeId, payDate, salaryDetails ,basicSalary, houseRentAllowance, transportAllowance, medicalAllowance, otherDeductions } = req.body;
 
-        // Destructure salary details from the request body
-       
 console.log(req.body);
-        // Calculate total pay (basic salary + allowances - deductions)
+     
         const totalAllowance = parseFloat(houseRentAllowance || 0) + parseFloat(transportAllowance || 0) + parseFloat(medicalAllowance || 0);
         const totalDeductions = parseFloat(otherDeductions || 0);
         const totalPay = parseFloat(basicSalary) + totalAllowance - totalDeductions;
 
-        // Find the last salary record for this employee
         const lastSalary = await SalaryTable.findOne({ employeeId }).sort({ payDate: -1 });
 
-        // If there is a previous salary, mark it as disabled
         if (lastSalary) {
-            lastSalary.isDisabled = true;  // Disable the previous salary record
-            await lastSalary.save();  // Save the updated last salary record
+            lastSalary.isDisabled = true;   
+            await lastSalary.save();  
         }
-
-        // Create a new salary record
+ 
         const newSalary = new SalaryTable({
             employeeId,
             basicSalary,
@@ -80,14 +74,12 @@ console.log(req.body);
             otherDeductions,
             totalPay,
             payDate,
-            isDisabled: false,  // Mark the new salary as active
+            isDisabled: false,   
         });
-
-        // Save the new salary record
+ 
         await newSalary.save();
 
         console.log(totalPay);
-        // Respond with a success message
         res.status(200).json({ message: 'Salary saved successfully!', totalPay });
 
     } catch (error) {

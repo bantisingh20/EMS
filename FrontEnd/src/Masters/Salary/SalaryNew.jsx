@@ -29,10 +29,11 @@ const SalaryMasterPage = () => {
 
     // Submit handler
     const onSubmit =async (data) => { 
+        console.log(data);
         const response = await axiosInstance.post('/api/salary/save-salary',data);
 
         console.log(response);
-        console.log(data);
+        
     };
 
     return (

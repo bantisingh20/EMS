@@ -1,9 +1,9 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
+} */
 
 .logo {
   height: 6em;
@@ -39,4 +39,13 @@
 
 .read-the-docs {
   color: #888;
+}
+
+
+/* In your CSS file */
+.MuiDataGrid-columnHeader {
+  background-color: #00897b;  /* Set header background color */
+  color: white;               /* Set text color for the header */
+  font-size: 16px;            /* Optional: adjust font size */
+  font-weight: bold;          /* Optional: make the header text bold */
 }

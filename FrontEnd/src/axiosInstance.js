@@ -1,6 +1,6 @@
 import axios from 'axios'; 
  
-const REACT_APP_BACKEND_URL = "http://localhost:3000";
+const REACT_APP_BACKEND_URL = "http://localhost:3000/api";
 const token = localStorage.getItem("Token");  ;
 // Create Axios instance
 const axiosInstance = axios.create({

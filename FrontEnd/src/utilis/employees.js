@@ -1,5 +1,6 @@
 import axios from 'axios'; 
 import {config ,Token } from '../../config';
+import axiosInstance from '../axiosInstance';
 import * as yup from 'yup'; 
 export class EmployeeClass {
    
@@ -146,13 +147,8 @@ export class EmployeeClass {
 
     async GetAllEmployees(){
             try {
-               const response = await axios.get(`${config}/api/employee/GetAllEmployees`,{
-                headers:{
-                    "Authorization":`Bearer ${Token}`
-                }
-               });
- 
-               return response.data;
+               const response = await axiosInstance.get(`${config}/api/employee/GetAllEmployees`);
+               return response;
             } catch (error) {
                 console.error("Error fetching:", error);
                 throw error; 
