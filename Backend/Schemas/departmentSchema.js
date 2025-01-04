@@ -38,11 +38,12 @@ const SaveDepartment = async (req, res) => {
 const GetAllDepartments = async (req, res) => {
     try {
         const departments = await DepartmentTable.find();
-
+   
         if (!departments.length) {
             return res.status(200).json({ success: false, message: "No departments found." });
         }
 
+       // console.log(departments);
         res.status(200).json({ success: true, message: "Departments retrieved successfully", data:departments });
     } catch (error) {
         console.error('Error retrieving departments:', error);

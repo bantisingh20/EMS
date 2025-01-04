@@ -1,19 +1,32 @@
-import axios from 'axios';
 import {useLocation} from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
+import { useLocationContext } from '../Context/LocationContext';
 
-// 
-export const saveLeaveRequest = async (leaveData) => {
+
+const saveLeaveRequest = async (leaveData) => {
   try {
-       
-    // const location = useLocation();
-    // const baseUrl =  location.pathname.replace('/dashboard', '');
-
     const response = await axiosInstance.post('/leave/apply-leave', leaveData);
-    return response.data; // Return response if needed
+
+    console.log(response);
+    return response; // Return response if needed
 
   } catch (error) {
-    console.error('Error saving leave request:', error);
-    throw error; // Throw error to be caught in the page component
+    console.error('Error saving leave request:', error.response.data);
+    throw error.response.data.message; // Throw error to be caught in the page component
   }
 };
+
+const GetUserWiseLeaveData = async(location) =>{
+  try {
+    const baseUrl =  location.pathname.replace('/dashboard', '');
+    const response = await axiosInstance.get(baseUrl);
+    //console.log(response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error Getting leave request:', error);
+    throw error; // Throw error to be caught in the page component
+  }
+}
+
+export {saveLeaveRequest,GetUserWiseLeaveData}

@@ -29,8 +29,8 @@ const LoginPage =() =>{
                 localStorage.setItem("Token",result.token)
                 LoginSessionStart(result.user);
                 handleSuccess('login Successfull');
-                navigate('/dashboard');
-             
+                //navigate('/dashboard');
+                window.location.href = '/dashboard';
             }
         } catch (error) {
             console.log(error);

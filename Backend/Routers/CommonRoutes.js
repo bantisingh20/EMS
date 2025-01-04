@@ -1,5 +1,5 @@
 
-const { SaveLeave } = require('../Schemas/LeaveSchema.js');
+const { SaveLeave, GetLeaveDetails } = require('../Schemas/LeaveSchema.js');
 const { SaveDepartment ,GetAllDepartments ,GetDepartmentByName ,GetDepartmentById,DeleteDepartment ,UpdateDepartment } = require('../Schemas/departmentSchema');
 
 const {SaveDesignation ,GetAllDesignation, UpdateDesignation, DeleteDesignation} =require('../Schemas/designationSchema.js');
@@ -37,5 +37,7 @@ route.delete('/employee/DeleteEmployee/:id',DeleteEmployee);
 //route.post('/salary/save-salary',Save);
 
 route.post('/leave/apply-leave',verifyuser,SaveLeave);
+route.get('/leave/leave',verifyuser,GetLeaveDetails);
+route.get('/leave/leavedashboard',verifyuser,GetLeaveDetails);
 
 module.exports = route;

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {config ,Token } from '../../config';
+import axiosInstance from '../axiosInstance';
 
 
 export class DepartmentsClass {
@@ -28,14 +29,10 @@ export class DepartmentsClass {
 
     async GetAllDepartmentsNew() {
         try {
-            const response = await axios.get(`${config}/api/department/GetAllDepartment`, {
-                headers: {
-                    "Authorization": `Bearer ${Token}`
-                }
-            });
+            const response = await axiosInstance.get(`/department/GetAllDepartment`);
             //console.log(response.data)
              
-            return response.data;  
+            return response;  
         } catch (error) {
             console.error("Error fetching departments:", error);
             throw error; 

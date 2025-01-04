@@ -4,50 +4,7 @@ import {FaBuilding, FaRedoAlt, FaCalendarAlt, FaMoneyBill, FaSteam, FaTachometer
 import { sessiondata } from '../Context/Context';
 import { FaUser,FaLock } from 'react-icons/fa';
 
-const SideBarOld = () => {
-    //console.clear();
-  return (
-    <div className="bg bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-64">
-        <div className='bg-teal-600 h-12 items-cente justify-center'>
-            <h2 className='text-2xl text-center font-pacific'>Employee</h2>
-        </div>
-
-        <div className='px-4'>
-            <NavLink to="/dashboard"
-             className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`} end>
-                <FaTachometerAlt /> <span>Dashboard</span>
-            </NavLink>
-            <NavLink to="employees" 
-             className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
-                <FaUsers /> <span>Employees</span>
-            </NavLink>
-            <NavLink to="department" 
-            className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
-                <FaBuilding /> <span>Department</span>
-            </NavLink>
-
-            <NavLink to="designation" 
-            className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
-                <FaBuilding /> <span>Designation</span>
-            </NavLink>
-
-
-            <NavLink to="salary" className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded `}>
-                <FaMoneyBill /> <span>Salary</span>
-            </NavLink>
-            <NavLink to="leave" className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
-                <FaCalendarAlt /> <span>Leave</span>
-            </NavLink>
-            <NavLink to="setting" className= {({isActive}) => `${isActive ? "bg-teal-500" :" "} flex items-center space-x-4 block py-2.5 px-4 rounded`}>
-                <FaSteam /> <span>Setting</span>
-            </NavLink>
-        </div>
-    </div>
-       
-  )
-}
-
-const SideBar = ({ isCollapsed, toggleSidebar }) => {
+const SideBarStatic = ({ isCollapsed, toggleSidebar }) => {
   return (
     <div
       className={`bg-gray-800 text-white h-screen fixed top-0 bottom-0 transition-all ${
@@ -56,7 +13,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
     >
       {/* Header Section */}
       <div className="bg-teal-600 h-12 flex items-center justify-between px-4">
-        {!isCollapsed && <h2 className="text-2xl font-pacific">Employee</h2>}
+        {!isCollapsed && <h2 className="text-2xl font-pacific">EMS</h2>}
         <button
           onClick={toggleSidebar}
           className="text-white focus:outline-none"
@@ -79,7 +36,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
         </NavLink>
 
         <NavLink
-          to="employees"
+          to="list-employees"
           className={({ isActive }) =>
             `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
@@ -119,7 +76,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
         </NavLink> */}
 
         <NavLink
-          to="leave"
+          to="leave/leavedashboard"
           className={({ isActive }) =>
             `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
@@ -137,22 +94,90 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
           <FaSteam className="text-lg" />
           {!isCollapsed && <span>Setting</span>}
         </NavLink>
+
+
+        <NavLink
+          to="Report"
+          className={({ isActive }) =>
+            `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+        >
+          <FaCalendarAlt className="text-lg" />
+          {!isCollapsed && <span>Report</span>}
+        </NavLink>
       </div>
     </div>
   );
 };
 
+const SideBar = ({ isCollapsed, toggleSidebar }) => {
+  // Array containing the navigation links and their properties
+  const navLinks = [
+    { to: '/dashboard', icon: <FaTachometerAlt className="text-lg" />, label: 'Dashboard' },
+    { to: 'list-employees', icon: <FaUsers className="text-lg" />, label: 'Employees' },
+    { to: 'department', icon: <FaBuilding className="text-lg" />, label: 'Department' },
+    { to: 'designation', icon: <FaBuilding className="text-lg" />, label: 'Designation' },
+    { to: 'leave/leavedashboard', icon: <FaCalendarAlt className="text-lg" />, label: 'Leave' },
+    { to: 'attendence', icon: <FaCalendarAlt className="text-lg" />, label: 'Attendence' },
+    { to: 'setting', icon: <FaSteam className="text-lg" />, label: 'Setting' },
+    { to: 'Report', icon: <FaCalendarAlt className="text-lg" />, label: 'Report' },
+  ];
+
+  return (
+    <div
+      className={`bg-gray-800 text-white h-screen fixed top-0 bottom-0 transition-all ${
+        isCollapsed ? "w-20" : "w-64"
+      }`}
+    >
+      {/* Header Section */}
+      <div className="bg-teal-600 h-12 flex items-center justify-between px-4">
+        {!isCollapsed && <h2 className="text-2xl font-pacific">EMS</h2>}
+        <button
+          onClick={toggleSidebar}
+          className="text-white focus:outline-none"
+        >
+          {isCollapsed ? "▶" : "◀"}
+        </button>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="px-2 py-3">
+        {navLinks.map((link, index) => (
+          <NavLink
+            key={index}
+            to={link.to}
+            className={({ isActive }) =>
+              `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded`
+            }
+            end
+          >
+            {link.icon}
+            {!isCollapsed && <span>{link.label}</span>}
+          </NavLink>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
 const NavBar = ({isCollapsed}) => {
     const {user, logout} = sessiondata();
-       
+    useEffect(()=>{
+      if (user) {
+        // Do something when user changes, like logging the user info or triggering some logic
+        console.log("User data changed:", user);
+         
+      }
+    },[user])
+
     const handleProfileClick = () => {
         
     };
  
     return(
         <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5'>
-            <p >Welcome {user.name !="" ? user.name : "Guest"}</p>
-            
+           <p >Welcome {user ? ` ${user.firstname } ${user.lastname}`: 'Guest'}</p>
             <div className="flex items-center gap-4">
                             
                 <button
@@ -176,15 +201,7 @@ const NavBar = ({isCollapsed}) => {
 }
 export {NavBar, SideBar}
 
-
-
-// latest ncage
-// import React from "react";
-// import { NavLink } from "react-router-dom";
-// import { FaBuilding, FaCalendarAlt, FaMoneyBill, FaSteam, FaTachometerAlt, FaUsers } from "react-icons/fa";
-// import { sessiondata } from "../Context/Context";
-
-
+  
 
 
 // const NavBar = ({ isCollapsed }) => {

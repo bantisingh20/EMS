@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -7,11 +7,12 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Input } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
 import { MagnifyingGlassIcon, UserPlusIcon } from '@heroicons/react/24/outline';
- 
+import { DataGrid ,GridToolbar  } from '@mui/x-data-grid';
+import { Box, Typography } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { Select, Option } from "@material-tailwind/react";
 import DataTable from 'react-data-table-component';
-import { CustomLoader } from './loader';
+import loader, { CustomLoader } from './loader';
  
 
 function FormLabels(label){
@@ -144,31 +145,202 @@ function BasicSearchInput({onChange}){
   );
 }
 
+const lightenColor = (color, amount) => {
+  const col = color.startsWith('#') ? color.substring(1) : color;
+  const rgb = parseInt(col, 16); // Convert hex to RGB
+  const r = (rgb >> 16) + amount;
+  const g = ((rgb >> 8) & 0x00FF) + amount;
+  const b = (rgb & 0x0000FF) + amount;
+  return `#${(1 << 24) | (r << 16) | (g << 8) | b}`.toString(16).slice(1).padStart(6, '0');
+};
+
+const darkenColor = (color, amount) => lightenColor(color, -amount);
+
 const AppDataTable = ({columns,data}) =>{
  
+  const headerColor = '#00897b'; // Define your header background color
+
+  // Calculate light and dark versions of the header color
+  const lighterColor = lightenColor(headerColor, 60);  // Lighter version of the header color
+  const darkerColor = darkenColor(headerColor, 50);   // Darker version of the header color
+
+  const customStyles = {
+    headCells: {
+      style: {
+        backgroundColor: headerColor,
+        color: 'black', // Optional: set text color
+        fontSize: 'small',
+      },
+    },
+    row: {
+      style: {
+        // Use light/dark color for rows based on a condition (like odd/even rows)
+        backgroundColor: (rowIndex) => (rowIndex % 2 === 0 ? 'red' : darkerColor),
+        color:(rowIndex) => (rowIndex % 2 === 0 ? 'red' : 'green'),
+      },
+    },
+    cells: {
+      style: {
+        // Custom cell styles based on row color
+        backgroundColor: (rowIndex) => (rowIndex % 2 === 0 ? 'teal-600' : darkerColor),
+        color:(rowIndex) => (rowIndex % 2 === 0 ? 'red' : 'green'),
+          // Optional: Set text color for contrast
+      },
+    },
+  };
+
   return(
 
     <DataTable 
       columns={columns} 
       data={data} 
-      pagination 
-      
+      pagination       
       progressPending={false} 
       progressComponent={<CustomLoader />}
       className="mt-6"
-      customStyles={{
-        headCells: {
-        style: {
-          backgroundColor: '#00897b',
-          color: 'black', // Optional: set text color
-          fontSize:'small',      
-        },
-      },
-      }}
+      customStyles={customStyles}
     />
           
 
   );
 }
+
+// const AppDataGrid = ({columns,data,heading}) =>{
+
+//   return (
+//     <Box sx={{ height: 'auto', width: 'auto' }}>
+      
+//       <Typography variant="h6" gutterBottom>
+//         {heading}
+//       </Typography>
+
+//       <DataGrid
+//         columns={columns}
+//         rows={data}  
+//         rowsPerPageOptions={[5]}
+//         checkboxSelection={false}
+//         disableSelectionOnClick
+//         initialState={{
+//           pagination: {
+//             paginationModel: {
+//               pageSize: 10,
+//             },
+//           },
+//           ...data.initialState,
+//           filter: {
+//             filterModel: {
+//               items: [],
+//               //quickFilterValues: ['abc'],
+//             },
+//           },
+//         }}
+//         slots={{ toolbar: GridToolbar }} // this show filter export hide/show col
+//         slotProps={{
+//           toolbar: {
+//             showQuickFilter: true,
+//           },
+//         }}
+//         pageSizeOptions={[5,10,20,50,100]}
+//         sx={{
+//           '& .MuiDataGrid-columnHeader': {
+//             backgroundColor: '#00897b',  // Set background color for the header
+//             textAlign:'center',
+//             color: 'black',              // Set text color of header
+//            // fontSize: '15px',            // Optional: adjust font size
+//             fontWeight: 'bold',          // Optional: make the header text bold
+//           },
+//           '& .MuiDataGrid-row': {
+//             // Set alternating background color for rows
+//             '&:nth-of-type(even)': {
+//               backgroundColor: '#f5f5f5', // Light background for even rows
+//             },
+//             '&:nth-of-type(odd)': {
+//               backgroundColor: '#e0f7fa', // Darker shade (or different color) for odd rows
+//             },
+//           },
+//           '& .MuiDataGrid-cell': {
+//             fontSize: '14px',  
+//             whiteSpace: 'normal', // Allow text wrapping in cell
+//             wordWrap: 'break-word', // Enable word wrapping in cell
+//           },
+          
+//         }}
+//       />
+//     </Box>
+//   );
+// }
+
+const AppDataGrid = ({ columns, data, heading }) => {
+  const [columnVisibilityModel, setColumnVisibilityModel] = useState(
+    columns.reduce((acc, col) => {
+      acc[col.field] = true;  
+      return acc;
+    }, {})
+  );
+ 
+  const adjustedColumns = columns.map((col) => ({
+    ...col,
+    flex: columnVisibilityModel[col.field] ? 1 : 0,  
+  }));
+
+  return (
+    <Box sx={{ height: 'auto', width: '100%' }}>
+      <Typography variant="h6" gutterBottom>
+        {heading}
+      </Typography>
+
+      <DataGrid
+        columns={adjustedColumns}
+        rows={data}
+        rowsPerPageOptions={[5]}
+        checkboxSelection={false}
+        disableSelectionOnClick
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+          ...data.initialState,
+          filter: {
+            filterModel: {
+              items: [],
+            },
+          },
+        }}
+        slots={{ toolbar: GridToolbar }}
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+          },
+        }}
+        pageSizeOptions={[5, 10, 20, 50, 100]}
+        columnVisibilityModel={columnVisibilityModel}
+        onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+        sx={{
+          '& .MuiDataGrid-columnHeader': {
+            backgroundColor: '#00897b',
+            textAlign: 'center',
+            color: 'black',
+            fontWeight: 'bold',
+          },
+          '& .MuiDataGrid-row': {
+            '&:nth-of-type(even)': {
+              backgroundColor: '#f5f5f5',
+            },
+            '&:nth-of-type(odd)': {
+              backgroundColor: '#e0f7fa',
+            },
+          },
+          '& .MuiDataGrid-cell': {
+            fontSize: '14px',
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+          },
+        }}
+      />
+    </Box>
+  );
+};
 //module.exports = {}
-export {AppDataTable,FormLabels,TextFields ,BasicSearchInput ,FormControl ,BasicSelectTag, Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress}
+export {AppDataTable,FormLabels,TextFields ,BasicSearchInput ,FormControl ,BasicSelectTag, Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress,AppDataGrid}

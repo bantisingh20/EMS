@@ -9,18 +9,18 @@ const Login = async(req,res) =>{
         const { email, password } = req.body;
         console.log(email,password);
 
-        if(email == 'admin@gmail.com' && password == 'admin123'){
-            const token = jwt.sign({_id: '01', role: 'superadmin' }, process.env.JWT_SECRET,{expiresIn:"1d"})
-            const user = {
-                _id: '01',
-                name:'Admin',
-                email:'admin@gmail.com',
-                password:'admin123',
-                role:'superadmin',
-                profileImage:'',
-            }
-            return res.status(200).json({success:true, message:"login Successfull", token, user});
-        }
+        // if(email == 'admin@gmail.com' && password == 'admin123'){
+        //     const token = jwt.sign({_id: '01', role: 'superadmin' }, process.env.JWT_SECRET,{expiresIn:"1d"})
+        //     const user = {
+        //         _id: '01',
+        //         name:'Admin',
+        //         email:'admin@gmail.com',
+        //         password:'admin123',
+        //         role:'superadmin',
+        //         profileImage:'',
+        //     }
+        //     return res.status(200).json({success:true, message:"login Successfull", token, user});
+        // }
 
         const user = await EmployeeTable.findOne({emailid: email});
         console.log(user);

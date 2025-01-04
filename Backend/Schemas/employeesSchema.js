@@ -4,6 +4,8 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const bcrypt =require('bcrypt');
 const {UserTable} = require("../Schemas/user");
 
+
+
 const EmployeeSchema = new mongoose.Schema({
 employeecode : {type:String,required :true, default:'' }, 
 //Userid :{type: mongoose.Schema.Types.ObjectId,ref:"User"},
@@ -31,6 +33,51 @@ isdeleted: { type: String, enum: ['n', 'y'], required: true, default: 'n' },
 
 // EmployeeSchema.plugin(AutoIncrement, { inc_field: 'employeeid' });
 const EmployeeTable = mongoose.model("Employee",EmployeeSchema)
+
+
+
+// Function to insert default employees
+async function insertDefaultEmployees() {
+    const roles = ["admin", "user", "manager", "superadmin"];
+    
+    for (const role of roles) {
+      const employeeCode = `default_${role}`;
+      const existingEmployee = await EmployeeTable.findOne({ employeecode: employeeCode });
+  
+      const password = `${role}123`;
+      const haspassword = await bcrypt.hash(password,10);
+      if (!existingEmployee) {
+        const defaultEmployee = new EmployeeTable({
+          employeecode: employeeCode,
+          firstname: "Default",
+          lastname: role,
+          contactno: null,
+          emailid: `${role}@gmail.com`,
+          dateofbith: null,
+          dateofJoining: new Date(),
+          gender: "N/A",
+          department: null,
+          designation: null,
+          address: "N/A",
+          originalpassword: password,
+          password:haspassword,
+          role: role,
+          profileImage: "N/A",
+          activestatus: "y",
+          recordstatus: "insert",
+          statusdate: new Date(),
+          disabled: "n",
+          isdeleted: "n",
+        });
+  
+        await defaultEmployee.save();
+        console.log(`Inserted default employee for role: ${role}`);
+      } else {
+       // console.log(`Employee with employeecode ${employeeCode} already exists.`);
+      }
+    }
+  }
+
 
 const storage = multer.diskStorage({
     destination :(req,file,cb) =>{
@@ -189,4 +236,4 @@ const DeleteEmployee = async(req,res) => {
 }
 
 
-module.exports = {EmployeeTable ,SaveEmployee,upload ,GetAllEmployees ,GetEmployeesById,UpdateEmployee,DeleteEmployee}
+module.exports = {EmployeeTable ,SaveEmployee,upload ,GetAllEmployees ,GetEmployeesById,UpdateEmployee,DeleteEmployee,insertDefaultEmployees}

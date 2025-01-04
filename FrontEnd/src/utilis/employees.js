@@ -147,7 +147,7 @@ export class EmployeeClass {
 
     async GetAllEmployees(){
             try {
-               const response = await axiosInstance.get(`${config}/api/employee/GetAllEmployees`);
+               const response = await axiosInstance.get(`/employee/GetAllEmployees`);
                return response;
             } catch (error) {
                 console.error("Error fetching:", error);

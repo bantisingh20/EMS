@@ -282,10 +282,12 @@ const DepartmentPage = () => {
   const handleOnclickForCommonButton = () => {
     setMode("new");
     setShowModal(!showModal);
+    
     setDepartment({ _id: '0', departmentname: '' });
   };
 
   const handleShowModal = (name, id) => {
+     
     setDepartment({ _id: id, departmentname: name });
     setMode("old");
     setShowModal(true);

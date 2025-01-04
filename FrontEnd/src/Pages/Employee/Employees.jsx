@@ -1,21 +1,20 @@
 import React,{useEffect, useState ,useRef} from 'react';
-import { FormControl, FormLabels, handleError, handleSuccess ,TextFields,BasicSelectTag ,BasicSearchInput} from '../../Pages/Common';
+import { FormControl, FormLabels, handleError, handleSuccess ,TextFields,BasicSelectTag ,BasicSearchInput} from '../Common';
 import Form from 'react-bootstrap/Form';
 import { Link,useNavigate ,Navigate, useLocation} from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify'; 
 import DataTable from 'react-data-table-component';
+import { CustomLoader } from '../loader'
+import { EmployeeClass } from '../../utilis/employees'; 
 import {  TextField, Box, MenuItem, Select } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form'; 
 import * as yup from 'yup'; 
 import { yupResolver } from '@hookform/resolvers/yup';   
-//import CommonClassComponent from '../Pages/CommonParameter';
 import { DepartmentsClass } from '../../utilis/department';
 import { DesignationClass } from '../../utilis/designation';
-import { CustomLoader } from '../../Pages/loader'
-import { EmployeeClass } from '../../utilis/employees'; 
 
-const ListEmployee = () => { 
+const SaveEmployee = () => { 
   const obj = new EmployeeClass();
   const objdept = new DepartmentsClass();
   const objdesig = new DesignationClass();
@@ -43,11 +42,32 @@ const ListEmployee = () => {
       department: '',
       role: '',
       designation: '',
-      dateofJoining: '',
+      dateofJoining: new Date(),
       address: '',
       password: ''
     }
   });
+
+  
+  const ResetForm = () =>{
+
+    setMode("new");
+    reset({
+      _id: '',
+      employeecode: '',
+      firstname: '',
+      lastname: '',
+      contactno: '',
+      emailid: '',
+      gender: '',
+      department: '',
+      role: '',
+      designation: '',
+      dateofJoining: new Date(),
+      address: '',
+      password: '',
+    }); 
+  }
 
   
     const handleShowModal = async (id,edit) =>{
@@ -55,7 +75,7 @@ const ListEmployee = () => {
         setShowModal(true);
         setMode("edit")
 
-        if(mode == "edit"){
+    
           const editData = await obj.GetEmployeeById(id);
           reset({
             _id:editData._id || 0,
@@ -70,12 +90,10 @@ const ListEmployee = () => {
             department: editData.department || '',
             role: editData.role || '',
             designation: editData.designation || '',
-            dateofJoining: editData.dateofJoining || '',
+            dateofJoining: editData.dateofJoining || new Date(),
             address: editData.address || '',
             password: editData.password || ''
           }); 
-        }
-        
         
         //if(mode == "edit"){
          
@@ -101,7 +119,7 @@ const ListEmployee = () => {
         await handleSuccess('Employee Save Successfully');
         await setMode('new');
         await GetAllEmployee(); 
-                 
+        ResetForm();    
       }
       else{
         handleError(response.message);
@@ -121,15 +139,15 @@ const ListEmployee = () => {
     { name:"Employee Code",  sortable: true,  selector:(row) => row.employeecode },
     { name:"Action", selector:(row) => (
         <div className='flex space-x-4'>
-          <Link  
+          <Button  
             className='px-3 py-1 bg-teal-600 text-white font-bold rounded'
-            onClick={(e) => handleShowModal(row._id,"edit")
+            onClick={(e) => {setMode("edit"); handleShowModal(row._id,"edit")}
             } 
             // to={`#/mode=edit&id:${row._id}`} 
-            to=""
+           // to=""
           >
                Edit
-          </Link>
+          </Button>
 
           <Button
             className='px-3 py-1 bg-red-600 text-white font-bold rounded'
@@ -140,14 +158,12 @@ const ListEmployee = () => {
             Delete
           </Button>
 
-          <Button
+          <Link
             className='px-3 py-1 bg-yellow-600 text-white font-bold rounded'
-            onClick={async (e) => {
-                await obj.DeleteEmployee(row._id);  
-                await GetAllEmployee();  
-            }} >
+            to="./ViewEmployee"
+            >
             View
-          </Button>
+          </Link>
 
       </div>
       )
@@ -223,7 +239,7 @@ const ListEmployee = () => {
   const filteredData = list.filter(item =>  item.firstname.toLowerCase().includes(searchQuery.toLowerCase())  );
 
   return (
-    <div>  
+    <div className='bg-white'>  
     
     {showModal ? (
         <>
@@ -471,16 +487,18 @@ const ListEmployee = () => {
           </Box>
         )}
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-            <Button 
-              className="text-red-500 bg-red font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1,gap:3 }}>
 
-                onClick={() => {setMode('new'); setShowModal(false); }} color="secondary">
-              Close
-            </Button>
-            <Button type="submit" color="primary">
+          <Button type="submit" color="primary" className='px-4 py-1 bg-teal-400 rounded text-white'>
               Submit
             </Button>
+            <Button 
+              className="px-4 py-1 bg-red-400 rounded text-white"
+
+                onClick={(e) => {ResetForm(); setShowModal(false); }} color="secondary">
+              Cancel
+            </Button>
+           
           </Box>
       
         </Box>
@@ -501,7 +519,7 @@ const ListEmployee = () => {
           <BasicSearchInput onChange={(e) =>setSearchQuery(e.target.value)}/>
           
           <div className="flex shrink-0 flex-col gap-2 sm:flex-column">
-            <Link to={''} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => {setShowModal(true) ; setMode('new')}} >
+            <Link to={''} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => {setMode('new') ;setShowModal(true) ; }} >
               Add Employee
             </Link>
           </div>
@@ -535,6 +553,48 @@ const ListEmployee = () => {
 };
  
 
-export default ListEmployee;
+const listEmployee = () =>{
+  return(
+     
+    <>
+ 
+    <div className='text-center'>
+      <h3 className='text-2xl font-bold mb-6'>Manage Employees</h3>
+    </div>
+
+    <div className='flex justify-between items-center px-3'>           
+      <BasicSearchInput onChange={(e) =>setSearchQuery(e.target.value)}/>
+      
+      <div className="flex shrink-0 flex-col gap-2 sm:flex-column">
+        <Link to={''} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => {setMode('new') ;setShowModal(true) ; }} >
+          Add Employee
+        </Link>
+      </div>
+    </div>
+     
+      <br />
+      
+      <DataTable 
+        columns={columns} 
+        data={filteredData} 
+        pagination 
+        progressPending={pending} 
+        progressComponent={<CustomLoader />}
+        customStyles={{
+          headCells: {
+            style: {
+              backgroundColor: '#00897b',
+              color: 'black', // Optional: set text color
+              fontSize:'small',
+               
+            },
+          },
+        }}
+      />
+  </>
+  
+  );
+}
+export default SaveEmployee;
 
 
