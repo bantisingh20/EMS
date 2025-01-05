@@ -82,22 +82,19 @@ const GetDepartmentByName = async (req, res) => {
 
 const GetDepartmentById = async (req, res) => {
     try {
-        const { departmentid } = req.query;  
-   
-        console.log(req.query)
-        if (!departmentid || departmentid == "0") {
-            return GetAllDepartments(req, res);
-        }
-
-        const departments = await DepartmentTable.find({ 
-            departmentid: 0              
-        });
         
-        if (!departments.length) {
-            return res.status(404).json({ success: false, message: "No matching departments found." });
-        }
+        const { id } = req.params;  
+        console.log(id);
+      
+        const departments = await DepartmentTable.findById({ 
+            _id:id            
+        });
 
-        res.status(200).json({ success: true, message: "Departments retrieved successfully", departments });
+        if (!departments) {
+            return { success: false, message: "Department not found" };
+          }
+         
+        res.status(200).json({ success: true, message: "Departments retrieved successfully", data:departments });
     } catch (error) {
         console.error('Error searching departments:', error);
         res.status(500).json({ success: false, message: "Error searching departments", error: error.message });
@@ -123,7 +120,7 @@ const DeleteDepartment = async(req,res) => {
 const UpdateDepartment = async(req,res) => {
     try { 
         const {_id, departmentname} = req.body; 
-        // console.log(req.body);
+         console.log(req.body);
         const departments = await DepartmentTable.findByIdAndUpdate(
             { _id: _id },
             { departmentname: departmentname,statusdate:Date.now() },

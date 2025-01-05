@@ -21,13 +21,15 @@ const LoginPage =() =>{
         //console.log(JSON.stringify(LoginInData));
         
         try {
-            const response = await axios.post(`${config}/auth/login`,LoginInData);
+            const response = await axios.post(`${config}/api/auth/login`,LoginInData);
             
             const result = await response.data;
           
             if(result.success){
+                debugger;
                 localStorage.setItem("Token",result.token)
                 LoginSessionStart(result.user);
+                
                 handleSuccess('login Successfull');
                 //navigate('/dashboard');
                 window.location.href = '/dashboard';

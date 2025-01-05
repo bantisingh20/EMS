@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route ,Navigate } from "react-router-dom";
 import DefaultPage from "./Pages/default";
 import DashboardPage from "./Pages/Dashboard";
 import AdminSummary from "./Dashboard/AdminSummary";
-import DepartmentPage from './Masters/Department'
+import  { DepartmentList,DepartmentPage } from './Masters/Department'
 import DesignationPage from './Masters/Designation'
 import EmployeesPage from './Pages/Employee/Employees'
 import Salary from './Masters/Salary/Salary'
@@ -39,27 +39,28 @@ function App() {
           
           <Route path="/dashboard" element={<DashboardPage />} >{/* parent */}
              <Route index element={<AdminSummary />}></Route>
-             <Route path="/dashboard/change-password" element={<ChangePasswordModal />} ></Route>
-             <Route path="/dashboard/department" element={<DepartmentPage />} ></Route>
-             <Route path="/dashboard/edit-department/id:" element={<DepartmentPage />} ></Route>
-             <Route path="/dashboard/designation" element={<DesignationPage />} ></Route>
-             <Route path="/dashboard/salary" element={<Salary />} ></Route>
-             <Route path="/dashboard/leave/leavedashboard" element={<LeaveDashboard />} ></Route>
+             <Route path="change-password" element={<ChangePasswordModal />} ></Route>
+             <Route path="save/department" element={<DepartmentPage mode="new" />} ></Route>
+             <Route path="edit-department/:id" element={<DepartmentPage mode="edit" />} />
+             <Route path="list-department" element={<DepartmentList />} ></Route>
+             <Route path="designation" element={<DesignationPage />} ></Route>
+             <Route path="salary" element={<Salary />} ></Route>
+             <Route path="leave/leavedashboard" element={<LeaveDashboard />} ></Route>
              
               
               {/* EmployeeRoute */}
-              <Route path="/dashboard/list-employees" element={<EmployeesPage />} ></Route>    
-              <Route path="/dashboard/add-new-employees" element={<EmployeesPage />} ></Route>              
-              <Route path="/dashboard/edit-employees/id:" element={<EmployeesPage />} ></Route>              
-              <Route path="/dashboard/employees/my-[profile" element={<EmployeeDetailPage employee={employee}/>} ></Route>                          
+              <Route path="list-employees" element={<EmployeesPage />} ></Route>    
+              <Route path="add-new-employees" element={<EmployeesPage />} ></Route>              
+              <Route path="edit-employees/id:" element={<EmployeesPage />} ></Route>              
+              <Route path="employees/my-[profile" element={<EmployeeDetailPage employee={employee}/>} ></Route>                          
               
-                {/* Attendence route */}
-                <Route path="/dashboard/Attendence" element={<EmployeeProfile />} ></Route>
+              {/* Attendence route */}
+              <Route path="Attendence" element={<EmployeeProfile />} ></Route>
               
-             <Route path="/dashboard/leaves/apply-leave" element={<LeaveForm />}></Route>
-             <Route path="/dashboard/setting" element={<Setting />} ></Route>
+              <Route path="leaves/apply-leave" element={<LeaveForm />}></Route>
+              <Route path="setting" element={<Setting />} ></Route>
              
-             <Route path="/dashboard/salarynew" element={<SalaryMasterPage />} ></Route>
+              <Route path="salarynew" element={<SalaryMasterPage />} ></Route>
           </Route>
           
       </Routes>

@@ -205,16 +205,10 @@ const DesignationPage = () => {
           </Link>
         </div>
            
-          {/* <br />
-          
-          <DataTable columns={columns} data={filteredData} pagination 
-            progressPending={pending}
-            progressComponent={<CustomLoader />}/> */}
-
-            <AppDataTable 
+          <AppDataTable 
             columns={columns} 
             data={filteredData} 
-             pending={pending}  
+            progressPending={pending} 
  
           />
 

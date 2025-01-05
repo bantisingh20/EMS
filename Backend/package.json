@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-     "dev": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,8 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.7",
     "oath": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "swagger-jsdoc": "^6.0.0",
+    "swagger-ui-express": "^5.0.1"
   }
 }

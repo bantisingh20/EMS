@@ -17,7 +17,7 @@ const saveLeaveRequest = async (leaveData) => {
 };
 
 const GetUserWiseLeaveData = async(location) =>{
-  try {
+  try { 
     const baseUrl =  location.pathname.replace('/dashboard', '');
     const response = await axiosInstance.get(baseUrl);
     //console.log(response.data);
