@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 import loader from '../loader';
 import { GetUserWiseLeaveData } from '../../api/LeaveApi';
 import {useLocation} from 'react-router-dom';
+import DataTable from '../../Components/DataTable';
 //import {  DataGridPremium,  GridToolbarContainer,  GridToolbarExport,} from '@mui/x-data-grid-premium';
 
 const columns = [
@@ -74,11 +75,13 @@ const Leave =  () => {
   return (
     <>
         <AppDataTable columns={columns} data={data} />
+        
         <AppDataGrid columns={columns1} heading={'Leave Details'} data={data} />
         
     </>
   )
 }
+  
 
 const columns1 = [
   { field: 'id', headerName: 'Sr.No', width: 70 },

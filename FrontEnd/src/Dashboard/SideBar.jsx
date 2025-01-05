@@ -115,7 +115,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
   const navLinks = [
     { to: '/dashboard', icon: <FaTachometerAlt className="text-lg" />, label: 'Dashboard' },
     { to: 'list-employees', icon: <FaUsers className="text-lg" />, label: 'Employees' },
-    { to: 'department', icon: <FaBuilding className="text-lg" />, label: 'Department' },
+    { to: 'list-department', icon: <FaBuilding className="text-lg" />, label: 'Department' },
     { to: 'designation', icon: <FaBuilding className="text-lg" />, label: 'Designation' },
     { to: 'leave/leavedashboard', icon: <FaCalendarAlt className="text-lg" />, label: 'Leave' },
     { to: 'attendence', icon: <FaCalendarAlt className="text-lg" />, label: 'Attendence' },

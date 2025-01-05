@@ -20,7 +20,7 @@ const AuthContextProvider = ({children}) =>{
     const verifyuser = async() =>{
       if(token){
         try {   
-          const response = await axios.get(`${config}/auth/verify-user`,{
+          const response = await axios.get(`${config}/api/auth/verify-user`,{
             headers:{
               "Authorization" :`Bearer ${token}`
             }
@@ -54,8 +54,8 @@ const AuthContextProvider = ({children}) =>{
 
 
   const LoginSessionStart =(user) =>{
-    setUser(user);  
-    UserDetails.setUserDetails(user) 
+    setUser(user);
+    console.log(user);  localStorage.setItem("userid",user._id);
     //console.log(user); 
   }
 

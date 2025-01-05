@@ -93,58 +93,38 @@
 
 // export default EmployeeProfile;
 
- 
-import { AccessTime, CalendarToday, AssignmentTurnedIn } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Box, Paper, CircularProgress } from '@mui/material';
+import { calculateCircularProgressValue, calculateHRSTimeDifference, calculateTimeDifference, GetEmployeePuchDetails, UserPunchIn, UserPunchOut } from '../../api/AttendenceApi';
 
 
 const StatsPanel = () => {
   return (
-    <div className="p-6">
-      {/* Attendance Panel */}
-      <Paper elevation={3} style={{ backgroundColor: '#38B2AC'}} className="bg-teal-500 text-white rounded-lg p-6 shadow-md mb-6">
-        <Typography variant="h4" align="center" className="font-bold" style={{ fontFamily: 'serif', fontWeight: 'bold'}}>
-          Attendance
-        </Typography>
+    <div className="p-2">
+      {/* Attendance Panel style={{ backgroundColor: '#38B2AC'}} */}
+      <Paper elevation={3}  className="text-white rounded-lg shadow-md">
          
+        <h2 className="text-3xl font-bold text-center text-black-800 bg-gradient-to-r from-teal-500 to-teal-300 p-4 rounded-lg shadow-md transform transition duration-300 hover:scale-105">
+          Attendance
+        </h2>
       </Paper>
-
+      <br />
       {/* Cards Container */}
       <Box className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
         {/* Timesheet Statistics Card */}
         <Card className="shadow-lg bg-white rounded-lg">
-          <CardContent className="text-center p-6">
-            
+          <CardContent className="text-center p-6">            
               <TimesheetTab /> 
           </CardContent>
         </Card>
 
         {/* Today's Activity Card */}
         <Card className="shadow-lg bg-white rounded-lg">
-          <CardContent className="text-center p-6">
-            <CalendarToday className="text-teal-500 text-4xl mb-4" />
-            <Typography variant="h6" className="font-semibold mb-2">
-              Today's Activity
-            </Typography>
-            <Typography variant="body1" color="textSecondary">
-              Track your activities and attendance for today.
-            </Typography>
+          <CardContent className="text-center p-6">            
+              <AttendanceStats /> 
           </CardContent>
         </Card>
-
-        {/* Recent Activity Card */}
-        <Card className="shadow-lg bg-white rounded-lg">
-          <CardContent className="text-center p-6">
-            <AssignmentTurnedIn className="text-teal-500 text-4xl mb-4" />
-            <Typography variant="h6" className="font-semibold mb-2">
-              Recent Activity
-            </Typography>
-            <Typography variant="body1" color="textSecondary">
-              Review your recent check-ins, check-outs, and more.
-            </Typography>
-          </CardContent>
-        </Card>
+ 
       </Box>
     </div>
   );
@@ -159,53 +139,73 @@ const TimesheetTab = () => {
   const options = { year: 'numeric', month: 'short', day: '2-digit' };
   const formattedDate = currentTime.toLocaleDateString('en-GB', options).replace(',', '').replace(' ', '.');
 
-  // Update the current time every minute (or you can set an interval to update)
+  const getPunchInData = async() =>{
+    const getdetails = await GetEmployeePuchDetails();
+    
+
+     if(getdetails.data && getdetails.data[0].status == "Present"){
+      //console.log(`Punchin Time : ${getdetails.data[0].inTime}`)
+
+      const time = getdetails.data[0].inTime;
+      const date = new Date(time);
+  
+      //console.log(date);
+       setPunchInTime(date);
+       setIsPunchedIn(true);
+      // console.log(`var time : ${punchInTime}`);
+
+     
+     }
+     
+  }
+
+  
   useEffect(() => {
+    
+    getPunchInData();
+   
     const interval = setInterval(() => {
       setCurrentTime(new Date());
     }, 60000); // Update every minute
     return () => clearInterval(interval); // Cleanup interval on component unmount
+
+
   }, []);
   
   // Handle the punch-in action (for demonstration)
-  const handlePunchIn = () => {
+  const handlePunchIn = async () => {
     const now = new Date();
+    const response = await UserPunchIn(now); 
+    
     setPunchInTime(now);
     setIsPunchedIn(true);
   };
 
-  const handlePunchOut = () =>{
+  const handlePunchOut = async () =>{   
+    const punchout = await UserPunchOut(currentTime,punchInTime)
     setIsPunchedIn(false);
   }
 
-  // Calculate the difference between punch-in time and current time in minutes
-  const calculateTimeDifference = () => {
-    if (punchInTime) {
-      const diff = Math.floor((currentTime - punchInTime) / 60000); // Time difference in minutes
-      console.log(diff);
-      return diff < 0 ? 0 : diff; 
-    }
-    return 0;
-  };
+  const progressValue = calculateCircularProgressValue(punchInTime,currentTime);
 
-  // Calculate percentage for the circular progress
-  const calculateCircularProgressValue = () => {
-    const maxTime = 480; // Let's assume 8 hours max work time (in minutes)
-    const timeDiff = calculateTimeDifference();
-    const progress = (timeDiff / maxTime) * 100; // Percentage progress
-    return progress > 100 ? 100 : progress;
-  };
-
-  const progressValue = calculateCircularProgressValue();
+  const PunchButton = () =>{
+    return (
+      <button
+      onClick={isPunchedIn ? handlePunchOut : handlePunchIn}
+        className=  {`${!isPunchedIn ? 'bg-teal-500 text-white py-2 px-4 rounded-full text-sm transform transition-all duration-300 hover:scale-105 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50' : 'bg-red-500 text-white py-2 px-4 rounded-full text-sm'}`}
+      >
+        {isPunchedIn ? 'Punch Out' : 'Punch In'}
+      </button>
+    );
+  }
 
   return (
-    <div>
- 
-          <AccessTime className="text-teal-500 text-4xl mb-4" />
-            <Typography variant="h6" className="font-extrabold">
-              Timesheet Statistics
-            </Typography>
-            
+    <div className="p-4 bg-gray-100 rounded-lg shadow-lg max-w-xs mx-auto">
+         
+     <div className='flex justify-between'>
+      <h2 className="text-teal-500 text-xl font-bold mb-4">TimeSheet</h2>
+      <p className="text-sm text-gray-500">{formattedDate}</p>
+     </div>
        {/* Punch-In Status */}
       <Card className="shadow-lg bg-white rounded-lg mb-6">
         <CardContent className="text-center p-6">
@@ -220,18 +220,7 @@ const TimesheetTab = () => {
             </Typography>
           )}
 
-          {/* Punch In Button */}
-
-          {!isPunchedIn &&
-          (
-            <button
-            onClick={handlePunchIn}
-            className="bg-teal-500 text-white py-2 px-4 rounded-full text-sm"
-          >
-            {isPunchedIn ? 'Punch Out' : 'Punch In'}
-          </button>
-          )
-        }
+          {!isPunchedIn && <PunchButton />}
          
         </CardContent>
       </Card>
@@ -240,11 +229,9 @@ const TimesheetTab = () => {
       {isPunchedIn && (
 
         <>
-           <div className="flex flex-col items-center space-y-4 p-6">
-            <h1 className="text-2xl font-semibold">Time Tracker</h1>
-            <p className="text-sm text-gray-500">{formattedDate}</p>
+          <div className="flex flex-col items-center space-y-4 p-6">
        
-      {/* Circular Progress */}
+          {/* Circular Progress */}
           <div className="relative flex items-center justify-center">
             <svg
               className="w-32 h-32"
@@ -273,11 +260,11 @@ const TimesheetTab = () => {
             {/* Progress Percentage */}
             <div className="absolute text-xl font-semibold">
               {/* {Math.floor(progressValue)}% */}
-              {`${calculateTimeDifference()} min`}
+              {`${calculateHRSTimeDifference(punchInTime,currentTime)}`}
             </div>
           </div>
 
-          {isPunchedIn &&
+          {/* {isPunchedIn &&
           (
             <button
             onClick={handlePunchOut}
@@ -286,8 +273,9 @@ const TimesheetTab = () => {
             {isPunchedIn ? 'Punch Out' : 'Punch In'}
           </button>
           )
-        }
-        
+        } */}
+        {isPunchedIn && <PunchButton />}
+
         </div>
    
         </>
@@ -298,6 +286,114 @@ const TimesheetTab = () => {
 }; 
   
 
+const AttendanceStats = () => {
+  // Example Data (replace with actual data from your API)
+  const todayPresentHours = 3.45;
+  const todayTotalHours = 8;
+  const thisWeekTotalHours = 28;
+  const thisWeekPossibleHours = 40;
+  const thisMonthTotalHours = 160;
+  const thisMonthPossibleHours = 180;
+  const overtimeThisMonth = 20;
+  const overtimePossibleHours = 30;
+
+  const Statisticsvalue= [
+    {
+      name:'Today',
+      present:3.75,
+      Total : 8,
+    },
+    {
+      name:'This Week',
+      present:28,
+      Total : 40,
+    },
+    {
+      name:'This Month',
+      present: 160,
+      Total : 180,
+    },
+    {
+      name:'OverDue',
+      present:20,
+      Total : 1,
+    }
+]
+  // Function to calculate the percentage of the progress
+  const calculatePercentage = (currentValue, maxValue) => {
+    return (currentValue / maxValue) * 100;
+  };
+
+  return (
+    <div className="p-4 bg-gray-100 rounded-lg shadow-lg max-w-xs mx-auto">
+      <h2 className="text-teal-500 text-xl font-bold mb-4">Attendance Statistics</h2>
+
+      {/* Today's Attendance Panel */}
+      <div className="mb-4 p-3 bg-white rounded-lg shadow-sm">
+        <div className='flex justify-between'>
+          <h3 className="text-sm font-semibold">Today</h3>
+          <p className="text-gray-700 text-sm">
+            {todayPresentHours.toFixed(2)}/{todayTotalHours} hrs
+          </p>
+        </div>
+        <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+          <div
+            className="bg-teal-500 h-2 rounded-full"
+            style={{ width: `${calculatePercentage(todayPresentHours, todayTotalHours)}%` }}
+          ></div>
+        </div>
+      </div>
+
+      {/* This Week's Attendance Panel */}
+      <div className="mb-4 p-3 bg-white rounded-lg shadow-sm">
+      <div className='flex justify-between'>
+        <h3 className="text-sm font-semibold">This Week</h3>
+        <p className="text-gray-700 text-sm">
+          {thisWeekTotalHours}/{thisWeekPossibleHours} hrs
+        </p>
+      </div>
+        <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+          <div
+            className="bg-blue-500 h-2 rounded-full"
+            style={{ width: `${calculatePercentage(thisWeekTotalHours, thisWeekPossibleHours)}%` }}
+          ></div>
+        </div>
+      </div>
+
+      {/* This Month's Attendance Panel */}
+      <div className="mb-4 p-3 bg-white rounded-lg shadow-sm">
+      <div className='flex justify-between'>
+         <h3 className="text-sm font-semibold">This Month</h3>
+        <p className="text-gray-700 text-sm">
+          {thisMonthTotalHours}/{thisMonthPossibleHours} hrs
+        </p>
+      </div>
+        <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+          <div
+            className="bg-orange-500 h-2 rounded-full"
+            style={{ width: `${calculatePercentage(thisMonthTotalHours, thisMonthPossibleHours)}%` }}
+          ></div>
+        </div>
+      </div>
+
+      {/* Overtime Panel */}
+      <div className="p-3 bg-white rounded-lg shadow-sm">
+      <div className='flex justify-between'>
+        <h3 className="text-sm font-semibold">Overtime This Month</h3>
+        <p className="text-gray-700 text-sm">
+          {overtimeThisMonth}/{overtimePossibleHours} hrs
+        </p>
+      </div>
+        <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+          <div
+            className="bg-yellow-500 h-2 rounded-full"
+            style={{ width: `${calculatePercentage(overtimeThisMonth, overtimePossibleHours)}%` }}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default StatsPanel;
 

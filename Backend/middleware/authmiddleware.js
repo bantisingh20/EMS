@@ -1,16 +1,15 @@
 const {UserTable} = require("../Schemas/user");
 const bcrypt =require('bcrypt')
 const jwt = require("jsonwebtoken");
-const DefaultUser = require("../index");
+//const DefaultUser = require("../index");
 const { EmployeeTable } = require("../Schemas/employeesSchema");
 
 const verifyuser = async(req,res,next) => {
     try {
        
-        //console.log(req.headers)
-        //console.log(req.headers.authorization);
-        const token = req.headers.authorization.split(' ')[1];
-         
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+       
         if(!token || token === "null"){
             console.log("token is invalid")
             return res.status(401).json({success:false, message :"Token not provided"});
@@ -18,9 +17,7 @@ const verifyuser = async(req,res,next) => {
         }
 
         const decode = jwt.verify(token, process.env.JWT_SECRET)
-
-        // console.log(`decode : ${decode}`);
-         //console.log(decode);
+ 
         if(!decode){
             console.log("token is not valid");
             return res.status(401).json({success:false, message :"Token not valid"});

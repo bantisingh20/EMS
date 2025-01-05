@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+
+import React, { useState ,useRef,Suspense, lazy } from 'react';
+import { CircularProgress } from '@mui/material';
+import {  Field,  ErrorMessage } from 'formik';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Input } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
 import { MagnifyingGlassIcon, UserPlusIcon } from '@heroicons/react/24/outline';
@@ -12,8 +12,23 @@ import { Box, Typography } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { Select, Option } from "@material-tailwind/react";
 import DataTable from 'react-data-table-component';
-import loader, { CustomLoader } from './loader';
+import  { CustomLoader } from './loader';
  
+
+const FormInputField = ({label,type,id,name,placeholder}) =>{
+  return(
+      <>
+       <label className="block text-sm font-semibold mb-1" htmlFor="visitorName">
+          {label} <span className="text-red-500">*</span>
+        </label>
+          <Field type={type} id={id} name={name}
+            className="block w-full p-2 border border-gray-300 rounded-md"
+            placeholder={placeholder}
+          />
+          <ErrorMessage name={name} component="div" className=" font-bold text-red-500 text-xs mt-1" />
+      </>
+  );
+}
 
 function FormLabels(label){
     return(
@@ -144,6 +159,32 @@ function BasicSearchInput({onChange}){
     </div>
   );
 }
+ 
+const LazyLoadingComponent = () => {
+  return (
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <Suspense
+        fallback={
+          <div className="flex justify-center items-center">
+            <CircularProgress size={50} className="text-blue-500" />
+          </div>
+        }
+      >
+        <LazyLoadedComponent />
+      </Suspense>
+    </div>
+  );
+};
+
+const LazyLoadedComponent = () => {
+  return (
+    <div className="bg-white p-8 rounded-lg shadow-md max-w-sm mx-auto flex justify-center items-center">
+      
+      <CircularProgress size={50} className="text-blue-500" />
+        
+    </div>
+  );
+};
 
 const lightenColor = (color, amount) => {
   const col = color.startsWith('#') ? color.substring(1) : color;
@@ -156,7 +197,7 @@ const lightenColor = (color, amount) => {
 
 const darkenColor = (color, amount) => lightenColor(color, -amount);
 
-const AppDataTable = ({columns,data}) =>{
+const AppDataTable = ({columns,data,progressPending}) =>{
  
   const headerColor = '#00897b'; // Define your header background color
 
@@ -195,7 +236,7 @@ const AppDataTable = ({columns,data}) =>{
       columns={columns} 
       data={data} 
       pagination       
-      progressPending={false} 
+      progressPending={progressPending} 
       progressComponent={<CustomLoader />}
       className="mt-6"
       customStyles={customStyles}
@@ -284,7 +325,7 @@ const AppDataGrid = ({ columns, data, heading }) => {
   }));
 
   return (
-    <Box sx={{ height: 'auto', width: '100%' }}>
+    <Box mx={{ height: 'auto', width: '100%' }}>
       <Typography variant="h6" gutterBottom>
         {heading}
       </Typography>
@@ -343,4 +384,4 @@ const AppDataGrid = ({ columns, data, heading }) => {
   );
 };
 //module.exports = {}
-export {AppDataTable,FormLabels,TextFields ,BasicSearchInput ,FormControl ,BasicSelectTag, Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress,AppDataGrid}
+export {FormInputField,LazyLoadingComponent,AppDataTable,FormLabels,TextFields ,BasicSearchInput ,FormControl ,BasicSelectTag, Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress,AppDataGrid}

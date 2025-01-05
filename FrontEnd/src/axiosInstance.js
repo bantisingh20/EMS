@@ -53,11 +53,14 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("Token"); // Always fetch the latest token
+    const userid = localStorage.getItem("userid");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      config.headers.UserId = `${userid}`;
     }
     else{
       config.headers.Authorization = `Bearer ${token}`;
+      config.headers.UserId = `${userid}`;
     }
     return config;
   },
