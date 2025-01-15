@@ -4,8 +4,7 @@ import { Link, useNavigate, useLocation,useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { DeleteDepartmentById, GetAllDepartmentsNew, GetDepartmentById, SaveNewDepartment, UpdateDepartment } from '../api/DepartmentApi';
 import {useFormik, Formik, Form } from 'formik';
-import * as Yup from 'yup';
-//import { useFormik } from 'formik'; 
+import * as Yup from 'yup'; 
 
 const DepartmentList = () =>{
   const navigate = useNavigate();
@@ -20,15 +19,8 @@ const DepartmentList = () =>{
   const GetAllDepartment = async () => {
     try {
       const response = await GetAllDepartmentsNew();
-      if (response.success) {
-        let sno = 1;
-        const list = response.data.map(dep => ({
-          _id: dep._id,
-          sno: sno++,
-          departmentname: dep.departmentname,
-          disabled: dep.disabled,
-        }));
-        setDepartmentlist(list);
+      if (response.success) {         
+        setDepartmentlist(response.data);
       } else {
         setDepartmentlist([]);
       }
@@ -42,7 +34,7 @@ const DepartmentList = () =>{
   const columns = [
     {
       name: "Sr.No",
-      selector: (row) => row.sno,
+      selector: (row) => row.row_num,
       sortable: true,
     },
     {
@@ -139,7 +131,6 @@ const DepartmentPage = ({ mode }) => {
     try {
       let response;
       if (mode === 'new') {
-         
         response = await SaveNewDepartment(values);
       } else if (mode === 'edit' && id) {
       

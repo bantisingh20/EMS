@@ -66,7 +66,8 @@ const calculateHRSTimeDifference = (punchInTime, currentTime) => {
     const diffInMinutes = Math.floor((currentTime - punchInTime) / 60000); // Time difference in minutes
     if (diffInMinutes < 60) {
       
-      return `${diffInMinutes} min`;
+      return diffInMinutes < 0 ? '0 min' : `${diffInMinutes} min`;
+      //return `${diffInMinutes} min`;
     } else {
   
       const hours = Math.floor(diffInMinutes / 60);

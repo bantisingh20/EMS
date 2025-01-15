@@ -13,6 +13,7 @@ lerna-debug.log*
 node_modules
 FrontEnd/node_modules/
 Backend/node_modules/
+server/node_modules/
 frontend/dist
 dist-ssr
 *.local

@@ -1,10 +1,9 @@
 import { FormLabels,FormControl, Buttons ,handleError,handleSuccess  } from './Common';
 import React, { useState } from 'react';
-import axios from 'axios';
-import {config} from '../../config';
 import { ToastContainer } from 'react-toastify'; 
 import { sessiondata } from '../Context/Context';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../axiosInstance';
 //rafce
 
 const LoginPage =() =>{
@@ -17,25 +16,21 @@ const LoginPage =() =>{
 
     const LoginUser= async (e) =>{
         e.preventDefault();
-        //logout();
-        //console.log(JSON.stringify(LoginInData));
-        
+       
         try {
-            const response = await axios.post(`${config}/api/auth/login`,LoginInData);
-            
-            const result = await response.data;
-          
-            if(result.success){
-                debugger;
-                localStorage.setItem("Token",result.token)
-                LoginSessionStart(result.user);
+            const response = await axiosInstance.post(`/auth/login`,LoginInData);
+            console.log(response);          
+            if(response.success){
+                //debugger;
+                localStorage.setItem("Token",response.token)
+                LoginSessionStart(response.user);
                 
                 handleSuccess('login Successfull');
                 //navigate('/dashboard');
                 window.location.href = '/dashboard';
             }
         } catch (error) {
-            console.log(error);
+            console.log(`Error: ${error}`);
             handleError(error.response.data.message);
         }
     }

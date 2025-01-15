@@ -7,11 +7,11 @@ const AdminSummary = () => {
 
   const {user} =sessiondata();
 
-   useEffect(()=>{
-      if (user) { 
-        console.log("User data changed:", user);          
-      }
-   },[user])
+  //  useEffect(()=>{
+  //     if (user) { 
+  //       console.log("User data changed:", user);          
+  //     }
+  //  },[user])
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(amount);
