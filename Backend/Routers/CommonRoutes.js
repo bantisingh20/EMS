@@ -1,4 +1,5 @@
 
+const { SaveMenu } = require('../Controllers/Menu.js');
 const { SaveEmployeePunchIn, GetAttendeceDetails, SaveEmployeePunchOut } = require('../Schemas/AttendenceSchema.js');
 const { SaveLeave, GetLeaveDetails } = require('../Schemas/LeaveSchema.js');
 const { SaveDepartment ,GetAllDepartments ,GetDepartmentByName ,GetDepartmentById,DeleteDepartment ,UpdateDepartment } = require('../Schemas/departmentSchema');
@@ -80,5 +81,7 @@ route.post('/attendence/Employee-Punch-In',verifyuser,SaveEmployeePunchIn)
 route.post('/attendence/Employee-Punch-Out',verifyuser,SaveEmployeePunchOut)
 route.get('/attendence/GetAttendenceData',verifyuser,GetAttendeceDetails)
 
+//menu route
+route.post('/menu/add-new-menu',SaveMenu)
 
 module.exports = route;

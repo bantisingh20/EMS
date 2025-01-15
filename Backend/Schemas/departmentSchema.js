@@ -35,21 +35,39 @@ const SaveDepartment = async (req, res) => {
     }
 };
 
+ 
 const GetAllDepartments = async (req, res) => {
     try {
-        const departments = await DepartmentTable.find();
-   
+        const departments = await DepartmentTable.aggregate([
+            {
+                $setWindowFields: { 
+                  sortBy: { departmentname: -1 }, // Sort by salary in descending order 1 for as                  
+                  output: {
+                    row_num: { $documentNumber: {} }  
+                  }
+                }
+            },      
+            
+            {$project: {
+                _id: 1,
+                departmentname: 1,
+                disabled: 1,
+                row_num: 1,  // Include serial number
+            },}
+        ]);
+
         if (!departments.length) {
             return res.status(200).json({ success: false, message: "No departments found." });
         }
 
-       // console.log(departments);
-        res.status(200).json({ success: true, message: "Departments retrieved successfully", data:departments });
+        console.log(departments);
+        res.status(200).json({ success: true, message: "Departments retrieved successfully", data: departments });
     } catch (error) {
         console.error('Error retrieving departments:', error);
         res.status(500).json({ success: false, message: "Error retrieving departments", error: error.message });
     }
 };
+
 
 // Function to search departments by name
 const GetDepartmentByName = async (req, res) => {

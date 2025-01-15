@@ -37,8 +37,7 @@
 // export default DashboardPage
 
 import React, { useState } from 'react';
-import { sessiondata } from '../Context/Context';
-import { SideBar, NavBar } from '../Dashboard/SideBar'; 
+import { SideBar, NavBar } from '../LayOut/SideBar'; 
 import { Outlet } from 'react-router-dom'; 
 
 const DashboardPage = () => {

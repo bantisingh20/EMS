@@ -3,6 +3,7 @@ const bcrypt =require('bcrypt')
 const jwt = require("jsonwebtoken");
 //const DefaultUser = require("../index");
 const { EmployeeTable } = require("../Schemas/employeesSchema");
+const EmployeeLoginResponse = require("../Model/Employee.model");
 
 const verifyuser = async(req,res,next) => {
     try {
@@ -48,7 +49,15 @@ const verifyuser = async(req,res,next) => {
                 return res.status(401).json({success:false, message :"User Not Found"});
             }
             else{
-                req.user= user;
+ 
+                const userResponse = {
+                    _id : user._id,
+                    emailid: user.emailid,
+                    role: user.role,
+                    name: user.firstname
+                };
+
+                req.user= userResponse;
                 next();
             }
         }
