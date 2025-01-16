@@ -18,6 +18,7 @@ import LeaveDashboard from "./Pages/Leave/leavedashboard";
 import LeaveForm from "./Pages/Leave/LeaveForm";
 import EmployeeProfile from "./Pages/Attendence/Attendence";
 import 'react-toastify/dist/ReactToastify.css'; 
+import AssignRole from "./Masters/AssignRole";
 //import './App.css';
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
               <Route path="setting" element={<Setting />} ></Route>
              
               <Route path="salarynew" element={<SalaryMasterPage />} ></Route>
+              <Route path="Role/Assign-Role-To-Employee" element={<AssignRole />} ></Route>
           </Route>
           
       </Routes>
