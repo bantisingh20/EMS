@@ -14,7 +14,18 @@ const MenuSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-// Create and export the model
 const Menu = mongoose.model('Menu', MenuSchema);
 
-module.exports = Menu;
+const menurightMaster = new mongoose.Schema({
+     
+    menuid: { type: mongoose.Schema.Types.ObjectId, ref: 'Menu', default: null },   
+    usergroup: { type: String, default: null }, 
+    
+}, {
+    timestamps: true,
+});
+
+// Create and export the model
+const MenuRight = mongoose.model('MenuRight', menurightMaster);
+
+module.exports = {Menu,MenuRight};

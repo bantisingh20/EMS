@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { NavLink ,Link } from 'react-router-dom'
 import {FaBuilding, FaRedoAlt, FaCalendarAlt, FaMoneyBill, FaSteam, FaTachometerAlt, FaUsers, FaKey} from 'react-icons/fa'
 import { sessiondata } from '../Context/Context';
 import { FaUser,FaLock } from 'react-icons/fa';
+import axiosInstance from '../axiosInstance';
+import { GetAllMenulist } from '../api/MenuApi';
 
 const SideBar = ({ isCollapsed, toggleSidebar }) => {
   // Array containing the navigation links and their properties
+  const [menulist,setMenulist]= useState([]);
   const navLinks = [
     { to: '/dashboard', icon: <FaTachometerAlt className="text-lg" />, label: 'Dashboard' },
     { to: 'list-employees', icon: <FaUsers className="text-lg" />, label: 'Employees' },
@@ -16,6 +19,21 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
     { to: 'setting', icon: <FaSteam className="text-lg" />, label: 'Setting' },
     { to: 'Report', icon: <FaCalendarAlt className="text-lg" />, label: 'Report' },
   ];
+
+  const fetchMenuData = async () => {
+    try {
+      const data = await GetAllMenulist();
+      setMenulist(data.data); 
+      console.log(data.data);
+    } catch (error) {
+      console.error('Error fetching menu data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMenuData(); 
+  }, []);
+
 
   return (
     <div
@@ -36,7 +54,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
 
       {/* Navigation Links */}
       <div className="px-2 py-3">
-        {navLinks.map((link, index) => (
+        {/* {navLinks.map((link, index) => (
           <NavLink
             key={index}
             to={link.to}
@@ -48,7 +66,23 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
             {link.icon}
             {!isCollapsed && <span>{link.label}</span>}
           </NavLink>
-        ))}
+        ))} */}
+  {menulist.map((link, index) => (
+        <Link
+          key={index}
+          to={link.navigateUrl}  // Use `to` for React Router Link
+          className="flex items-center space-x-4 block py-2.5 px-4 rounded"
+        >
+          {link.icon && (
+            <span
+              dangerouslySetInnerHTML={{
+                __html: link.icon, // Render the icon HTML string
+              }}
+            />
+          )}
+          {!isCollapsed && <span>{link.menuName}</span>}
+        </Link>
+      ))}
       </div>
     </div>
   );
@@ -60,7 +94,7 @@ const NavBar = ({isCollapsed}) => {
      
     useEffect(()=>{
       if (user) {             
-        //console.log("User data changed:", user);         
+        console.log("User data changed:", user);         
       }
     },[user])
 
@@ -70,7 +104,7 @@ const NavBar = ({isCollapsed}) => {
  
     return(
         <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5'>
-           <p >Welcome {user ? ` ${user.firstname } ${user.lastname}`: 'Guest'}</p>
+           <p >Welcome {user ? ` ${user.name } `: 'Guest'}</p>
             <div className="flex items-center gap-4">
                             
                 <button
