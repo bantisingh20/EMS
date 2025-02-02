@@ -34,7 +34,7 @@ const DepartmentList = () =>{
   const columns = [
     {
       name: "Sr.No",
-      selector: (row) => row.row_num,
+      selector: (row,index) =>  index + 1,
       sortable: true,
     },
     {
@@ -49,7 +49,7 @@ const DepartmentList = () =>{
           
           <Link
             className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-department/${row._id}`}
+            to={`/dashboard/edit-department/${row.departmentid}`}
           >
             Edit
           </Link>
@@ -58,7 +58,7 @@ const DepartmentList = () =>{
           <Button
             className='px-3 py-1 bg-red-600 text-white rounded'
             onClick={async () => {
-              await DeleteDepartmentById(row._id);
+              await DeleteDepartmentById(row.departmentid);
               await GetAllDepartment();
             }}
           >
