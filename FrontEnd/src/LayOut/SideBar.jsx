@@ -54,7 +54,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
 
       {/* Navigation Links */}
       <div className="px-2 py-3">
-        {/* {navLinks.map((link, index) => (
+        {navLinks.map((link, index) => (
           <NavLink
             key={index}
             to={link.to}
@@ -66,8 +66,8 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
             {link.icon}
             {!isCollapsed && <span>{link.label}</span>}
           </NavLink>
-        ))} */}
-  {menulist.map((link, index) => (
+        ))}
+  {/* {menulist.map((link, index) => (
         <Link
           key={index}
           to={link.navigateUrl}  // Use `to` for React Router Link
@@ -82,7 +82,7 @@ const SideBar = ({ isCollapsed, toggleSidebar }) => {
           )}
           {!isCollapsed && <span>{link.menuName}</span>}
         </Link>
-      ))}
+      ))} */}
       </div>
     </div>
   );

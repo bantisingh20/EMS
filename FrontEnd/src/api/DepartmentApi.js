@@ -37,8 +37,7 @@ const GetAllDepartmentsNew = async() => {
 }
 
 const GetDepartmentById = async(id) => {
-    try {
-                
+    try {                
         const response = await axiosInstance.get(`/department/GetDepartmentById/${id}`);
         
         return response.data;  

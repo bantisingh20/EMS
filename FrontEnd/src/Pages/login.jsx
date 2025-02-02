@@ -26,8 +26,8 @@ const LoginPage =() =>{
                 LoginSessionStart(response.user);
                 
                 handleSuccess('login Successfull');
-                //navigate('/dashboard');
-                window.location.href = '/dashboard';
+                navigate('/dashboard');
+                //window.location.href = '/dashboard';
             }
         } catch (error) {
             console.log(`Error: ${error}`);
