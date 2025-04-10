@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { AppDataTable,BasicSearchInput, FormInputField, handleError, handleSuccess, LazyLoadingComponent } from '../Pages/Common';
 import { Link, useNavigate, useLocation,useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { DeleteDepartmentById, GetAllDepartmentsNew, GetDepartmentById, SaveNewDepartment, UpdateDepartment } from '../api/DepartmentApi';
+import { DeleteDesignationById, GetAllDesignationsNew, GetDesignationById, SaveNewDesignation, Updatedesignation } from '../api/DesignationApi';
 import {useFormik, Formik, Form } from 'formik';
 import * as Yup from 'yup'; 
 
-const DepartmentList = () =>{
+const DesignationListPage = () =>{
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [departmentlist, setDepartmentlist] = useState([]);
+  const [Masterlist, DataList] = useState([]);
   const [pending, setPending] = useState(true);
 
   useEffect(() => {
@@ -18,11 +18,12 @@ const DepartmentList = () =>{
 
   const GetAllDepartment = async () => {
     try {
-      const response = await GetAllDepartmentsNew();
+      const response = await GetAllDesignationsNew();
       if (response.success) {         
-        setDepartmentlist(response.data);
+        console.log(response.data)
+        DataList(response.data);
       } else {
-        setDepartmentlist([]);
+        DataList([]);
       }
     } catch (error) {
       console.error(error);
@@ -38,8 +39,8 @@ const DepartmentList = () =>{
       sortable: true,
     },
     {
-      name: "Department",
-      selector: (row) => row.departmentname,
+      name: "Designation",
+      selector: (row) => row.designationname,
       sortable: true,
     },
       {
@@ -49,7 +50,7 @@ const DepartmentList = () =>{
           
           <Link
             className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-department/${row.departmentid}`}
+            to={`/dashboard/edit-designation/${row.designationid}`}
           >
             Edit
           </Link>
@@ -58,7 +59,7 @@ const DepartmentList = () =>{
           <Button
             className='px-3 py-1 bg-red-600 text-white rounded'
             onClick={async () => {
-              await DeleteDepartmentById(row.departmentid);
+              await DeleteDesignationById(row.designationid);
               await GetAllDepartment();
             }}
           >
@@ -69,20 +70,20 @@ const DepartmentList = () =>{
     },
   ];
 
-  const filteredData = departmentlist.filter(item =>
-    item.departmentname.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredData = Masterlist.filter(item =>
+    item.designationname.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className='bg-white  '>
      
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-6">Manage Department</h3>
+            <h3 className="text-2xl font-bold mb-6">Manage Designation</h3>
           </div>
           <div className="flex justify-between items-center px-4">
             <BasicSearchInput onChange={(e) => setSearchQuery(e.target.value)} />
-            <Button className="bg-teal-500 text-white rounded px-4 py-1" onClick={()=>navigate('/dashboard/save/department')}>
-              Add New Department
+            <Button className="bg-teal-500 text-white rounded px-4 py-1" onClick={()=>navigate('/dashboard/save/designation')}>
+              Add New Designation
             </Button>
           </div>
           
@@ -98,7 +99,7 @@ const DepartmentList = () =>{
 }
  
 
-const DepartmentPage = ({ mode }) => {
+const DesignationSubmitPage = ({ mode }) => {
   const navigate = useNavigate();
   const { id } = useParams();   
   const [department, setDepartment] = useState(null);   
@@ -109,7 +110,7 @@ const DepartmentPage = ({ mode }) => {
       const fetchDepartmentData = async () => {
         try {
           
-          const data = await GetDepartmentById(id);
+          const data = await GetDesignationById(id);
  
           setDepartment(data);
           console.log(department)
@@ -123,30 +124,30 @@ const DepartmentPage = ({ mode }) => {
 
   const initialValues = {
     
-    departmentname: mode === 'edit' && department ? department.departmentName : '',
+    name: mode === 'edit' && department ? department.name : '',
        
   };
 
   const validationSchema = Yup.object({
-    departmentname: Yup.string().required('Department name is required'),
+    name: Yup.string().required('Designation name is required'),
   });
 
   const handleSubmit = async (values) => {
     try {
       let response;
       if (mode === 'new') {
-        response = await SaveNewDepartment(values);
+        response = await SaveNewDesignation(values);
       } else if (mode === 'edit' && id) {
       
-        response = await UpdateDepartment( JSON.stringify({
+        response = await Updatedesignation( JSON.stringify({
           _id: id,           
-          departmentname: values.departmentname,   
+          name: values.name,   
         }));
       }
 
       if (response.success) {
-        navigate('/dashboard/list-department');
-        handleSuccess('Department Save successfully');
+        navigate('/dashboard/list-designation');
+        handleSuccess('Designation Save successfully');
       } else {
         handleError(response.message);
       }
@@ -165,7 +166,7 @@ const DepartmentPage = ({ mode }) => {
       <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-md w-full max-w-lg">
           <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-            {mode === 'new' ? 'Add New Department' : 'Edit Department'}
+            {mode === 'new' ? 'Add New Designation' : 'Edit Designation'}
           </h2>
           <Formik
             enableReinitialize={true} // This ensures Formik will reinitialize the form when initialValues change
@@ -178,10 +179,10 @@ const DepartmentPage = ({ mode }) => {
                 <div className="mb-6">
                   <FormInputField
                     type="text"
-                    placeholder="Enter Department Name"
-                    label="Department Name"
-                    id="departmentname"
-                    name="departmentname"
+                    placeholder="Enter Designation Name"
+                    label="Designation Name"
+                    id="name"
+                    name="name"
                   />
                 </div>
 
@@ -195,7 +196,7 @@ const DepartmentPage = ({ mode }) => {
 
                   <button
                     type="button"
-                    onClick={() => navigate('/dashboard/list-department')}
+                    onClick={() => navigate('/dashboard/list-designation')}
                     className="px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition duration-300"
                   >
                     Close
@@ -210,6 +211,6 @@ const DepartmentPage = ({ mode }) => {
   );
 };
 
-export  {DepartmentPage,DepartmentList};
+export  {DesignationSubmitPage,DesignationListPage};
 
 
