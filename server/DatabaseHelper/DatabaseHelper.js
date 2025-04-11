@@ -128,6 +128,7 @@ class DatabaseHelper {
       return result;
     } catch (error) {
       this.lastError = error.message;
+      console.error(error);
       console.error(error.message);
       throw error;
     }

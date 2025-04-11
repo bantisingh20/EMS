@@ -55,7 +55,8 @@ const AuthContextProvider = ({children}) =>{
 
   const LoginSessionStart =(user) =>{
     setUser(user);
-    console.log(user);  localStorage.setItem("userid",user._id);
+    //console.log(user);
+    localStorage.setItem("userid",user._id);
     //console.log(user); 
   }
 

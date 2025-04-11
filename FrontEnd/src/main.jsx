@@ -10,7 +10,7 @@ import { LocationProvider } from './Context/LocationContext.jsx'
 
 createRoot(document.getElementById('root')).render(
    
-  <StrictMode>
+  <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>   
         {/* <LocationProvider>  */}
@@ -18,6 +18,6 @@ createRoot(document.getElementById('root')).render(
         {/* </LocationProvider>     */}
       </AuthContextProvider>
     </BrowserRouter>
-  </StrictMode>
+  </React.StrictMode>
   
 )

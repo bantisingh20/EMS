@@ -4,6 +4,7 @@ const CommonRoutes = require('./Router/Common.routes');
 const sequelize = require('./sequelize');   
 const generateSwaggerSpec = require('./swaggerConfig');
 const swaggerUi = require('swagger-ui-express');
+
 const cors = require('cors');
 const app = express();
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(generateSwaggerSpec()));
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use('/api', CommonRoutes);
- 
+
 async function startServer() {
     try {
         //await sequelize.sync({ force: false }); 
