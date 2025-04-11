@@ -25,7 +25,8 @@ const verifyuser = async(req,res,next) => {
             const user = await dbHelper.executeProcedureNew('spGetEmployeeByID',{
                 'employeeid': decode._id
             })
-            console.log('midle');
+            //console.log('midle');
+    
             if(!user){
                 console.log("user not found");
                 return res.status(401).json({success:false, message :"User Not Found"});

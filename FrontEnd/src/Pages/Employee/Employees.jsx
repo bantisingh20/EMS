@@ -519,7 +519,7 @@ const SaveEmployee = () => {
           <BasicSearchInput onChange={(e) =>setSearchQuery(e.target.value)}/>
           
           <div className="flex shrink-0 flex-col gap-2 sm:flex-column">
-            <Link to={''} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => {setMode('new') ;setShowModal(true) ; }} >
+            <Link to={'../list-EmployeeSubmitPage'} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => {setMode('new') ;setShowModal(true) ; }} >
               Add Employee
             </Link>
           </div>
@@ -566,7 +566,7 @@ const listEmployee = () =>{
       <BasicSearchInput onChange={(e) =>setSearchQuery(e.target.value)}/>
       
       <div className="flex shrink-0 flex-col gap-2 sm:flex-column">
-        <Link to={''} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => {setMode('new') ;setShowModal(true) ; }} >
+        <Link to={'./EmployeeSubmitPage'} className='px-4 py-1 bg-teal-400 rounded text-white' onClick={() => {setMode('new') ;setShowModal(true) ; }} >
           Add Employee
         </Link>
       </div>
