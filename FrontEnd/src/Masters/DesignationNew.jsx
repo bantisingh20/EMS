@@ -40,7 +40,7 @@ const DesignationListPage = () =>{
     },
     {
       name: "Designation",
-      selector: (row) => row.designationname,
+      selector: (row) => row.name,
       sortable: true,
     },
       {
@@ -50,7 +50,7 @@ const DesignationListPage = () =>{
           
           <Link
             className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-designation/${row.designationid}`}
+            to={`/dashboard/edit-designation/${row.id}`}
           >
             Edit
           </Link>
@@ -59,7 +59,7 @@ const DesignationListPage = () =>{
           <Button
             className='px-3 py-1 bg-red-600 text-white rounded'
             onClick={async () => {
-              await DeleteDesignationById(row.designationid);
+              await DeleteDesignationById(row.id);
               await GetAllDepartment();
             }}
           >
@@ -71,7 +71,7 @@ const DesignationListPage = () =>{
   ];
 
   const filteredData = Masterlist.filter(item =>
-    item.designationname.toLowerCase().includes(searchQuery.toLowerCase())
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -113,7 +113,7 @@ const DesignationSubmitPage = ({ mode }) => {
           const data = await GetDesignationById(id);
  
           setDepartment(data);
-          console.log(department)
+       
         } catch (error) {
           console.error('Error fetching department data:', error);
         }

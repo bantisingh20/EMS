@@ -33,7 +33,7 @@ axiosInstance.interceptors.request.use(
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Transform the response data to include `success` directly
+    console.log(response);
     const { success, data ,token ,user,message } = response.data;
     response.success = success;
     response.data = data;
@@ -42,8 +42,8 @@ axiosInstance.interceptors.response.use(
     response.message = message;
     return response;
   },
-  (error) => {
-    // Redirect to login on 401 errors
+  (error) => { 
+        console.log(error);
     if (error.response?.status === 401) {
      // const navigate = useNavigate(); // This is a hook and cannot be used here
       console.error('Unauthorized or token expired. Redirecting to login...');

@@ -18,7 +18,7 @@ import LeaveDashboard from "./Pages/Leave/leavedashboard";
 import LeaveForm from "./Pages/Leave/LeaveForm";
 import EmployeeProfile from "./Pages/Attendence/Attendence";
 import {DesignationSubmitPage,DesignationListPage } from './Masters/DesignationNew'
-import { EmployeeSubmitPage } from "./Masters/Employee";
+import { EmployeeSubmitPage,ListEmployeeNew } from "./Masters/Employee";
 import 'react-toastify/dist/ReactToastify.css'; 
 import AssignRole from "./Masters/AssignRole";
 //import './App.css';
@@ -53,12 +53,11 @@ function App() {
  
              <Route path="salary" element={<Salary />} ></Route>
              <Route path="leave/leavedashboard" element={<LeaveDashboard />} ></Route>
-             
-                  <Route path="list-EmployeeSubmitPage" element={<EmployeeSubmitPage />} ></Route> 
+                              
               {/* EmployeeRoute */}
-              <Route path="list-employees" element={<EmployeesPage />} ></Route>    
-              <Route path="add-new-employees" element={<EmployeesPage />} ></Route>              
-              <Route path="edit-employees/id:" element={<EmployeesPage />} ></Route>              
+              <Route path="list-EmployeeSubmitPage" element={<EmployeeSubmitPage />} ></Route> 
+              <Route path="list-employees" element={<ListEmployeeNew />} ></Route>     
+              <Route path="edit-EmployeeSubmitPage/:id" element={<EmployeeSubmitPage />} ></Route>              
               <Route path="employees/my-[profile" element={<EmployeeDetailPage employee={employee}/>} ></Route>                          
               
               {/* Attendence route */}

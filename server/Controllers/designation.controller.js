@@ -33,7 +33,13 @@ const UpdateDesignation = async(req,res) => {
 const GetAllDesignation = async(req,res) => {
     try { 
         const data = await dbhelper.executeProcedureNew('SpGetAlldesignation');
-        return res.status(200).json({ success:true, message: ' View All Designation', data: data});
+        const formattedData = data.map(dept => ({
+            id: dept.designationid,      // assuming this field exists
+            name: dept.designationname,  // renamed from departmentname to name
+            // You can include more fields here if needed
+        }));
+
+        return res.status(200).json({ success:true, message: ' View All Designation', data: formattedData});
     } catch (error) {
         return res.status(500).json({ success:false, message: error.message });
     }
