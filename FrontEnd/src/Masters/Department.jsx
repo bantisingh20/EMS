@@ -39,7 +39,7 @@ const DepartmentList = () =>{
     },
     {
       name: "Department",
-      selector: (row) => row.departmentname,
+      selector: (row) => row.name,
       sortable: true,
     },
       {
@@ -49,7 +49,7 @@ const DepartmentList = () =>{
           
           <Link
             className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-department/${row.departmentid}`}
+            to={`/dashboard/edit-department/${row.id}`}
           >
             Edit
           </Link>
@@ -58,7 +58,7 @@ const DepartmentList = () =>{
           <Button
             className='px-3 py-1 bg-red-600 text-white rounded'
             onClick={async () => {
-              await DeleteDepartmentById(row.departmentid);
+              await DeleteDepartmentById(row.id);
               await GetAllDepartment();
             }}
           >
@@ -70,7 +70,7 @@ const DepartmentList = () =>{
   ];
 
   const filteredData = departmentlist.filter(item =>
-    item.departmentname.toLowerCase().includes(searchQuery.toLowerCase())
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -123,7 +123,7 @@ const DepartmentPage = ({ mode }) => {
 
   const initialValues = {
     
-    departmentname: mode === 'edit' && department ? department.departmentName : '',
+    departmentname: mode === 'edit' && department ? department.name : '',
        
   };
 

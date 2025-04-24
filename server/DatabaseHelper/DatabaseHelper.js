@@ -109,7 +109,7 @@ class DatabaseHelper {
   async executeProcedureNew(procedureName, params = {}) {
     try {
       let query = `EXEC ${procedureName}`;
-       console.log(params);
+//       console.log(params);
       if (Object.keys(params).length > 0) {
         const paramStr = Object.keys(params)
           .map((key) => `@${key} = :${key}`)

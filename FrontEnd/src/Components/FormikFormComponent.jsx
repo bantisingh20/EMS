@@ -1,70 +1,40 @@
-import React from 'react';
+import React,{useState,useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
-const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
-  console.log(fields); 
-  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+import axiosInstance from '../axiosInstance';
  
-  const buildValidationSchema = (fields) => {
-    const shape = {};
-  
-    fields.forEach(field => {
-      const isRequired = field.validation?.required;
-  
-      if (isRequired) {
-        switch (field.type) {
-          case 'text':
-          case 'email':
-          case 'tel':
-            shape[field.name] = Yup.string()
-              .trim()
-              .required(`${field.label} is required`);
-  
-            if (field.type === 'email') {
-              shape[field.name] = shape[field.name].email('Invalid email format');
-            }
-  
-            if (field.name === 'phone') {
-              shape[field.name] = shape[field.name].matches(phoneRegExp, 'Phone number is not valid');
-            }
-            break;
-  
-          case 'date':
-            shape[field.name] = Yup.date().required(`${field.label} is required`);
-            break;
-  
-          case 'select':
-            shape[field.name] = Yup.string()
-              .required(`${field.label} is required`)
-              .notOneOf(['0', '', null], `Please select a valid ${field.label.toLowerCase()}`);
-            break;
-  
-          case 'checkbox':
-            shape[field.name] = Yup.boolean()
-              .oneOf([true], `${field.label} must be accepted`);
-            break;
-  
-          case 'radio':
-            shape[field.name] = Yup.string()
-              .required(`Please select a ${field.label.toLowerCase()}`);
-            break;
-  
-          case 'checkboxGroup':
-            shape[field.name] = Yup.array()
-              .min(1, `Select at least one ${field.label.toLowerCase()}`);
-            break;
-  
-          default:
-            shape[field.name] = Yup.string().trim().required(`${field.label} is required`);
-        }
-      }
-    });
-  
-    return Yup.object().shape(shape);
-  };
-  
+const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
+  const [dynamicOptions, setDynamicOptions] = useState({});
  const validationSchema = buildValidationSchema(fields);
+ 
+//  useEffect(() => {
+//   const fetchDropdownOptions = async () => {
+//     const dropdownFields = fields.filter(
+//       (field) => field.type === "select" && field.master
+//     );
+
+//     const optionsMap = {};
+//     await Promise.all(
+//       dropdownFields.map(async (field) => {
+//         try {
+//           const response = await axiosInstance.get("/department/GetAllDepartment", {
+//             params: { master: field.master },
+//           });
+//           console.log(response);
+//           console.log('a');
+//           optionsMap[field.name] = response.data.options || [];
+//         } catch (err) {
+//           console.error(`Error fetching options for ${field.name}:`, err);
+//           optionsMap[field.name] = [];
+//         }
+//       })
+//     );
+
+//     setDynamicOptions(optionsMap);
+//   };
+
+//   fetchDropdownOptions();
+// }, [fields]);
 
   return (
    <>
@@ -98,7 +68,7 @@ const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
                       name={field.name}
                       id={field.name}
                       placeholder={field.placeholder || ''}
-                      autocomplete="new-password"
+                      autoComplete="new-password"
                       className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ) : field.type === 'textarea' ? (
@@ -111,17 +81,20 @@ const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
                     />
                   ) : field.type === 'select' ? (
                     <Field
-                      as="select"
-                      name={field.name}
-                      id={field.name}
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      {field.options.map((option, optionIndex) => (
+                    as="select"
+                    name={field.name}
+                    id={field.name}
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select {field.label || field.name}</option>
+                    {(field.options || dynamicOptions[field.name] || []).map(
+                      (option, optionIndex) => (
                         <option key={optionIndex} value={option.value}>
                           {option.label}
                         </option>
-                      ))}
-                    </Field>
+                      )
+                    )}
+                  </Field>
                   ) : field.type === 'checkbox' ? (
                     field.options.map((option, optionIndex) => (
                       <div key={optionIndex} className="flex items-center mb-2">
@@ -217,6 +190,66 @@ const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
 
    </>
   );
+};
+
+
+
+const buildValidationSchema = (fields) => {
+  const shape = {};
+ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+  fields.forEach(field => {
+    const isRequired = field.validation?.required;
+
+    if (isRequired) {
+      switch (field.type) {
+        case 'text':
+        case 'email':
+        case 'tel':
+          shape[field.name] = Yup.string()
+            .trim()
+            .required(`${field.label} is required`);
+
+          if (field.type === 'email') {
+            shape[field.name] = shape[field.name].email('Invalid email format');
+          }
+
+          if (field.name === 'phone') {
+            shape[field.name] = shape[field.name].matches(phoneRegExp, 'Phone number is not valid');
+          }
+          break;
+
+        case 'date':
+          shape[field.name] = Yup.date().required(`${field.label} is required`);
+          break;
+
+        case 'select':
+          shape[field.name] = Yup.string()
+            .required(`${field.label} is required`)
+            .notOneOf(['0', '', null], `Please select a valid ${field.label.toLowerCase()}`);
+          break;
+
+        case 'checkbox':
+          shape[field.name] = Yup.boolean()
+            .oneOf([true], `${field.label} must be accepted`);
+          break;
+
+        case 'radio':
+          shape[field.name] = Yup.string()
+            .required(`Please select a ${field.label.toLowerCase()}`);
+          break;
+
+        case 'checkboxGroup':
+          shape[field.name] = Yup.array()
+            .min(1, `Select at least one ${field.label.toLowerCase()}`);
+          break;
+
+        default:
+          shape[field.name] = Yup.string().trim().required(`${field.label} is required`);
+      }
+    }
+  });
+
+  return Yup.object().shape(shape);
 };
 
 export default FormikFormComponent;
