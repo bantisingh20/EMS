@@ -31,14 +31,16 @@ const UpdateDepartment = async(req,res) => {
 const GetAllDepartment = async(req,res) => {
     try { 
         const data = await dbhelper.executeProcedureNew('SpGetAllDepartments');
-         // Map the raw data to a clean model
+       console.log(data);
         const formattedData = data.map(dept => ({
             id: dept.departmentid,      // assuming this field exists
             name: dept.departmentname,  // renamed from departmentname to name
-            // You can include more fields here if needed
+            TotalRecords: dept.TotalRecords,
+            RowNum: dept.RowNum
         }));
 
-        return res.status(200).json({ success:true, message: 'Department Update', data: formattedData});
+        console.log(formattedData[0].TotalRecords);
+        return res.status(200).json({ success:true, message: 'Department Update', data: formattedData ,totalRecords :formattedData[0].TotalRecords});
     } catch (error) {
         return res.status(500).json({ success:false, message: error.message });
     }

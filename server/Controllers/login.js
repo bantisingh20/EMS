@@ -24,7 +24,7 @@ const login = async(req, res) => {
             console.log(user[0].employeeid);
             const token = jwt.sign({_id: user[0].employeeid }, process.env.JWT_SECRET,{expiresIn:"1d"})
                   
-            return res.status(200).json({ success:true, message: 'Login successful', token, user });
+            return res.status(200).json({ success:true, message: 'Login successful', token, user:user[0] });
         } else {
              
             return res.status(401).json({success:false,  message: 'Invalid credentials' });

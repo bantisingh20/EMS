@@ -1,12 +1,18 @@
 import React,{useState,useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
 import axiosInstance from '../axiosInstance';
  
 const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
   const [dynamicOptions, setDynamicOptions] = useState({});
  const validationSchema = buildValidationSchema(fields);
- 
+ const navigate = useNavigate();
+
+  const handleCancel = () => {
+    // Redirect to the previous page or a default page
+    navigate(-1); // `-1` navigates back to the previous page
+  };
 //  useEffect(() => {
 //   const fetchDropdownOptions = async () => {
 //     const dropdownFields = fields.filter(
@@ -176,13 +182,25 @@ const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
             })}
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full p-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 disabled:bg-gray-300"
-          >
-            Submit
-          </button>
+          <div className="flex gap-4 mt-6">
+      {/* Save Button */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full p-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 disabled:bg-gray-300 transition-colors duration-300"
+      >
+        Save
+      </button>
+
+      {/* Cancel Button */}
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="w-full p-3 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-300"
+      >
+        Cancel
+      </button>
+    </div>
         </Form>
       )}
     </Formik>

@@ -12,10 +12,8 @@ createRoot(document.getElementById('root')).render(
    
   <React.StrictMode>
     <BrowserRouter>
-      <AuthContextProvider>   
-        {/* <LocationProvider>  */}
-        <App />
-        {/* </LocationProvider>     */}
+      <AuthContextProvider>          
+        <App />     
       </AuthContextProvider>
     </BrowserRouter>
   </React.StrictMode>

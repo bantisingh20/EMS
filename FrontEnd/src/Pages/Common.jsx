@@ -197,7 +197,7 @@ const lightenColor = (color, amount) => {
 
 const darkenColor = (color, amount) => lightenColor(color, -amount);
 
-const AppDataTable = ({columns,data,progressPending}) =>{
+const AppDataTable = ({columns,data,progressPending,totalRows,handlePageChange}) =>{
  
   const headerColor = '#00897b'; // Define your header background color
 
@@ -232,16 +232,28 @@ const AppDataTable = ({columns,data,progressPending}) =>{
 
   return(
 
-    <DataTable 
-      columns={columns} 
-      data={data} 
-      pagination       
-      progressPending={progressPending} 
+    // <DataTable 
+    //   columns={columns} 
+    //   data={data} 
+    //   pagination       
+    //   progressPending={progressPending} 
+    //   progressComponent={<CustomLoader />}
+    //   className="mt-6"
+    //   customStyles={customStyles}
+    // />
+
+    <DataTable
+      columns={columns}
+      data={data}
+      progressPending={progressPending}
+      pagination
+      paginationServer
+      paginationTotalRows={totalRows}
+      onChangePage={handlePageChange}
       progressComponent={<CustomLoader />}
       className="mt-6"
       customStyles={customStyles}
     />
-          
 
   );
 }

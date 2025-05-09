@@ -24,7 +24,8 @@ const GetAllEmployee = async() =>{
 
 const GetEmployeeById = async() =>{
     try {
-        
+        const response = await axiosInstance.get('/employees/get-employees');
+        return response;
     } catch (error) {
         console.error("Error While Fetching:", error);
         throw error;

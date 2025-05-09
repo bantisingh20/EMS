@@ -6,12 +6,15 @@ import { DeleteDepartmentById, GetAllDepartmentsNew, GetDepartmentById, SaveNewD
 import {useFormik, Formik, Form } from 'formik';
 import * as Yup from 'yup'; 
 
-const DepartmentList = () =>{
+export const DepartmentList = () =>{
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [departmentlist, setDepartmentlist] = useState([]);
   const [pending, setPending] = useState(true);
-
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
   useEffect(() => {
     GetAllDepartment();
   }, []);
@@ -34,7 +37,7 @@ const DepartmentList = () =>{
   const columns = [
     {
       name: "Sr.No",
-      selector: (row,index) =>  index + 1,
+      selector: (row,index) =>  row.RowNum,
       sortable: true,
     },
     {
@@ -90,7 +93,8 @@ const DepartmentList = () =>{
             columns={columns} 
             data={filteredData} 
             progressPending={pending}  
-             
+            totalRows={1000}
+            handlePageChange={handlePageChange}
           />
       
     </div>
@@ -98,7 +102,7 @@ const DepartmentList = () =>{
 }
  
 
-const DepartmentPage = ({ mode }) => {
+export const DepartmentPage = ({ mode }) => {
   const navigate = useNavigate();
   const { id } = useParams();   
   const [department, setDepartment] = useState(null);   
@@ -210,6 +214,6 @@ const DepartmentPage = ({ mode }) => {
   );
 };
 
-export  {DepartmentPage,DepartmentList};
+// export  {DepartmentPage,DepartmentList};
 
 

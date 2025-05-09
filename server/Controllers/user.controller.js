@@ -56,7 +56,11 @@ const GetAllEmployee = async(req,res) => {
 
 const GetAllEmployeeById = async(req,res) => {
   try { 
-      const data = await dbHelper.executeProcedureNew('SpGetAllEmployees');
+
+    console.log(req);
+      const data = await dbHelper.executeProcedureNew('SpGetAllEmployees',{
+        id
+      });
        
 
       return res.status(200).json({ success:true, message: ' View All Designation', data: data});
