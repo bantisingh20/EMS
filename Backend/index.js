@@ -4,9 +4,11 @@ const AuthRouter = require('./Routers/AuthRoute');
 const ApiRouter = require('./Routers/CommonRoutes');
 const swaggerSpecs = require('./swaggerConfig');
 const swaggerUi = require('swagger-ui-express');
+const { dropDatabase } = require('./Connection/db');
+const { verifyuser } = require('./middleware/authmiddleware');
 
 require('dotenv').config();
-require('dotenv').config();
+//require('dotenv').config();
 require('./Connection/db')
 
 const app = express();
@@ -25,17 +27,16 @@ app.get('/ping', (req,res) => {
     res.send('PONG');
 })
 
+
 //client side request
+app.use('/api/drop' , async (req, res) => {
+    try { 
+        await dropDatabase();
+        res.status(200).json({ success: true, message: "Database dropped successfully" });
+    } catch (error) {
+        console.error('Error dropping database:', error);
+        res.status(500).json({ success: false, message: "Error dropping database", error: error.message });
+    }
+});
 app.use('/api/auth',AuthRouter);
-app.use('/api',ApiRouter);
-
-// const Defaultuser = {
-//     _id: process.env.DEFAULT_USER_ID,
-//     name: process.env.DEFAULT_USER_NAME,
-//     email: process.env.DEFAULT_USER_EMAIL,
-//     password: process.env.DEFAULT_USER_PASSWORD,
-//     role: process.env.DEFAULT_USER_ROLE,
-//     profileImage: process.env.DEFAULT_USER_PROFILE_IMAGE || '', // Default to empty if not set
-// };
-
-// module.exports = Defaultuser;
+app.use('/api',verifyuser,ApiRouter);

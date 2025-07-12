@@ -15,7 +15,7 @@ const SaveNewDesignation = async(SubmitDesignationData) => {
 
 const Updatedesignation = async(SubmitDesignationData) => {
     try {
-         
+         console.log(SubmitDesignationData);
         const response = await axiosInstance.put(`/designation/Updatedesignation`,SubmitDesignationData);
 
         return response;  

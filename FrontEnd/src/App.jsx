@@ -108,7 +108,11 @@ const StatsPanel = React.lazy(() => import('./Pages/Attendence/Attendence'));
 const LeaveForm = React.lazy(() => import('./Pages/Leave/LeaveForm'));
 const Setting = React.lazy(() => import('./Pages/Setting'));
 const SalaryMasterPage = React.lazy(() => import('./Masters/Salary/SalaryNew'));
-const AssignRole = React.lazy(() => import('./Masters/AssignRole'));
+const RoleSubmitForm = React.lazy(() => import('./Masters/RoleSubmitForm'));
+const ListRole = React.lazy(() => import('./Masters/ListRole'));
+ 
+// const RoleSubmitForm = React.lazy(() => import('./Masters/Role').then(module => ({ default: module.RoleSubmitForm })));
+// const ListRole = React.lazy(() => import('./Masters/Role').then(module => ({ default: module.ListRole })));
 
 function App() {
   const employee = {
@@ -124,7 +128,7 @@ function App() {
     <ErrorBoundary>
 
     
-      <Suspense fallback={<SkeletonLoader/> }>
+      <Suspense fallback={<div>loading</div>}>
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/login" element={<LoginPage />} />
@@ -133,11 +137,16 @@ function App() {
           <Route path="/dashboard" element={<LayOut />}>
             <Route index element={<AdminSummary />} />
             <Route path="change-password" element={<ChangePasswordModal />} />
-            <Route path="save/department" element={<DepartmentPage mode="new" />} />
+
+             <Route path="role/submit" element={<RoleSubmitForm   />} />
+            <Route path="role/submit/:id" element={<RoleSubmitForm mode="edit" />} />
+            <Route path="list-role" element={<ListRole />} />
+
+            <Route path="save/department" element={<DepartmentPage  />} />
             <Route path="edit-department/:id" element={<DepartmentPage mode="edit" />} />
             <Route path="list-department" element={<DepartmentList />} />
 
-            <Route path="save/designation" element={<DesignationSubmitPage mode="new" />} />
+            <Route path="save/designation" element={<DesignationSubmitPage   />} />
             <Route path="edit-designation/:id" element={<DesignationSubmitPage mode="edit" />} />
             <Route path="list-designation" element={<DesignationListPage />} />
 
@@ -158,7 +167,7 @@ function App() {
 
             <Route path="setting" element={<Setting />} />
             <Route path="salarynew" element={<SalaryMasterPage />} />
-            <Route path="role/assign-role" element={<AssignRole />} />
+            {/* <Route path="role/assign-role" element={<AssignRole />} /> */}
           </Route>
         </Routes>
       </Suspense>

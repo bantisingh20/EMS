@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const LocationContext = createContext();
+export const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
   const location = useLocation();
@@ -12,5 +12,3 @@ export const LocationProvider = ({ children }) => {
     </LocationContext.Provider>
   );
 };
-
-export const useLocationContext = () => useContext(LocationContext);

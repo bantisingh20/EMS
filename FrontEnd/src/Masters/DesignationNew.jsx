@@ -5,8 +5,10 @@ import { Button } from 'react-bootstrap';
 import { DeleteDesignationById, GetAllDesignationsNew, GetDesignationById, SaveNewDesignation, Updatedesignation } from '../api/DesignationApi';
 import {useFormik, Formik, Form } from 'formik';
 import * as Yup from 'yup'; 
+import MasterSubmitForm from './MasterSubmitForm';
+import DesignationFormConfig from '../config/DesignationForm.Config';
 
-const DesignationListPage = () =>{
+export const DesignationListPage = () =>{
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [Masterlist, DataList] = useState([]);
@@ -40,7 +42,7 @@ const DesignationListPage = () =>{
     },
     {
       name: "Designation",
-      selector: (row) => row.name,
+      selector: (row) => row.designationname,
       sortable: true,
     },
       {
@@ -50,7 +52,7 @@ const DesignationListPage = () =>{
           
           <Link
             className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-designation/${row.id}`}
+            to={`/dashboard/edit-designation/${row._id}`}
           >
             Edit
           </Link>
@@ -59,7 +61,7 @@ const DesignationListPage = () =>{
           <Button
             className='px-3 py-1 bg-red-600 text-white rounded'
             onClick={async () => {
-              await DeleteDesignationById(row.id);
+              await DeleteDesignationById(row._id);
               await GetAllDepartment();
             }}
           >
@@ -71,7 +73,7 @@ const DesignationListPage = () =>{
   ];
 
   const filteredData = Masterlist.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    item.designationname.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -99,118 +101,126 @@ const DesignationListPage = () =>{
 }
  
 
-const DesignationSubmitPage = ({ mode }) => {
-  const navigate = useNavigate();
-  const { id } = useParams();   
-  const [department, setDepartment] = useState(null);   
+// const DesignationSubmitPage = ({ mode }) => {
+//   const navigate = useNavigate();
+//   const { id } = useParams();   
+//   const [department, setDepartment] = useState(null);   
 
  
-  useEffect(() => {
-    if (mode === "edit" && id) {
-      const fetchDepartmentData = async () => {
-        try {
-          
-          const data = await GetDesignationById(id);
+//   useEffect(() => {
+//     if (mode === "edit" && id) {
+//       const fetchDepartmentData = async () => {
+//         try {
+//           console.log("Fetching designation data for ID:", id);
+//           const data = await GetDesignationById(id);
  
-          setDepartment(data);
+//           setDepartment(data);
        
-        } catch (error) {
-          console.error('Error fetching department data:', error);
-        }
-      };
-      fetchDepartmentData();
-    }
-  }, [mode, id]);
+//         } catch (error) {
+//           console.error('Error fetching department data:', error);
+//         }
+//       };
+//       fetchDepartmentData();
+//     }
+//   }, [mode, id]);
 
-  const initialValues = {
+//   const initialValues = {
     
-    name: mode === 'edit' && department ? department.name : '',
+//     designationname: mode === 'edit' && department ? department.designationname : '',
        
-  };
+//   };
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required('Designation name is required'),
-  });
+//   const validationSchema = Yup.object({
+//     designationname: Yup.string().required('Designation name is required'),
+//   });
 
-  const handleSubmit = async (values) => {
-    try {
-      let response;
-      if (mode === 'new') {
-        response = await SaveNewDesignation(values);
-      } else if (mode === 'edit' && id) {
+//   const handleSubmit = async (values) => {
+//     try {
+//       let response;
+//       console.log("Submitting form with values:", values);
+//       if (mode === 'new') {
+//         response = await SaveNewDesignation(values);
+//       } else if (mode === 'edit' && id) {
       
-        response = await Updatedesignation( JSON.stringify({
-          _id: id,           
-          name: values.name,   
-        }));
-      }
+//         response = await Updatedesignation( JSON.stringify({
+//           _id: id,           
+//           designationname: values.designationname,   
+//         }));
+//       }
 
-      if (response.success) {
-        navigate('/dashboard/list-designation');
-        handleSuccess('Designation Save successfully');
-      } else {
-        handleError(response.message);
-      }
-    } catch (error) {
-      handleError(error.message);
+//       if (response.success) {
+//         navigate('/dashboard/list-designation');
+//         handleSuccess('Designation Save successfully');
+//       } else {
+//         handleError(response.message);
+//       }
+//     } catch (error) {
+//       handleError(error.message);
        
-    }
-  };
+//     }
+//   };
  
-  if (mode === 'edit' && !department) {
-    return <LazyLoadingComponent />;
-  }
+//   // if (mode === 'edit' && !department) {
+//   //   return <LazyLoadingComponent />;
+//   // }
 
-  return (
-    <div className="relative">
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-md w-full max-w-lg">
-          <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-            {mode === 'new' ? 'Add New Designation' : 'Edit Designation'}
-          </h2>
-          <Formik
-            enableReinitialize={true} // This ensures Formik will reinitialize the form when initialValues change
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ setFieldValue }) => (
-              <Form>
-                <div className="mb-6">
-                  <FormInputField
-                    type="text"
-                    placeholder="Enter Designation Name"
-                    label="Designation Name"
-                    id="name"
-                    name="name"
-                  />
-                </div>
+//   return (
+//     <div className="relative">
+//       <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+//         <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-md w-full max-w-lg">
+//           <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
+//             {mode === 'new' ? 'Add New Designation' : 'Edit Designation'}
+//           </h2>
+//           <Formik
+//             enableReinitialize={true} // This ensures Formik will reinitialize the form when initialValues change
+//             initialValues={initialValues}
+//             validationSchema={validationSchema}
+//             onSubmit={handleSubmit}
+//           >
+//             {({ setFieldValue }) => (
+//               <Form>
+//                 <div className="mb-6">
+//                   <FormInputField
+//                     type="text"
+//                     placeholder="Enter Designation Name"
+//                     label="Designation Name"
+//                     id="name"
+//                     name="designationname"
+//                   />
+//                 </div>
 
-                <div className="flex justify-between">
-                  <button
-                    type="submit"
-                    className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300"
-                  >
-                    {mode === 'new' ? 'Submit' : 'Update'}
-                  </button>
+//                 <div className="flex justify-between">
+//                   <button
+//                     type="submit"
+//                     className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300"
+//                   >
+//                     {mode === 'new' ? 'Submit' : 'Update'}
+//                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => navigate('/dashboard/list-designation')}
-                    className="px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition duration-300"
-                  >
-                    Close
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </div>
-    </div>
-  );
+//                   <button
+//                     type="button"
+//                     onClick={() => navigate('/dashboard/list-designation')}
+//                     className="px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition duration-300"
+//                   >
+//                     Close
+//                   </button>
+//                 </div>
+//               </Form>
+//             )}
+//           </Formik>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+export const DesignationSubmitPage = ({ mode }) => {
+  const config = DesignationFormConfig(mode);
+  return <MasterSubmitForm config={config} />;
 };
 
-export  {DesignationSubmitPage,DesignationListPage};
+
+// export  {DesignationSubmitPage,DesignationListPage};
 
 

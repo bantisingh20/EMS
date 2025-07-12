@@ -4,43 +4,16 @@ import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
 import axiosInstance from '../axiosInstance';
  
-const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
+const FormikFormComponent = ({ initialValues, fields, onSubmit,onCancel }) => {
   const [dynamicOptions, setDynamicOptions] = useState({});
  const validationSchema = buildValidationSchema(fields);
  const navigate = useNavigate();
 
   const handleCancel = () => {
-    // Redirect to the previous page or a default page
-    navigate(-1); // `-1` navigates back to the previous page
-  };
-//  useEffect(() => {
-//   const fetchDropdownOptions = async () => {
-//     const dropdownFields = fields.filter(
-//       (field) => field.type === "select" && field.master
-//     );
-
-//     const optionsMap = {};
-//     await Promise.all(
-//       dropdownFields.map(async (field) => {
-//         try {
-//           const response = await axiosInstance.get("/department/GetAllDepartment", {
-//             params: { master: field.master },
-//           });
-//           console.log(response);
-//           console.log('a');
-//           optionsMap[field.name] = response.data.options || [];
-//         } catch (err) {
-//           console.error(`Error fetching options for ${field.name}:`, err);
-//           optionsMap[field.name] = [];
-//         }
-//       })
-//     );
-
-//     setDynamicOptions(optionsMap);
-//   };
-
-//   fetchDropdownOptions();
-// }, [fields]);
+     onCancel();
+    
+  }; 
+ 
 
   return (
    <>
@@ -49,6 +22,7 @@ const FormikFormComponent = ({ initialValues, fields, onSubmit }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize={true}
     >
       {({ isSubmitting }) => (
         <Form className="max-w-auto mx-auto p-6 bg-white rounded-md shadow-lg">

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { FaBuilding, FaCalendarAlt, FaUsers, FaKey, FaTachometerAlt, FaSteam, FaLock, FaUser, FaBars, FaTimes } from 'react-icons/fa';
-import { sessiondata } from '../Context/Context';
-import { GetAllMenulist } from '../api/MenuApi';
+import { sessiondata } from '../Context/Context'; 
 
  const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([ 
     { link: '/dashboard', icon: <FaTachometerAlt className="text-lg" />, label: 'Dashboard' },
-    { link: 'list-employees', icon: <FaUsers className="text-lg" />, label: 'Employees' },
+    { link: 'list-role', icon: <FaUsers className="text-lg" />, label: 'Roles' },
     { link: 'list-department', icon: <FaBuilding className="text-lg" />, label: 'Department' },
     { link: 'list-designation', icon: <FaBuilding className="text-lg" />, label: 'Designation' },
+    { link: 'list-employees', icon: <FaUsers className="text-lg" />, label: 'Employees' },
     { link: 'leave/leavedashboard', icon: <FaCalendarAlt className="text-lg" />, label: 'Leave' },
     { link: 'attendence', icon: <FaCalendarAlt className="text-lg" />, label: 'Attendence' },
     { link: 'setting', icon: <FaSteam className="text-lg" />, label: 'Setting' },
@@ -165,10 +165,10 @@ import { GetAllMenulist } from '../api/MenuApi';
 const NavBar = ({ isCollapsed }) => {
   const { user, logout } = sessiondata();
 
-  useEffect(()=>{
-   console.log(user);
-   console.log('helo');
-  },[user])
+  // useEffect(()=>{
+  // //  console.log(user);
+  // //  console.log('helo');
+  // },[user])
   const handleProfileClick = () => {
     // Profile logic
   };

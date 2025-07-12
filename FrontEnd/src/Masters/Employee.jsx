@@ -38,10 +38,10 @@ const EmployeeSubmitPage = () => {
 
         console.log(deptData.data)
         setDepartments(
-          deptData.data.map(dept => ({ label: dept.name, value: dept.id }))
+          deptData.data.map(dept => ({ label: dept.departmentname, value: dept._id }))
         );
         setDesignations(
-          desgData.data.map(desg => ({ label: desg.name, value: desg.id }))
+          desgData.data.map(desg => ({ label: desg.designationname, value: desg._id }))
         );
       } catch (error) {
         console.error('Error fetching department/designation:', error);
@@ -148,21 +148,21 @@ const ListEmployeeNew = () =>{
   const columns = [
     { name: "Sr.No", selector: (row,index) =>  index + 1, sortable: true, },
     { name: "Employee Code", selector: (row) => row.employeecode, sortable: true, },
-    { name: "Employee Name", selector: (row) => row.name, sortable: true, },
+    { name: "Employee Name", selector: (row) => row.firstname, sortable: true, },
     { name: "Email Id", selector: (row) => row.emailid, sortable: true, },    
     { name: "Designation", selector: (row) => row.designationname, sortable: true, },
     { name: "Department", selector: (row) => row.departmentname, sortable: true, },
     { name: "Action", selector: (row) => (
         <div className='flex space-x-4'>         
-          <Link className='px-3 py-1 bg-teal-600 text-white rounded' to={`/dashboard/edit-EmployeeSubmitPage/${row.id}`} > Edit </Link>
-          <Button className='px-3 py-1 bg-red-600 text-white rounded' onClick={async () => { await DeleteEmployeeById(row.id); await GetAllDataForList();}} > Delete </Button>
+          <Link className='px-3 py-1 bg-teal-600 text-white rounded' to={`/dashboard/edit-EmployeeSubmitPage/${row._id}`} > Edit </Link>
+          <Button className='px-3 py-1 bg-red-600 text-white rounded' onClick={async () => { await DeleteEmployeeById(row._id); await GetAllDataForList();}} > Delete </Button>
         </div>
       ),
     },
   ];
 
   const filteredData = Masterlist.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    item.firstname.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

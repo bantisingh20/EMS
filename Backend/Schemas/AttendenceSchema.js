@@ -17,66 +17,6 @@ attendanceSchema.pre('save', function(next) {
 });
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
-
-// {
-//     $cond: {
-//       if: <condition>,       // the condition to evaluate
-//       then: <value_if_true>,  // value to return if condition is true
-//       else: <value_if_false>  // value to return if condition is false
-//     }
-// }
-  
-// async function categorizeEmployees() {
-//   const employees = await Employee.aggregate([
-//     {
-//       $project: {
-//         name: 1,
-//         salary: 1,
-//         category: {
-//           $cond: {
-//             if: { $gt: ["$salary", 100000] },
-//             then: "High",
-//             else: {
-//               $cond: {
-//                 if: { $gte: ["$salary", 50000] },
-//                 then: "Medium",
-//                 else: "Low"
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   ]);
-
-//   console.log(employees);
-// }
-
-// categorizeEmployees();
-
-// async function categorizeByJobTitle() {
-//     const employees = await Employee.aggregate([
-//       {
-//         $project: {
-//           name: 1,
-//           jobTitle: 1,
-//           category: {
-//             $switch: {
-//               branches: [
-//                 { case: { $eq: ["$jobTitle", "Manager"] }, then: "High" },
-//                 { case: { $eq: ["$jobTitle", "Developer"] }, then: "Medium" },
-//                 { case: { $eq: ["$jobTitle", "Intern"] }, then: "Low" }
-//               ],
-//               default: "Unknown"
-//             }
-//           }
-//         }
-//       }
-//     ]);
-  
-//     console.log(employees);
-//   }
-   
   
 
 const SaveEmployeePunchIn = async(req,res) =>{

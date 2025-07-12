@@ -5,6 +5,8 @@ import { Button } from 'react-bootstrap';
 import { DeleteDepartmentById, GetAllDepartmentsNew, GetDepartmentById, SaveNewDepartment, UpdateDepartment } from '../api/DepartmentApi';
 import {useFormik, Formik, Form } from 'formik';
 import * as Yup from 'yup'; 
+import MasterSubmitForm from './MasterSubmitForm';
+import DepartmentFormConfig from '../config/DepartmentFormConfig';
 
 export const DepartmentList = () =>{
   const navigate = useNavigate();
@@ -37,12 +39,12 @@ export const DepartmentList = () =>{
   const columns = [
     {
       name: "Sr.No",
-      selector: (row,index) =>  row.RowNum,
+      selector: (row,index) =>  index + 1,
       sortable: true,
     },
     {
       name: "Department",
-      selector: (row) => row.name,
+      selector: (row) => row.departmentname,
       sortable: true,
     },
       {
@@ -52,7 +54,7 @@ export const DepartmentList = () =>{
           
           <Link
             className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-department/${row.id}`}
+            to={`/dashboard/edit-department/${row._id}`}
           >
             Edit
           </Link>
@@ -61,7 +63,7 @@ export const DepartmentList = () =>{
           <Button
             className='px-3 py-1 bg-red-600 text-white rounded'
             onClick={async () => {
-              await DeleteDepartmentById(row.id);
+              await DeleteDepartmentById(row._id);
               await GetAllDepartment();
             }}
           >
@@ -73,7 +75,7 @@ export const DepartmentList = () =>{
   ];
 
   const filteredData = departmentlist.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    item.departmentname.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -102,116 +104,121 @@ export const DepartmentList = () =>{
 }
  
 
-export const DepartmentPage = ({ mode }) => {
-  const navigate = useNavigate();
-  const { id } = useParams();   
-  const [department, setDepartment] = useState(null);   
+// export const DepartmentPageold = ({ mode }) => {
+//   const navigate = useNavigate();
+//   const { id } = useParams();   
+//   const [department, setDepartment] = useState(null);   
 
  
-  useEffect(() => {
-    if (mode === "edit" && id) {
-      const fetchDepartmentData = async () => {
-        try {
-          
-          const data = await GetDepartmentById(id);
+//   useEffect(() => {
+//     if (mode === "edit" && id) {
+//       const fetchDepartmentData = async () => {
+//         try {
+//           console.log("Fetching department data for ID:", id);
+//           const data = await GetDepartmentById(id);
  
-          setDepartment(data);
-          console.log(department)
-        } catch (error) {
-          console.error('Error fetching department data:', error);
-        }
-      };
-      fetchDepartmentData();
-    }
-  }, [mode, id]);
+//           setDepartment(data);
+//           console.log(department)
+//         } catch (error) {
+//           console.error('Error fetching department data:', error);
+//         }
+//       };
+//       fetchDepartmentData();
+//     }
+//   }, [mode, id]);
 
-  const initialValues = {
+//   const initialValues = {
     
-    departmentname: mode === 'edit' && department ? department.name : '',
+//     departmentname: mode === 'edit' && department ? department.departmentname : '',
        
-  };
+//   };
 
-  const validationSchema = Yup.object({
-    departmentname: Yup.string().required('Department name is required'),
-  });
+//   const validationSchema = Yup.object({
+//     departmentname: Yup.string().required('Department name is required'),
+//   });
 
-  const handleSubmit = async (values) => {
-    try {
-      let response;
-      if (mode === 'new') {
-        response = await SaveNewDepartment(values);
-      } else if (mode === 'edit' && id) {
+//   const handleSubmit = async (values) => {
+//     try {
+//       let response;
+//       if (mode === 'new') {
+//         response = await SaveNewDepartment(values);
+//       } else if (mode === 'edit' && id) {
       
-        response = await UpdateDepartment( JSON.stringify({
-          _id: id,           
-          departmentname: values.departmentname,   
-        }));
-      }
+//         response = await UpdateDepartment( JSON.stringify({
+//           _id: id,           
+//           departmentname: values.departmentname,   
+//         }));
+//       }
 
-      if (response.success) {
-        navigate('/dashboard/list-department');
-        handleSuccess('Department Save successfully');
-      } else {
-        handleError(response.message);
-      }
-    } catch (error) {
-      handleError(error.message);
+//       if (response.success) {
+//         navigate('/dashboard/list-department');
+//         handleSuccess('Department Save successfully');
+//       } else {
+//         handleError(response.message);
+//       }
+//     } catch (error) {
+//       handleError(error.message);
        
-    }
-  };
+//     }
+//   };
  
-  if (mode === 'edit' && !department) {
-    return <LazyLoadingComponent />;
-  }
+//   if (mode === 'edit' && !department) {
+//     return <LazyLoadingComponent />;
+//   }
 
-  return (
-    <div className="relative">
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-md w-full max-w-lg">
-          <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-            {mode === 'new' ? 'Add New Department' : 'Edit Department'}
-          </h2>
-          <Formik
-            enableReinitialize={true} // This ensures Formik will reinitialize the form when initialValues change
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ setFieldValue }) => (
-              <Form>
-                <div className="mb-6">
-                  <FormInputField
-                    type="text"
-                    placeholder="Enter Department Name"
-                    label="Department Name"
-                    id="departmentname"
-                    name="departmentname"
-                  />
-                </div>
+//   return (
+//     <div className="relative">
+//       <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+//         <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-md w-full max-w-lg">
+//           <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
+//             {mode === 'new' ? 'Add New Department' : 'Edit Department'}
+//           </h2>
+//           <Formik
+//             enableReinitialize={true} // This ensures Formik will reinitialize the form when initialValues change
+//             initialValues={initialValues}
+//             validationSchema={validationSchema}
+//             onSubmit={handleSubmit}
+//           >
+//             {({ setFieldValue }) => (
+//               <Form>
+//                 <div className="mb-6">
+//                   <FormInputField
+//                     type="text"
+//                     placeholder="Enter Department Name"
+//                     label="Department Name"
+//                     id="departmentname"
+//                     name="departmentname"
+//                   />
+//                 </div>
 
-                <div className="flex justify-between">
-                  <button
-                    type="submit"
-                    className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300"
-                  >
-                    {mode === 'new' ? 'Submit' : 'Update'}
-                  </button>
+//                 <div className="flex justify-between">
+//                   <button
+//                     type="submit"
+//                     className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300"
+//                   >
+//                     {mode === 'new' ? 'Submit' : 'Update'}
+//                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => navigate('/dashboard/list-department')}
-                    className="px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition duration-300"
-                  >
-                    Close
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </div>
-    </div>
-  );
+//                   <button
+//                     type="button"
+//                     onClick={() => navigate('/dashboard/list-department')}
+//                     className="px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition duration-300"
+//                   >
+//                     Close
+//                   </button>
+//                 </div>
+//               </Form>
+//             )}
+//           </Formik>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+export const DepartmentPage = ({ mode }) => {
+  const config = DepartmentFormConfig(mode);
+  return <MasterSubmitForm config={config} />;
 };
 
 // export  {DepartmentPage,DepartmentList};

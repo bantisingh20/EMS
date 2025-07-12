@@ -2,18 +2,18 @@
 import React, { useState ,useRef,Suspense, lazy } from 'react';
 import { CircularProgress } from '@mui/material';
 import {  Field,  ErrorMessage } from 'formik';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Input } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
 import { MagnifyingGlassIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import { DataGrid ,GridToolbar  } from '@mui/x-data-grid';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography ,Button } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { Select, Option } from "@material-tailwind/react";
 import DataTable from 'react-data-table-component';
 import  { CustomLoader } from './loader';
- 
+//import { Button, Typography } from '@mui/material'; 
 
 const FormInputField = ({label,type,id,name,placeholder}) =>{
   return(
@@ -323,7 +323,7 @@ const AppDataTable = ({columns,data,progressPending,totalRows,handlePageChange})
 //   );
 // }
 
-const AppDataGrid = ({ columns, data, heading }) => {
+const AppDataGrid = ({ columns, data, heading,showHeaderButton = false,  headerButtonProps = {}, }) => {
   const [columnVisibilityModel, setColumnVisibilityModel] = useState(
     columns.reduce((acc, col) => {
       acc[col.field] = true;  
@@ -338,9 +338,33 @@ const AppDataGrid = ({ columns, data, heading }) => {
 
   return (
     <Box mx={{ height: 'auto', width: '100%' }}>
-      <Typography variant="h6" gutterBottom>
-        {heading}
-      </Typography>
+
+      <div
+        className="flex justify-between items-center mb-3"
+        style={{ flexWrap: 'wrap', gap: 10 }}
+      >
+       <Typography
+          variant="subtitle1"
+          sx={{ fontWeight: 'bold', color: '#0f766e', fontSize: '1rem' }}
+        >
+          Manage Roles
+        </Typography>
+
+         {showHeaderButton && (
+          <Button
+  variant="contained"
+  color="primary"
+  size="small"
+  sx={{ fontSize: '0.8rem', padding: '5px 12px' }}
+  onClick={headerButtonProps?.onClick}
+>
+  {headerButtonProps?.label || 'Action'}
+</Button>
+
+        )}
+      </div>
+
+       
 
       <DataGrid
         columns={adjustedColumns}
