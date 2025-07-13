@@ -8,5 +8,6 @@ route.use('/role', require('./roles.routes.js'));
 route.use('/document', require('./document.routes.js'));
 route.use('/attendence', require('./attendence.routes.js'));
 route.use('/leave', require('./leave.routes.js'));
+route.use('/menu', require('./menu.routes.js'));
 module.exports = route;
 

@@ -1,4 +1,4 @@
-const RoleWiseRights = require('../Models/roleWiseRights.model');  // Import RoleWiseRights Model
+const RoleWiseRights = require('../models/rolewiserights.model');  // Import RoleWiseRights Model
 
 // Save new role-wise rights
 exports.SaveRoleWiseRights = async (req, res) => {

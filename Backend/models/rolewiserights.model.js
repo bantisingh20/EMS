@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 // Define the RoleWiseRights schema
 const RoleWiseRightsSchema = new mongoose.Schema({
   role: { 
-    type: String, 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'roles',  
     required: true 
   },
   menuId: { 

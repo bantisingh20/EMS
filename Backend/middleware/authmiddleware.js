@@ -53,6 +53,8 @@ const verifyuser = async(req,res,next) => {
                 const userResponse = {
                     _id : user._id,
                     emailid: user.emailid,
+                    roleid : user.role._id,
+                    profileImage: user.profileImage,
                     role: user.role.name,
                     name: user.firstname
                 };
