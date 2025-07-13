@@ -1,104 +1,105 @@
-import React, { useEffect, useState } from 'react';
-import { AppDataTable,BasicSearchInput, FormInputField, handleError, handleSuccess, LazyLoadingComponent } from '../Pages/Common';
-import { Link, useNavigate, useLocation,useParams } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { DeleteDesignationById, GetAllDesignationsNew, GetDesignationById, SaveNewDesignation, Updatedesignation } from '../api/DesignationApi';
-import {useFormik, Formik, Form } from 'formik';
-import * as Yup from 'yup'; 
-import MasterSubmitForm from './MasterSubmitForm';
-import DesignationFormConfig from '../config/DesignationForm.Config';
+//import React, { useEffect, useState } from 'react';
+//import { AppDataTable,BasicSearchInput, FormInputField, handleError, handleSuccess, LazyLoadingComponent } from '../Pages/Common';
+//import { Link, useNavigate, useLocation,useParams } from 'react-router-dom';
+//import { Button } from 'react-bootstrap';
+//import { DeleteDesignationById, GetAllDesignationsNew, GetDesignationById, SaveNewDesignation, Updatedesignation } from '../api/DesignationApi';
+//import {useFormik, Formik, Form } from 'formik';
+//import * as Yup from 'yup'; 
+import MasterSubmitForm from '../Pages/MasterSubmitForm';
+import MasterDataGridPage from '../Pages/MasterListPage';
+import DesignationFormConfig, { DesignationListConfig } from '../config/DesignationForm.Config';
 
-export const DesignationListPage = () =>{
-  const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [Masterlist, DataList] = useState([]);
-  const [pending, setPending] = useState(true);
+// export const DesignationListPage = () =>{
+//   const navigate = useNavigate();
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [Masterlist, DataList] = useState([]);
+//   const [pending, setPending] = useState(true);
 
-  useEffect(() => {
-    GetAllDepartment();
-  }, []);
+//   useEffect(() => {
+//     GetAllDepartment();
+//   }, []);
 
-  const GetAllDepartment = async () => {
-    try {
-      const response = await GetAllDesignationsNew();
-      if (response.success) {         
-        console.log(response.data)
-        DataList(response.data);
-      } else {
-        DataList([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setPending(false);
-  };
+//   const GetAllDepartment = async () => {
+//     try {
+//       const response = await GetAllDesignationsNew();
+//       if (response.success) {         
+//         console.log(response.data)
+//         DataList(response.data);
+//       } else {
+//         DataList([]);
+//       }
+//     } catch (error) {
+//       console.error(error);
+//     }
+//     setPending(false);
+//   };
 
 
-  const columns = [
-    {
-      name: "Sr.No",
-      selector: (row,index) =>  index + 1,
-      sortable: true,
-    },
-    {
-      name: "Designation",
-      selector: (row) => row.designationname,
-      sortable: true,
-    },
-      {
-      name: "Action",
-      selector: (row) => (
-        <div className='flex space-x-4'>
+//   const columns = [
+//     {
+//       name: "Sr.No",
+//       selector: (row,index) =>  index + 1,
+//       sortable: true,
+//     },
+//     {
+//       name: "Designation",
+//       selector: (row) => row.designationname,
+//       sortable: true,
+//     },
+//       {
+//       name: "Action",
+//       selector: (row) => (
+//         <div className='flex space-x-4'>
           
-          <Link
-            className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-designation/${row._id}`}
-          >
-            Edit
-          </Link>
+//           <Link
+//             className='px-3 py-1 bg-teal-600 text-white rounded'
+//             to={`/dashboard/edit-designation/${row._id}`}
+//           >
+//             Edit
+//           </Link>
 
 
-          <Button
-            className='px-3 py-1 bg-red-600 text-white rounded'
-            onClick={async () => {
-              await DeleteDesignationById(row._id);
-              await GetAllDepartment();
-            }}
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-    },
-  ];
+//           <Button
+//             className='px-3 py-1 bg-red-600 text-white rounded'
+//             onClick={async () => {
+//               await DeleteDesignationById(row._id);
+//               await GetAllDepartment();
+//             }}
+//           >
+//             Delete
+//           </Button>
+//         </div>
+//       ),
+//     },
+//   ];
 
-  const filteredData = Masterlist.filter(item =>
-    item.designationname.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+//   const filteredData = Masterlist.filter(item =>
+//     item.designationname.toLowerCase().includes(searchQuery.toLowerCase())
+//   );
 
-  return (
-    <div className='bg-white  '>
+//   return (
+//     <div className='bg-white  '>
      
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-6">Manage Designation</h3>
-          </div>
-          <div className="flex justify-between items-center px-4">
-            <BasicSearchInput onChange={(e) => setSearchQuery(e.target.value)} />
-            <Button className="bg-teal-500 text-white rounded px-4 py-1" onClick={()=>navigate('/dashboard/save/designation')}>
-              Add New Designation
-            </Button>
-          </div>
+//           <div className="text-center">
+//             <h3 className="text-2xl font-bold mb-6">Manage Designation</h3>
+//           </div>
+//           <div className="flex justify-between items-center px-4">
+//             <BasicSearchInput onChange={(e) => setSearchQuery(e.target.value)} />
+//             <Button className="bg-teal-500 text-white rounded px-4 py-1" onClick={()=>navigate('/dashboard/save/designation')}>
+//               Add New Designation
+//             </Button>
+//           </div>
           
-          <AppDataTable 
-            columns={columns} 
-            data={filteredData} 
-            progressPending={pending}  
+//           <AppDataTable 
+//             columns={columns} 
+//             data={filteredData} 
+//             progressPending={pending}  
              
-          />
+//           />
       
-    </div>
-  );
-}
+//     </div>
+//   );
+// }
  
 
 // const DesignationSubmitPage = ({ mode }) => {
@@ -219,6 +220,9 @@ export const DesignationSubmitPage = ({ mode }) => {
   const config = DesignationFormConfig(mode);
   return <MasterSubmitForm config={config} />;
 };
+
+
+export const DesignationListPage = () => <MasterDataGridPage config={DesignationListConfig} />;
 
 
 // export  {DesignationSubmitPage,DesignationListPage};

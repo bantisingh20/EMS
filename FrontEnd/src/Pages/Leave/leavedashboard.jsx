@@ -32,12 +32,10 @@ const leaveData = [
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
- 
-  // Handle opening/closing the form
+  
   const handleAddClick = () => {
     navigate('/dashboard/leaves/apply-leave')
-  //  setShowForm(true);
-  };
+   };
 
   const handleCloseForm = () => { 
     setShowForm(false);

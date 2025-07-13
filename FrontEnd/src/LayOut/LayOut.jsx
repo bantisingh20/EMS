@@ -1,22 +1,20 @@
 import React from 'react';
-
-import { SideBar,NavBar } from './SideBar';
 import { Outlet } from 'react-router-dom';
+import SideBar from './SideBar';
+import NavBar from './Navbar';
 
 const LayOut = () => {
   return (
-    <>
-      <div className='flex h-screen overflow-auto'>
-        <SideBar />
-        <div className='flex-1 flex flex-col'>
-            <NavBar />
-            <main className="flex-1 bg-gray-50 p-4 overflow-auto">
-            <Outlet />
-            </main>
-        </div>
+    <div className="flex h-screen overflow-hidden">
+      <SideBar />
+      <div className="flex flex-col flex-1">
+        <NavBar />
+        <main className="flex-1 bg-gray-100 p-3 sm:p-5 overflow-auto">
+          <Outlet />
+        </main>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default LayOut
+export default LayOut;

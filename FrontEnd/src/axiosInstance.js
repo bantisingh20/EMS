@@ -34,11 +34,12 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     console.log(response);
-    const { success, data ,token ,user,message } = response.data;
+    const { success, data ,token ,user,message,pagination } = response.data;
     response.success = success;
     response.data = data;
     response.token = token; 
     response.user= user;
+    response.pagination = pagination;
     response.message = message;
     return response;
   },

@@ -19,9 +19,9 @@ const Role = mongoose.model('Role', roleSchema);
 // Default roles to be added
 const defaultRoles = [
   { name: 'Superadmin', description: 'Full access to all resources and settings.' },
-  { name: 'Admin', description: 'Add,Update, Delete ' },
-  { name: 'Manager', description: 'approve leaves and view team performance.' },
-  { name: 'User', description: 'view their profiles and apply for leaves.' },
+  // { name: 'Admin', description: 'Add,Update, Delete ' },
+  // { name: 'Manager', description: 'approve leaves and view team performance.' },
+  // { name: 'User', description: 'view their profiles and apply for leaves.' },
 ];
 
 // Function to insert default roles if they don't exist

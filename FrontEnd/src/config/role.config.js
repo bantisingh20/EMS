@@ -1,4 +1,5 @@
 // src/config/RoleFormConfig.js
+import { actions } from 'react-table';
 import { SaveNewRole, UpdateRole, GetRoleById } from '../api/RoleService';
 import { GetAllRoles, DeleteRoleById } from '../api/RoleService';
 const RoleFormConfig = (mode) => ({
@@ -34,31 +35,32 @@ const RoleFormConfig = (mode) => ({
 // src/config/RoleListConfig.js
 
 
-export  const RoleListConfig = {
+export const RoleListConfig = {
   title: 'Manage Roles',
-  fetchFunction: GetAllRoles,
-  deleteFunction: DeleteRoleById,
-  addLabel: 'Add New Role',
-  addUrl: '/dashboard/role/submit',
-  editUrlBase: '/dashboard/role/submit',
-  searchKeys: ['name'],
+  fetchData: GetAllRoles,
+  deleteData: DeleteRoleById,
+  getId: (row,index) => row._id,
+  actions : true,
   columns: [
-    { field: '_id', headerName: 'ID', width: 80, hide: true },
-    { field: 'name', headerName: 'Role Name', flex: 1 },
-    // You can add more columns here
+    { field:'srNo', headerName: 'Sr.No', width: 80 },
+    { field: 'name', headerName: 'Role Name', flex: 1 }
   ],
-  actionButtons: [
+  addButton: {
+    label: 'Add Role',
+    onClick: (navigate) => navigate('/dashboard/role/submit')
+  },
+  rowActions: (row, navigate, handleDelete) => [
     {
       label: 'Edit',
-      type: 'edit',
-      condition: (user, row) => user.role === 'admin' || user.role === 'editor',
+      color: 'info',
+      onClick: () => navigate(`/dashboard/role/submit/${row._id}`)
     },
     {
       label: 'Delete',
-      type: 'delete',
-      condition: (user) => user.role === 'admin',
-    },
-  ],
-}; 
+      color: 'error',
+      onClick: () => handleDelete(row._id)
+    }
+  ]
+};
 
 export default RoleFormConfig;

@@ -1,6 +1,4 @@
 const mogoose =require('mongoose');
-const { insertDefaultEmployees } = require('../Schemas/employeesSchema');
-
 const mongoose_url = process.env.MONGO_CONN;
 
 const mongoose = require('mongoose');

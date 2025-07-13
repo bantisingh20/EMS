@@ -1,5 +1,7 @@
-const EmployeeTable = require('../Schemas/employeesSchema.js').EmployeeTable;
+const EmployeeTable = require('../models/employee.model.js').EmployeeTable;
+const multer = require('multer'); 
 
+const bcrypt =require('bcrypt');
 const SaveEmployee = async(req,res) => {
 
     try{ 
@@ -71,8 +73,9 @@ const GetEmployeesById = async(req,res) => {
         // console.log(e);
         const { id } = req.params;
          console.log(id);
-        const Employee = await EmployeeTable.findById(id);
+        const Employee = await EmployeeTable.findById({_id : id});
 
+        console.log(Employee);
         if(!Employee){
             return res.status(500).json({success:true, message:"Employee not Exist"})
         }
@@ -84,34 +87,74 @@ const GetEmployeesById = async(req,res) => {
 }
 
 const UpdateEmployee = async (req, res) => {
-    try {
- 
-        const { _id } = req.body; 
-        const updatedData = req.body; 
- 
-        const employee = await EmployeeTable.findById(_id);
+  try {
+    const {
+      _id,
+      employeecode,
+      firstname,
+      lastname,
+      contactno,
+      emailid,
+      dateofbith,
+      dateofJoining,
+      gender,
+      department,
+      designation,
+      address,
+      originalpassword,
+      password,
+      role,
+    } = req.body;
 
-        if (!employee) {
-            return res.status(404).json({ success: false, message: "Employee not found" });
-        }
+    const employee = await EmployeeTable.findById(_id);
 
-        const updatedEmployee = await EmployeeTable.findByIdAndUpdate(
-            _id,
-            updatedData,
-            { new: true }
-        );
-
-        res.status(200).json({ success: true, message: "Employee updated successfully",  data: updatedEmployee });
-    } catch (error) {
-        console.error("Error updating employee:", error);
-        res.status(500).json({ 
-            success: false, 
-            message: "Error updating employee", 
-            error: error.message 
-        });
+    if (!employee) {
+      return res.status(404).json({ success: false, message: "Employee not found" });
     }
-};
 
+    // Hash the new password if provided, otherwise use the old one
+    const hashedPassword = password
+      ? await bcrypt.hash(password, 10)
+      : employee.password;
+
+    const updatedFields = {
+      employeecode,
+      firstname,
+      lastname,
+      contactno,
+      emailid,
+      dateofbith,
+      dateofJoining,
+      gender,
+      department,
+      designation,
+      address,
+      originalpassword,
+      password: hashedPassword,
+      role: role?.toLowerCase() || employee.role,
+      profileImage: req.file ? req.file.filename : employee.profileImage,
+    };
+
+    const updatedEmployee = await EmployeeTable.findByIdAndUpdate(
+      _id,
+      updatedFields,
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Employee updated successfully",
+      data: updatedEmployee,
+    });
+  } catch (error) {
+    console.error("Error updating employee:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error updating employee",
+      error: error.message,
+    });
+  }
+};
 
 const DeleteEmployee = async(req,res) => {
     try { 

@@ -1,107 +1,108 @@
-import React, { useEffect, useState } from 'react';
-import { AppDataTable,BasicSearchInput, FormInputField, handleError, handleSuccess, LazyLoadingComponent } from '../Pages/Common';
-import { Link, useNavigate, useLocation,useParams } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { DeleteDepartmentById, GetAllDepartmentsNew, GetDepartmentById, SaveNewDepartment, UpdateDepartment } from '../api/DepartmentApi';
-import {useFormik, Formik, Form } from 'formik';
-import * as Yup from 'yup'; 
-import MasterSubmitForm from './MasterSubmitForm';
-import DepartmentFormConfig from '../config/DepartmentFormConfig';
+// import React, { useEffect, useState } from 'react';
+// import { AppDataTable,BasicSearchInput, FormInputField, handleError, handleSuccess, LazyLoadingComponent } from '../Pages/Common';
+// import { Link, useNavigate, useLocation,useParams } from 'react-router-dom';
+// import { Button } from 'react-bootstrap';
+// import { DeleteDepartmentById, GetAllDepartmentsNew, GetDepartmentById, SaveNewDepartment, UpdateDepartment } from '../api/DepartmentApi';
+// import {useFormik, Formik, Form } from 'formik';
+// import * as Yup from 'yup'; 
+import MasterSubmitForm from '../Pages/MasterSubmitForm';
+import DepartmentFormConfig, { DepartmentListConfig } from '../config/DepartmentFormConfig';
+import MasterDataGridPage from '../Pages/MasterListPage';
 
-export const DepartmentList = () =>{
-  const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [departmentlist, setDepartmentlist] = useState([]);
-  const [pending, setPending] = useState(true);
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
-  useEffect(() => {
-    GetAllDepartment();
-  }, []);
+// export const DepartmentList = () =>{
+//   const navigate = useNavigate();
+//   const [page, setPage] = useState(1);
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [departmentlist, setDepartmentlist] = useState([]);
+//   const [pending, setPending] = useState(true);
+//   const handlePageChange = (newPage) => {
+//     setPage(newPage);
+//   };
+//   useEffect(() => {
+//     GetAllDepartment();
+//   }, []);
 
-  const GetAllDepartment = async () => {
-    try {
-      const response = await GetAllDepartmentsNew();
-      if (response.success) {         
-        setDepartmentlist(response.data);
-      } else {
-        setDepartmentlist([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setPending(false);
-  };
+//   const GetAllDepartment = async () => {
+//     try {
+//       const response = await GetAllDepartmentsNew();
+//       if (response.success) {         
+//         setDepartmentlist(response.data);
+//       } else {
+//         setDepartmentlist([]);
+//       }
+//     } catch (error) {
+//       console.error(error);
+//     }
+//     setPending(false);
+//   };
 
 
-  const columns = [
-    {
-      name: "Sr.No",
-      selector: (row,index) =>  index + 1,
-      sortable: true,
-    },
-    {
-      name: "Department",
-      selector: (row) => row.departmentname,
-      sortable: true,
-    },
-      {
-      name: "Action",
-      selector: (row) => (
-        <div className='flex space-x-4'>
+//   const columns = [
+//     {
+//       name: "Sr.No",
+//       selector: (row,index) =>  index + 1,
+//       sortable: true,
+//     },
+//     {
+//       name: "Department",
+//       selector: (row) => row.departmentname,
+//       sortable: true,
+//     },
+//       {
+//       name: "Action",
+//       selector: (row) => (
+//         <div className='flex space-x-4'>
           
-          <Link
-            className='px-3 py-1 bg-teal-600 text-white rounded'
-            to={`/dashboard/edit-department/${row._id}`}
-          >
-            Edit
-          </Link>
+//           <Link
+//             className='px-3 py-1 bg-teal-600 text-white rounded'
+//             to={`/dashboard/edit-department/${row._id}`}
+//           >
+//             Edit
+//           </Link>
 
 
-          <Button
-            className='px-3 py-1 bg-red-600 text-white rounded'
-            onClick={async () => {
-              await DeleteDepartmentById(row._id);
-              await GetAllDepartment();
-            }}
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-    },
-  ];
+//           <Button
+//             className='px-3 py-1 bg-red-600 text-white rounded'
+//             onClick={async () => {
+//               await DeleteDepartmentById(row._id);
+//               await GetAllDepartment();
+//             }}
+//           >
+//             Delete
+//           </Button>
+//         </div>
+//       ),
+//     },
+//   ];
 
-  const filteredData = departmentlist.filter(item =>
-    item.departmentname.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+//   const filteredData = departmentlist.filter(item =>
+//     item.departmentname.toLowerCase().includes(searchQuery.toLowerCase())
+//   );
 
-  return (
-    <div className='bg-white  '>
+//   return (
+//     <div className='bg-white  '>
      
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-6">Manage Department</h3>
-          </div>
-          <div className="flex justify-between items-center px-4">
-            <BasicSearchInput onChange={(e) => setSearchQuery(e.target.value)} />
-            <Button className="bg-teal-500 text-white rounded px-4 py-1" onClick={()=>navigate('/dashboard/save/department')}>
-              Add New Department
-            </Button>
-          </div>
+//           <div className="text-center">
+//             <h3 className="text-2xl font-bold mb-6">Manage Department</h3>
+//           </div>
+//           <div className="flex justify-between items-center px-4">
+//             <BasicSearchInput onChange={(e) => setSearchQuery(e.target.value)} />
+//             <Button className="bg-teal-500 text-white rounded px-4 py-1" onClick={()=>navigate('/dashboard/save/department')}>
+//               Add New Department
+//             </Button>
+//           </div>
           
-          <AppDataTable 
-            columns={columns} 
-            data={filteredData} 
-            progressPending={pending}  
-            totalRows={1000}
-            handlePageChange={handlePageChange}
-          />
+//           <AppDataTable 
+//             columns={columns} 
+//             data={filteredData} 
+//             progressPending={pending}  
+//             totalRows={1000}
+//             handlePageChange={handlePageChange}
+//           />
       
-    </div>
-  );
-}
+//     </div>
+//   );
+// }
  
 
 // export const DepartmentPageold = ({ mode }) => {
@@ -221,6 +222,6 @@ export const DepartmentPage = ({ mode }) => {
   return <MasterSubmitForm config={config} />;
 };
 
-// export  {DepartmentPage,DepartmentList};
+export const DepartmentList = () => <MasterDataGridPage config={DepartmentListConfig} />;
 
 

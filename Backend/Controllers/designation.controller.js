@@ -1,4 +1,4 @@
-const DesignationTable = require('../Schemas/designationSchema').DesignationTable;
+const DesignationTable = require('../models/designation.model').DesignationTable;
 
 // Insert department 
 const SaveDesignation = async (req, res) => {

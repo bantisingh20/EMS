@@ -1,62 +1,62 @@
 
-import React, { useState ,useRef,Suspense, lazy } from 'react';
+import React, { useState, useRef, Suspense, lazy } from 'react';
 import { CircularProgress } from '@mui/material';
-import {  Field,  ErrorMessage } from 'formik';
+import { Field, ErrorMessage } from 'formik';
 //import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Input } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
 import { MagnifyingGlassIcon, UserPlusIcon } from '@heroicons/react/24/outline';
-import { DataGrid ,GridToolbar  } from '@mui/x-data-grid';
-import { Box, Typography ,Button } from '@mui/material';
-import 'react-toastify/dist/ReactToastify.css'; 
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { Box, Typography, Button } from '@mui/material';
+import 'react-toastify/dist/ReactToastify.css';
 import { Select, Option } from "@material-tailwind/react";
 import DataTable from 'react-data-table-component';
-import  { CustomLoader } from './loader';
+import { CustomLoader } from './loader';
 //import { Button, Typography } from '@mui/material'; 
 
-const FormInputField = ({label,type,id,name,placeholder}) =>{
-  return(
-      <>
-       <label className="block text-sm font-semibold mb-1" htmlFor="visitorName">
-          {label} <span className="text-red-500">*</span>
-        </label>
-          <Field type={type} id={id} name={name}
-            className="block w-full p-2 border border-gray-300 rounded-md"
-            placeholder={placeholder}
-          />
-          <ErrorMessage name={name} component="div" className=" font-bold text-red-500 text-xs mt-1" />
-      </>
+const FormInputField = ({ label, type, id, name, placeholder }) => {
+  return (
+    <>
+      <label className="block text-sm font-semibold mb-1" htmlFor="visitorName">
+        {label} <span className="text-red-500">*</span>
+      </label>
+      <Field type={type} id={id} name={name}
+        className="block w-full p-2 border border-gray-300 rounded-md"
+        placeholder={placeholder}
+      />
+      <ErrorMessage name={name} component="div" className=" font-bold text-red-500 text-xs mt-1" />
+    </>
   );
 }
 
-function FormLabels(label){
-    return(
-        <Form.Label className={label.className} >{label.label}</Form.Label>
-    );
+function FormLabels(label) {
+  return (
+    <Form.Label className={label.className} >{label.label}</Form.Label>
+  );
 }
 
-function FormControl(formfield){
-    return(
-        <Form.Control
-         type={formfield.type} 
-         placeholder={formfield.placeholder} 
-         className={formfield.className}
-         required={formfield.required == 1 ? true : false} 
-         onChange={formfield.onChange}
-         name={formfield.name} />
-    );
+function FormControl(formfield) {
+  return (
+    <Form.Control
+      type={formfield.type}
+      placeholder={formfield.placeholder}
+      className={formfield.className}
+      required={formfield.required == 1 ? true : false}
+      onChange={formfield.onChange}
+      name={formfield.name} />
+  );
 }
 
 
-function TextFields({type,label, name, onChange,className, value,required,placeholder }) {
-    return (
-      <>
-      <Input 
-        variant="static" 
-        color="teal" 
+function TextFields({ type, label, name, onChange, className, value, required, placeholder }) {
+  return (
+    <>
+      <Input
+        variant="static"
+        color="teal"
         label={label}
-        placeholder={placeholder} 
+        placeholder={placeholder}
         // labelProps={{ className: "hidden",}}
         containerProps={{ className: "min-w-[100px]" }}
         type={type}
@@ -64,37 +64,37 @@ function TextFields({type,label, name, onChange,className, value,required,placeh
         name={name}
         value={value}
       />
- 
-      </>
-    );
-  }
 
-  function Buttons(Fields){
-    return(
-      // <Button type={Fields.type} className={Fields.className}>{Fields.text}</Button>
-      <Button 
-        variant="outline-success"
-        type={Fields.type} 
-        className={Fields.className}
-        onClick={Fields.onClick}
-        >{Fields.text}</Button> 
-    );
-  }
+    </>
+  );
+}
 
-function handleSuccess(message){
+function Buttons(Fields) {
+  return (
+    // <Button type={Fields.type} className={Fields.className}>{Fields.text}</Button>
+    <Button
+      variant="outline-success"
+      type={Fields.type}
+      className={Fields.className}
+      onClick={Fields.onClick}
+    >{Fields.text}</Button>
+  );
+}
+
+function handleSuccess(message) {
   toast.success(message)
 }
 
-function handleError(message){
+function handleError(message) {
   toast.error(message)
 }
 
-function handlewarning(message){
+function handlewarning(message) {
   toast.warning(message)
 }
 
-function DashboardCards(fields){
-  return(
+function DashboardCards(fields) {
+  return (
     <div className='rounded flex bg-white'>
       <div className={`text-3xl flex justify-center items-center ${fields.color} text-white px-4`}>
         {fields.icons}
@@ -108,8 +108,8 @@ function DashboardCards(fields){
 }
 
 
-const Page500 = () =>{
-  return(
+const Page500 = () => {
+  return (
     <section className="bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
         <div className="mx-auto max-w-screen-sm text-center">
@@ -123,8 +123,8 @@ const Page500 = () =>{
 }
 
 
-const WorkUnderProgress = () =>{
-  return(
+const WorkUnderProgress = () => {
+  return (
     <div className="bg-white dark:bg-gray-700">
       <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
         <div className="mx-auto max-w-screen-sm text-center">
@@ -135,10 +135,10 @@ const WorkUnderProgress = () =>{
       </div>
     </div>
   )
-} 
+}
 
 
-function BasicSelectTag({ label, name, onChange, Data ,value}) {
+function BasicSelectTag({ label, name, onChange, Data, value }) {
   return (
     <Select variant="static" label={label} name={name} onChange={onChange} value={value}>
       {Data.map(option => (
@@ -150,16 +150,16 @@ function BasicSelectTag({ label, name, onChange, Data ,value}) {
   );
 }
 
-function BasicSearchInput({onChange}){
-   
+function BasicSearchInput({ onChange }) {
+
   return (
     <div className="w-full md:w-72">
       <Input label="Search" onChange={onChange}
-      icon={<MagnifyingGlassIcon className="h-5 w-5" />}  />
+        icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
     </div>
   );
 }
- 
+
 const LazyLoadingComponent = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -179,9 +179,9 @@ const LazyLoadingComponent = () => {
 const LazyLoadedComponent = () => {
   return (
     <div className="bg-white p-8 rounded-lg shadow-md max-w-sm mx-auto flex justify-center items-center">
-      
+
       <CircularProgress size={50} className="text-blue-500" />
-        
+
     </div>
   );
 };
@@ -197,8 +197,8 @@ const lightenColor = (color, amount) => {
 
 const darkenColor = (color, amount) => lightenColor(color, -amount);
 
-const AppDataTable = ({columns,data,progressPending,totalRows,handlePageChange}) =>{
- 
+const AppDataTable = ({ columns, data, progressPending, totalRows, handlePageChange }) => {
+
   const headerColor = '#00897b'; // Define your header background color
 
   // Calculate light and dark versions of the header color
@@ -217,20 +217,20 @@ const AppDataTable = ({columns,data,progressPending,totalRows,handlePageChange})
       style: {
         // Use light/dark color for rows based on a condition (like odd/even rows)
         backgroundColor: (rowIndex) => (rowIndex % 2 === 0 ? 'red' : darkerColor),
-        color:(rowIndex) => (rowIndex % 2 === 0 ? 'red' : 'green'),
+        color: (rowIndex) => (rowIndex % 2 === 0 ? 'red' : 'green'),
       },
     },
     cells: {
       style: {
         // Custom cell styles based on row color
         backgroundColor: (rowIndex) => (rowIndex % 2 === 0 ? 'teal-600' : darkerColor),
-        color:(rowIndex) => (rowIndex % 2 === 0 ? 'red' : 'green'),
-          // Optional: Set text color for contrast
+        color: (rowIndex) => (rowIndex % 2 === 0 ? 'red' : 'green'),
+        // Optional: Set text color for contrast
       },
     },
   };
 
-  return(
+  return (
 
     // <DataTable 
     //   columns={columns} 
@@ -257,19 +257,54 @@ const AppDataTable = ({columns,data,progressPending,totalRows,handlePageChange})
 
   );
 }
+ 
 
-// const AppDataGrid = ({columns,data,heading}) =>{
+// const AppDataGrid = ({ columns, data, heading, showHeaderButton = false, headerButtonProps = {}, }) => {
+//   const [columnVisibilityModel, setColumnVisibilityModel] = useState(
+//     columns.reduce((acc, col) => {
+//       acc[col.field] = true;
+//       return acc;
+//     }, {})
+//   );
+
+//   const adjustedColumns = columns.map((col) => ({
+//     ...col,
+//     flex: columnVisibilityModel[col.field] ? 1 : 0,
+//   }));
 
 //   return (
-//     <Box sx={{ height: 'auto', width: 'auto' }}>
-      
-//       <Typography variant="h6" gutterBottom>
-//         {heading}
-//       </Typography>
+//     <Box mx={{ height: 'auto', width: '100%' }}>
+
+//       <div
+//         className="flex justify-between items-center mb-3"
+//         style={{ flexWrap: 'wrap', gap: 10 }}
+//       >
+//         <Typography
+//           variant="subtitle1"
+//           sx={{ fontWeight: 'bold', color: '#0f766e', fontSize: '1rem' }}
+//         >
+//           {heading}
+//         </Typography>
+
+//         {showHeaderButton && (
+//           <Button
+//             variant="contained"
+//             color="primary"
+//             size="small"
+//             sx={{ fontSize: '0.8rem', padding: '5px 12px' }}
+//             onClick={headerButtonProps?.onClick}
+//           >
+//             {headerButtonProps?.label || 'Action'}
+//           </Button>
+
+//         )}
+//       </div>
+
+
 
 //       <DataGrid
-//         columns={columns}
-//         rows={data}  
+//         columns={adjustedColumns}
+//         rows={data}
 //         rowsPerPageOptions={[5]}
 //         checkboxSelection={false}
 //         disableSelectionOnClick
@@ -283,114 +318,108 @@ const AppDataTable = ({columns,data,progressPending,totalRows,handlePageChange})
 //           filter: {
 //             filterModel: {
 //               items: [],
-//               //quickFilterValues: ['abc'],
 //             },
 //           },
 //         }}
-//         slots={{ toolbar: GridToolbar }} // this show filter export hide/show col
+//         slots={{ toolbar: GridToolbar }}
 //         slotProps={{
 //           toolbar: {
 //             showQuickFilter: true,
 //           },
 //         }}
-//         pageSizeOptions={[5,10,20,50,100]}
+//         pageSizeOptions={[5, 10, 20, 50, 100]}
+//         columnVisibilityModel={columnVisibilityModel}
+//         onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
 //         sx={{
 //           '& .MuiDataGrid-columnHeader': {
-//             backgroundColor: '#00897b',  // Set background color for the header
-//             textAlign:'center',
-//             color: 'black',              // Set text color of header
-//            // fontSize: '15px',            // Optional: adjust font size
-//             fontWeight: 'bold',          // Optional: make the header text bold
+//             backgroundColor: '#00897b',
+//             textAlign: 'center',
+//             color: 'black',
+//             fontWeight: 'bold',
 //           },
 //           '& .MuiDataGrid-row': {
-//             // Set alternating background color for rows
 //             '&:nth-of-type(even)': {
-//               backgroundColor: '#f5f5f5', // Light background for even rows
+//               backgroundColor: '#f5f5f5',
 //             },
 //             '&:nth-of-type(odd)': {
-//               backgroundColor: '#e0f7fa', // Darker shade (or different color) for odd rows
+//               backgroundColor: '#e0f7fa',
 //             },
 //           },
 //           '& .MuiDataGrid-cell': {
-//             fontSize: '14px',  
-//             whiteSpace: 'normal', // Allow text wrapping in cell
-//             wordWrap: 'break-word', // Enable word wrapping in cell
+//             fontSize: '14px',
+//             whiteSpace: 'normal',
+//             wordWrap: 'break-word',
 //           },
-          
 //         }}
 //       />
 //     </Box>
 //   );
-// }
-
-const AppDataGrid = ({ columns, data, heading,showHeaderButton = false,  headerButtonProps = {}, }) => {
+// };
+ 
+ const AppDataGrid = ({
+  columns,
+  data,
+  heading,
+  showHeaderButton = false,
+  headerButtonProps = {},
+  paginationModel,
+  onPageChange,
+  onPageSizeChange,
+  loading,
+  rowCount,
+}) => {
   const [columnVisibilityModel, setColumnVisibilityModel] = useState(
     columns.reduce((acc, col) => {
-      acc[col.field] = true;  
+      acc[col.field] = true;
       return acc;
     }, {})
   );
- 
+
   const adjustedColumns = columns.map((col) => ({
     ...col,
-    flex: columnVisibilityModel[col.field] ? 1 : 0,  
+    flex: columnVisibilityModel[col.field] ? 1 : 0,
   }));
 
   return (
-    <Box mx={{ height: 'auto', width: '100%' }}>
-
-      <div
-        className="flex justify-between items-center mb-3"
-        style={{ flexWrap: 'wrap', gap: 10 }}
-      >
-       <Typography
+    <Box sx={{ height: 'auto', width: '100%' }}>
+      <div className="flex justify-between items-center mb-3" style={{ flexWrap: 'wrap', gap: 10 }}>
+        <Typography
           variant="subtitle1"
           sx={{ fontWeight: 'bold', color: '#0f766e', fontSize: '1rem' }}
         >
-          Manage Roles
+          {heading}
         </Typography>
 
-         {showHeaderButton && (
+        {showHeaderButton && (
           <Button
-  variant="contained"
-  color="primary"
-  size="small"
-  sx={{ fontSize: '0.8rem', padding: '5px 12px' }}
-  onClick={headerButtonProps?.onClick}
->
-  {headerButtonProps?.label || 'Action'}
-</Button>
-
+            variant="contained"
+            color="primary"
+            size="small"
+            sx={{ fontSize: '0.8rem', padding: '5px 12px' }}
+            onClick={headerButtonProps?.onClick}
+          >
+            {headerButtonProps?.label || 'Action'}
+          </Button>
         )}
       </div>
-
-       
 
       <DataGrid
         columns={adjustedColumns}
         rows={data}
-        rowsPerPageOptions={[5]}
+        rowCount={rowCount}
+        loading={loading}
+        
+        pagination
+        paginationMode="server"
+        paginationModel={paginationModel}
+        onPaginationModelChange={(model) => {
+          onPageChange?.(model.page);
+          onPageSizeChange?.(model.pageSize);
+        }}
         checkboxSelection={false}
         disableSelectionOnClick
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-          ...data.initialState,
-          filter: {
-            filterModel: {
-              items: [],
-            },
-          },
-        }}
         slots={{ toolbar: GridToolbar }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-          },
-        }}
+        slotProps={{ toolbar: { showQuickFilter: true } }}
         pageSizeOptions={[5, 10, 20, 50, 100]}
         columnVisibilityModel={columnVisibilityModel}
         onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
@@ -419,5 +448,6 @@ const AppDataGrid = ({ columns, data, heading,showHeaderButton = false,  headerB
     </Box>
   );
 };
+
 //module.exports = {}
-export {FormInputField,LazyLoadingComponent,AppDataTable,FormLabels,TextFields ,BasicSearchInput ,FormControl ,BasicSelectTag, Buttons ,handleSuccess , handleError,DashboardCards,WorkUnderProgress,AppDataGrid}
+export { FormInputField, LazyLoadingComponent, AppDataTable, FormLabels, TextFields, BasicSearchInput, FormControl, BasicSelectTag, Buttons, handleSuccess, handleError, DashboardCards, WorkUnderProgress, AppDataGrid }

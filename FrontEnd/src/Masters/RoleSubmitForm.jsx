@@ -83,7 +83,7 @@
 
 // src/forms/RoleSubmitForm.jsx
 import React from 'react';
-import MasterSubmitForm from './MasterSubmitForm';
+import MasterSubmitForm from '../Pages/MasterSubmitForm';
 import RoleFormConfig from '../config/role.config';
 
 

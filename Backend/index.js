@@ -1,7 +1,7 @@
 const express =require('express');
 const cors = require('cors');
-const AuthRouter = require('./Routers/AuthRoute');
-const ApiRouter = require('./Routers/CommonRoutes');
+const AuthRouter = require('./Routers/auth.routes');
+const ApiRouter = require('./Routers/common.routes');
 const swaggerSpecs = require('./swaggerConfig');
 const swaggerUi = require('swagger-ui-express');
 const { dropDatabase } = require('./Connection/db');

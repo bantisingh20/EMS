@@ -1,71 +1,139 @@
-import { FormLabels,FormControl, Buttons ,handleError,handleSuccess  } from './Common';
-import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify'; 
-import { sessiondata } from '../Context/Context';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { TextField, Button, Paper, FormControlLabel, Checkbox, Typography, Link } from '@mui/material';
+import { motion } from 'framer-motion';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { sessiondata } from '../Context/Context';
 import axiosInstance from '../axiosInstance';
-//rafce
+import { handleError, handleSuccess } from './Common';
 
-const LoginPage =() =>{
-     console.clear();
-    // localStorage.clearItem("Token");
-    const [LoginInData,SetLoginInData] = useState({});
-    const { LoginSessionStart,logout } = sessiondata();
-    const navigate = useNavigate()
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().min(6, 'Minimum 6 characters').required('Required'),
+});
 
+const LoginPage = () => {
+  const { LoginSessionStart } = sessiondata();
+  const navigate = useNavigate();
 
-    const LoginUser= async (e) =>{
-        e.preventDefault();
-       
-        try {
-            const response = await axiosInstance.post(`/auth/login`,LoginInData);
-            console.log(response);          
-            if(response.success){
-                //debugger;
-                localStorage.setItem("Token",response.token)
-                LoginSessionStart(response.user);
-                
-                handleSuccess('login Successfull');
-                navigate('/dashboard');
-                //window.location.href = '/dashboard';
-            }
-        } catch (error) {
-            console.log(`Error: ${error}`);
-            handleError(error.response.data.message);
+  const getSavedCredentials = () => {
+    const saved = JSON.parse(localStorage.getItem('loginCredentials'));
+    return saved || { email: '', password: '', remember: false };
+  };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const response = await axiosInstance.post('/auth/login', values);
+      if (response.success) {
+        localStorage.setItem('Token', response.token);
+        LoginSessionStart(response.user);
+        handleSuccess('Login Successful!');
+        if (values.remember) {
+          localStorage.setItem('loginCredentials', JSON.stringify(values));
+        } else {
+          localStorage.removeItem('loginCredentials');
         }
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      handleError(err.response?.data?.message || 'Login failed');
+    } finally {
+      setSubmitting(false);
     }
-    return(
-        <>
-         <div className='flex flex-col items-center h-screen justify-center bg-gradient-to-b from-teal-600 from-50% to-gray--100 to-50%'>
-          
-          <h2 className='font-sevillana text-3xl mb-3 text-white'>Employee Management System</h2>
+  };
 
-            <div className='border shadow p-6 w-80 bg-white'>
-                <h2 className='text-2xl font-bold mb-4 text-center'>Login</h2>
-                <form onSubmit = {LoginUser}>
-                    <div className='mb-4'>
-                        <FormLabels label="Email" className="block text-gray-700"/>
-                        <FormControl placeholder="Enter Email" type="email" className="w-full px-3 py-2 border" 
-                            required={1} name="email" onChange={(e) => SetLoginInData({ ...LoginInData, [e.target.name]: e.target.value })}/>
-                    </div>
+  const initialValues = getSavedCredentials();
 
-                    <div className='mb-4'>
-                        <FormLabels label="Password" className="block text-gray-700"/>
-                        <FormControl placeholder="Enter Password" type="Password" className="w-full px-3 py-2 border" required={1}
-                          name="password" onChange={(e) => SetLoginInData({ ...LoginInData, [e.target.name]: e.target.value })} />
-                    </div>
+  return (
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-teal-600 to-gray-100 px-4">
+     
+      <motion.h1
+        className="text-4xl md:text-5xl font-sevillana text-white mb-8"
+        initial={{ y: -60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 100 }}
+      >
+        Employee Management System
+      </motion.h1>
 
-                    <div className='mb-4'>
-                        <Buttons type="submit" className="w-full bg-teal-600 text-white py-2" text="login" />
-                    </div>
-                </form>
-                
-                <ToastContainer />
-            </div>
-            
-          </div> 
-        </>
-    );
-}
+      <Paper elevation={8} className="w-full max-w-md p-8 rounded-lg shadow-md">
+        <Typography variant="h5" align="center" gutterBottom className="font-semibold text-gray-800">
+          Login to your account
+        </Typography>
+
+        <Formik
+          initialValues={initialValues}
+          validationSchema={LoginSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, values, setFieldValue }) => (
+            <Form className="space-y-5">
+              <div>
+                <Field name="email">
+                  {({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Email"
+                      fullWidth
+                      variant="outlined"
+                      type="email"
+                    />
+                  )}
+                </Field>
+                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <Field name="password">
+                  {({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Password"
+                      fullWidth
+                      variant="outlined"
+                      type="password"
+                    />
+                  )}
+                </Field>
+                <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.remember}
+                      onChange={(e) => setFieldValue('remember', e.target.checked)}
+                      color="primary"
+                    />
+                  }
+                  label="Remember me"
+                />
+                <Link href="/forgot-password" className="text-sm text-blue-500 hover:underline">
+                  Forgot Password?
+                </Link>
+              </div>
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={isSubmitting}
+                className="bg-teal-600 hover:bg-teal-700 text-white py-2"
+              >
+                {isSubmitting ? 'Logging in...' : 'Login'}
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Paper>
+
+      <ToastContainer />
+    </div>
+  );
+};
 
 export default LoginPage;
