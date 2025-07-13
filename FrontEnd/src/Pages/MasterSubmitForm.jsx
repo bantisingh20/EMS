@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; 
 import FormikFormComponent from '../Components/FormikFormComponent'; 
-import { handleSuccess, handleError } from '../Pages/Common';
+import { handleSuccess, handleError } from './Common';
 
 const MasterSubmitForm = ({ config }) => {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ const MasterSubmitForm = ({ config }) => {
   const [formData, setFormData] = useState(config.initialValues || {});
 
   useEffect(() => {
+    console.log("MasterSubmitForm config:", config);
     if (config.mode === 'edit' && id && config.fetchById) {
       config
         .fetchById(id)
@@ -24,6 +25,8 @@ const MasterSubmitForm = ({ config }) => {
     } else {
       setFormData(config.initialValues || {});
     }
+
+    console.log("Form data initialized:", formData);
   }, [config, id]);
 
   const handleSubmit = async (values) => {

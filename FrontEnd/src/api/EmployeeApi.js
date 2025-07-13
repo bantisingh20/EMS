@@ -3,12 +3,23 @@ import { useParams } from 'react-router-dom';
 
 const SaveUpdateEmployee = async(data) =>{
     try {
-        
         const response = await axiosInstance.post('/employees/save-employees',data);
         return response;
     } catch (error) {
         console.error("Error While Saving:", error);
         throw error; 
+    }
+}
+
+const UpdateEmployee = async(data) => {
+    try {
+        // console.log(data);
+        const response = await axiosInstance.put(`/employees/UpdateEmployee`,data);
+
+        return response;  
+    } catch (error) {
+        console.error("Error While update employees:", error);
+        throw error;
     }
 }
 
@@ -22,10 +33,11 @@ const GetAllEmployee = async() =>{
     }
 }
 
-const GetEmployeeById = async() =>{
+const GetEmployeeById = async(id) =>{
     try {
-        const response = await axiosInstance.get('/employees/get-employees');
-        return response;
+        const response = await axiosInstance.get(`/employees/GetEmployeesById/${id}`);
+        console.log("Response from GetEmployeeById:", response.data);
+        return response.data;
     } catch (error) {
         console.error("Error While Fetching:", error);
         throw error;
@@ -41,4 +53,4 @@ const DeleteEmployeeById = async() =>{
     }
 }
 
-export {SaveUpdateEmployee, GetAllEmployee, GetEmployeeById, DeleteEmployeeById}
+export {SaveUpdateEmployee, GetAllEmployee, GetEmployeeById, DeleteEmployeeById , UpdateEmployee}

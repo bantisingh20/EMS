@@ -76,9 +76,15 @@ const UpdateRole = async (data) => {
   return await axiosInstance.put(`/role/UpdateRole`, data);
 };
 
-const GetAllRoles = async () => {
-  return await axiosInstance.get(`/role/GetAllRoles`);
+// const GetAllRoles = async () => {
+//   return await axiosInstance.get(`/role/GetAllRoles`);
+// };
+const GetAllRoles = async ({ page = 1, limit = 10 } = {}) => {
+  return await axiosInstance.get(`/role/GetAllRoles`, {
+    params: { page, limit }
+  });
 };
+
 
 const GetRoleById = async (id) => {
   return await axiosInstance.get(`/role/GetRolesById/${id}`);

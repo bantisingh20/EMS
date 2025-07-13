@@ -1,9 +1,10 @@
 // src/config/DepartmentFormConfig.js
-import { Save } from '@mui/icons-material';
+import { Delete, Save } from '@mui/icons-material';
 import {
   SaveNewDesignation,
   Updatedesignation,
-  GetDesignationById,
+  GetDesignationById,DeleteDesignationById,
+  GetAllDesignationsNew,
 } from '../api/DesignationApi';
 
 const DesignationFormConfig = (mode) => ({
@@ -27,4 +28,32 @@ const DesignationFormConfig = (mode) => ({
   redirectPath: '/dashboard/list-designation',
 });
 
+
+export const DesignationListConfig = {
+  title: 'Manage Designations',
+  fetchData: GetAllDesignationsNew,
+  deleteData: DeleteDesignationById,
+  getId: (row) => row._id,
+  columns: [
+    { field: 'id', headerName: 'Sr.No', width: 80 },
+    { field: 'designationname', headerName: 'Designation Name', flex: 1 }
+  ],
+  addButton: {
+    label: 'Add Designation',
+    onClick: (navigate) => navigate('/dashboard/save/designation')
+  },
+  actions: true,
+  rowActions: (row, navigate, handleDelete) => [
+    {
+      label: 'Edit',
+      color: 'info',
+      onClick: () => navigate(`/dashboard/edit-designation/${row._id}`)
+    },
+    {
+      label: 'Delete',
+      color: 'error',
+      onClick: () => handleDelete(row._id)
+    }
+  ]
+};
 export default DesignationFormConfig;

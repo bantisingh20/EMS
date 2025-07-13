@@ -39,7 +39,7 @@ const GetAllDepartmentsNew = async() => {
 const GetDepartmentById = async(id) => {
     try {                
         const response = await axiosInstance.get(`/department/GetDepartmentById/${id}`);
-        
+        console.log("Response from GetDepartmentById:", response.data);
         return response.data;  
     } catch (error) {
         console.error("Error fetching departments:", error);

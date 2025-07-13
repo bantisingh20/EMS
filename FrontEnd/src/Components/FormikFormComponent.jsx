@@ -1,188 +1,189 @@
-import React,{useState,useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { useNavigate } from "react-router-dom";
-import axiosInstance from '../axiosInstance';
+// import React,{useState,useEffect } from 'react';
+// import { Formik, Form, Field, ErrorMessage } from 'formik';
+// import * as Yup from 'yup';
+// import { useNavigate } from "react-router-dom";
+// import axiosInstance from '../axiosInstance';
  
-const FormikFormComponent = ({ initialValues, fields, onSubmit,onCancel }) => {
-  const [dynamicOptions, setDynamicOptions] = useState({});
- const validationSchema = buildValidationSchema(fields);
- const navigate = useNavigate();
+// const FormikFormComponent = ({ initialValues, fields, onSubmit,onCancel }) => {
+//   const [dynamicOptions, setDynamicOptions] = useState({});
+//  const validationSchema = buildValidationSchema(fields);
+//  const navigate = useNavigate();
+//  console.log("initialValues", fields);
 
-  const handleCancel = () => {
-     onCancel();
+//   const handleCancel = () => {
+//      onCancel();
     
-  }; 
+//   }; 
  
 
-  return (
-   <>
+//   return (
+//    <>
    
-   <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      enableReinitialize={true}
-    >
-      {({ isSubmitting }) => (
-        <Form className="max-w-auto mx-auto p-6 bg-white rounded-md shadow-lg">
-          {/* Grid system for responsive layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {fields.map((field, index) => {
-              // Check if the field is required for conditional visibility
-              const isRequired = field.validation && field.validation.required;
-              const shouldShowField = isRequired || initialValues[field.name] !== '';
+//    <Formik
+//       initialValues={initialValues}
+//       validationSchema={validationSchema}
+//       onSubmit={onSubmit}
+//       enableReinitialize={true}
+//     >
+//       {({ isSubmitting }) => (
+//         <Form className="max-w-auto mx-auto p-6 bg-white rounded-md shadow-lg">
+//           {/* Grid system for responsive layout */}
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+//             {fields.map((field, index) => {
+//               // Check if the field is required for conditional visibility
+//               const isRequired = field.validation && field.validation.required;
+//               const shouldShowField = isRequired || initialValues[field.name] !== '';
 
-              return (
-                <div key={index} className="mb-4">
-                  <label
-                    htmlFor={field.name}
-                    className="block text-left text-gray-700 text-sm font-semibold mb-2"
-                  >
-                    {field.label} {isRequired && <span className="text-red-500">*</span>}
-                  </label>
-                  {/* Handle different input types */}
-                  {field.type === 'text' || field.type === 'email' || field.type === 'number' || field.type === 'tel' || field.type === 'password' ? (
-                    <Field
-                      type={field.type}
-                      name={field.name}
-                      id={field.name}
-                      placeholder={field.placeholder || ''}
-                      autoComplete="new-password"
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : field.type === 'textarea' ? (
-                    <Field
-                      as="textarea"
-                      name={field.name}
-                      id={field.name}
-                      placeholder={field.placeholder || ''}
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : field.type === 'select' ? (
-                    <Field
-                    as="select"
-                    name={field.name}
-                    id={field.name}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Select {field.label || field.name}</option>
-                    {(field.options || dynamicOptions[field.name] || []).map(
-                      (option, optionIndex) => (
-                        <option key={optionIndex} value={option.value}>
-                          {option.label}
-                        </option>
-                      )
-                    )}
-                  </Field>
-                  ) : field.type === 'checkbox' ? (
-                    field.options.map((option, optionIndex) => (
-                      <div key={optionIndex} className="flex items-center mb-2">
-                        <Field
-                          type="checkbox"
-                          name={field.name}
-                          value={option.value}
-                          id={`${field.name}-${option.value}`}
-                          className="mr-2"
-                        />
-                        <label
-                          htmlFor={`${field.name}-${option.value}`}
-                          className="text-sm text-gray-700"
-                        >
-                          {option.label}
-                        </label>
-                      </div>
-                    ))
-                  ) : field.type === 'radio' ? (
-                    field.options.map((option, optionIndex) => (
-                      <div key={optionIndex} className="flex items-center mb-2">
-                        <Field
-                          type="radio"
-                          name={field.name}
-                          value={option.value}
-                          id={`${field.name}-${option.value}`}
-                          className="mr-2"
-                        />
-                        <label
-                          htmlFor={`${field.name}-${option.value}`}
-                          className="text-sm text-gray-700"
-                        >
-                          {option.label}
-                        </label>
-                      </div>
-                    ))
-                  ) : field.type === 'file' ? (
-                    <Field
-                      type="file"
-                      name={field.name}
-                      id={field.name}
-                      className="w-full p-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : field.type === 'date' ? (
-                    <Field
-                      type="date"
-                      name={field.name}
-                      id={field.name}
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : field.type === 'time' ? (
-                    <Field
-                      type="time"
-                      name={field.name}
-                      id={field.name}
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : field.type === 'color' ? (
-                    <Field
-                      type="color"
-                      name={field.name}
-                      id={field.name}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : field.type === 'range' ? (
-                    <Field
-                      type="range"
-                      name={field.name}
-                      id={field.name}
-                      className="w-full"
-                    />
-                  ) : null}
+//               return (
+//                 <div key={index} className="mb-4">
+//                   <label
+//                     htmlFor={field.name}
+//                     className="block text-left text-gray-700 text-sm font-semibold mb-2"
+//                   >
+//                     {field.label} {isRequired && <span className="text-red-500">*</span>}
+//                   </label>
+//                   {/* Handle different input types */}
+//                   {field.type === 'text' || field.type === 'email' || field.type === 'number' || field.type === 'tel' || field.type === 'password' ? (
+//                     <Field
+//                       type={field.type}
+//                       name={field.name}
+//                       id={field.name}
+//                       placeholder={field.placeholder || ''}
+//                       autoComplete="new-password"
+//                       className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     />
+//                   ) : field.type === 'textarea' ? (
+//                     <Field
+//                       as="textarea"
+//                       name={field.name}
+//                       id={field.name}
+//                       placeholder={field.placeholder || ''}
+//                       className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     />
+//                   ) : field.type === 'select' ? (
+//                     <Field
+//                     as="select"
+//                     name={field.name}
+//                     id={field.name}
+//                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                   >
+//                     <option value="">Select {field.label || field.name}</option>
+//                     {(field.options || dynamicOptions[field.name] || []).map(
+//                       (option, optionIndex) => (
+//                         <option key={optionIndex} value={option.value}>
+//                           {option.label}
+//                         </option>
+//                       )
+//                     )}
+//                   </Field>
+//                   ) : field.type === 'checkbox' ? (
+//                     field.options.map((option, optionIndex) => (
+//                       <div key={optionIndex} className="flex items-center mb-2">
+//                         <Field
+//                           type="checkbox"
+//                           name={field.name}
+//                           value={option.value}
+//                           id={`${field.name}-${option.value}`}
+//                           className="mr-2"
+//                         />
+//                         <label
+//                           htmlFor={`${field.name}-${option.value}`}
+//                           className="text-sm text-gray-700"
+//                         >
+//                           {option.label}
+//                         </label>
+//                       </div>
+//                     ))
+//                   ) : field.type === 'radio' ? (
+//                     field.options.map((option, optionIndex) => (
+//                       <div key={optionIndex} className="flex items-center mb-2">
+//                         <Field
+//                           type="radio"
+//                           name={field.name}
+//                           value={option.value}
+//                           id={`${field.name}-${option.value}`}
+//                           className="mr-2"
+//                         />
+//                         <label
+//                           htmlFor={`${field.name}-${option.value}`}
+//                           className="text-sm text-gray-700"
+//                         >
+//                           {option.label}
+//                         </label>
+//                       </div>
+//                     ))
+//                   ) : field.type === 'file' ? (
+//                     <Field
+//                       type="file"
+//                       name={field.name}
+//                       id={field.name}
+//                       className="w-full p-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     />
+//                   ) : field.type === 'date' ? (
+//                     <Field
+//                       type="date"
+//                       name={field.name}
+//                       id={field.name}
+//                       className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     />
+//                   ) : field.type === 'time' ? (
+//                     <Field
+//                       type="time"
+//                       name={field.name}
+//                       id={field.name}
+//                       className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     />
+//                   ) : field.type === 'color' ? (
+//                     <Field
+//                       type="color"
+//                       name={field.name}
+//                       id={field.name}
+//                       className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     />
+//                   ) : field.type === 'range' ? (
+//                     <Field
+//                       type="range"
+//                       name={field.name}
+//                       id={field.name}
+//                       className="w-full"
+//                     />
+//                   ) : null}
 
-                  <ErrorMessage name={field.name} component="div" className="text-red-500 text-sm mt-1" />
-                  {/* Show document section or help text based on field type */}
-                  {field.document && <div className="text-sm text-gray-500 mt-2">{field.document}</div>}
-                </div>
-              );
-            })}
-          </div>
+//                   <ErrorMessage name={field.name} component="div" className="text-red-500 text-sm mt-1" />
+//                   {/* Show document section or help text based on field type */}
+//                   {field.document && <div className="text-sm text-gray-500 mt-2">{field.document}</div>}
+//                 </div>
+//               );
+//             })}
+//           </div>
 
-          <div className="flex gap-4 mt-6">
-      {/* Save Button */}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full p-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 disabled:bg-gray-300 transition-colors duration-300"
-      >
-        Save
-      </button>
+//           <div className="flex gap-4 mt-6">
+//       {/* Save Button */}
+//       <button
+//         type="submit"
+//         disabled={isSubmitting}
+//         className="w-full p-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 disabled:bg-gray-300 transition-colors duration-300"
+//       >
+//         Save
+//       </button>
 
-      {/* Cancel Button */}
-      <button
-        type="button"
-        onClick={handleCancel}
-        className="w-full p-3 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-300"
-      >
-        Cancel
-      </button>
-    </div>
-        </Form>
-      )}
-    </Formik>
+//       {/* Cancel Button */}
+//       <button
+//         type="button"
+//         onClick={handleCancel}
+//         className="w-full p-3 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-300"
+//       >
+//         Cancel
+//       </button>
+//     </div>
+//         </Form>
+//       )}
+//     </Formik>
    
 
-   </>
-  );
-};
+//    </>
+//   );
+// };
 
 
 
@@ -243,5 +244,183 @@ const buildValidationSchema = (fields) => {
 
   return Yup.object().shape(shape);
 };
+
+import React, { useState, useEffect } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+
+const FormikFormComponent = ({ initialValues, fields, onSubmit, onCancel }) => {
+  const [dynamicOptions, setDynamicOptions] = useState({});
+  const validationSchema = buildValidationSchema(fields);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadDynamicOptions = async () => {
+      const optionsMap = {};
+      for (const field of fields) {
+        if (field.type === 'select' && typeof field.options === 'function') {
+          try {
+            const options = await field.options();
+            optionsMap[field.name] = options;
+          } catch (error) {
+            console.error(`Error loading options for ${field.name}:`, error);
+          }
+        }
+      }
+      setDynamicOptions(optionsMap);
+    };
+
+    loadDynamicOptions();
+  }, [fields]);
+
+  const handleCancel = () => {
+    onCancel();
+  };
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      enableReinitialize={true}
+    >
+      {({ isSubmitting }) => (
+        <Form className="max-w-auto mx-auto p-6 bg-white rounded-md shadow-lg">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {fields.map((field, index) => {
+              const isRequired = field.validation?.required;
+
+              return (
+                <div key={index} className="mb-4">
+                  <label
+                    htmlFor={field.name}
+                    className="block text-left text-gray-700 text-sm font-semibold mb-2"
+                  >
+                    {field.label} {isRequired && <span className="text-red-500">*</span>}
+                  </label>
+
+                  {/* Handle different input types */}
+                  {['text', 'email', 'number', 'tel', 'password'].includes(field.type) ? (
+                    <Field
+                      type={field.type}
+                      name={field.name}
+                      id={field.name}
+                      placeholder={field.placeholder || ''}
+                      autoComplete="new-password"
+                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ) : field.type === 'textarea' ? (
+                    <Field
+                      as="textarea"
+                      name={field.name}
+                      id={field.name}
+                      placeholder={field.placeholder || ''}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ) : field.type === 'select' ? (
+                    <Field
+                      as="select"
+                      name={field.name}
+                      id={field.name}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select {field.label}</option>
+                      {(field.options instanceof Array
+                        ? field.options
+                        : dynamicOptions[field.name] || []
+                      ).map((option, i) => (
+                        <option key={i} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </Field>
+                  ) : field.type === 'checkbox' ? (
+                    field.options.map((option, i) => (
+                      <div key={i} className="flex items-center mb-2">
+                        <Field
+                          type="checkbox"
+                          name={field.name}
+                          value={option.value}
+                          id={`${field.name}-${option.value}`}
+                          className="mr-2"
+                        />
+                        <label
+                          htmlFor={`${field.name}-${option.value}`}
+                          className="text-sm text-gray-700"
+                        >
+                          {option.label}
+                        </label>
+                      </div>
+                    ))
+                  ) : field.type === 'radio' ? (
+                    field.options.map((option, i) => (
+                      <div key={i} className="flex items-center mb-2">
+                        <Field
+                          type="radio"
+                          name={field.name}
+                          value={option.value}
+                          id={`${field.name}-${option.value}`}
+                          className="mr-2"
+                        />
+                        <label
+                          htmlFor={`${field.name}-${option.value}`}
+                          className="text-sm text-gray-700"
+                        >
+                          {option.label}
+                        </label>
+                      </div>
+                    ))
+                  ) : field.type === 'file' ? (
+                    <Field
+                      type="file"
+                      name={field.name}
+                      id={field.name}
+                      className="w-full p-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ) : field.type === 'date' ? (
+                    <Field
+                      type="date"
+                      name={field.name}
+                      id={field.name}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ) : null}
+
+                  <ErrorMessage
+                    name={field.name}
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                  {field.document && (
+                    <div className="text-sm text-gray-500 mt-2">{field.document}</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex gap-4 mt-6">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full p-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 disabled:bg-gray-300 transition-colors duration-300"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="w-full p-3 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-300"
+            >
+              Cancel
+            </button>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
 
 export default FormikFormComponent;

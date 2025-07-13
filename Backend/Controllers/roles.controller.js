@@ -1,4 +1,4 @@
-const RoleTable = require('../Schemas/roleSchema').Role;
+const RoleTable = require('../models/role.model').Role;
 
 const SaveRole = async (req, res) => {
   try {
@@ -16,14 +16,47 @@ const SaveRole = async (req, res) => {
   }
 }
 
+// const GetAllRoles = async (req, res) => {
+//   try {
+//     const roles = await RoleTable.find({});
+//     res.status(200).json({success:true, message:"Roles retrieving successfully" , data:roles})
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching roles', error });
+//   }
+// }   
 const GetAllRoles = async (req, res) => {
   try {
-    const roles = await RoleTable.find({});
-    res.status(200).json({success:true, message:"Roles retrieving successfully" , data:roles})
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+ 
+    const totalRoles = await RoleTable.countDocuments();
+ 
+    const roles = await RoleTable.find({})
+      .skip(skip)
+      .limit(limit);
+ 
+    const rolesWithSrNo = roles.map((role, index) => ({
+      ...role.toObject(),
+      srNo: skip + index + 1, // Serial number starts from 1
+    }));
+
+    res.status(200).json({
+      success: true,
+      message: "Roles retrieved successfully",
+      data: rolesWithSrNo,
+      pagination: {
+        total: totalRoles,
+        page,
+        limit,
+        totalPages: Math.ceil(totalRoles / limit),
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching roles', error });
   }
-}   
+};
+
 
 const GetRoleById = async (req, res) => {
   try {

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const multer = require('multer'); 
 const bcrypt =require('bcrypt');
-const { DepartmentTable } = require('./departmentSchema');
-const { DesignationTable } = require('./designationSchema');
-const { Role } = require('./roleSchema');
+const { DepartmentTable } = require('./department.model');
+const { DesignationTable } = require('./designation.model');
+const { Role } = require('./role.model');
 
 const EmployeeSchema = new mongoose.Schema({
 employeecode : {type:String,required :true, default:'' }, 
@@ -38,6 +38,7 @@ const insertDefaultEmployees = async () => {
   const defaultDepartment = await DepartmentTable.findOne({ departmentname: "Default Department" });
   const defaultDesignation = await DesignationTable.findOne({ designationname: "Default Designation" });
 
+ // console.log('Roles:', roles);
   // console.log('Default Department:', defaultDepartment);
   // console.log('Default Designation:', defaultDesignation);
   const defaultDepartmentId = defaultDepartment ? defaultDepartment._id : null;

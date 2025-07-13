@@ -18,10 +18,9 @@ const saveLeaveRequest = async (leaveData) => {
 
 const GetUserWiseLeaveData = async(location) =>{
   try { 
-    const baseUrl =  location.pathname.replace('/dashboard', '');
-    const response = await axiosInstance.get(baseUrl);
-    //console.log(response.data);
-    return response.data;
+    //const baseUrl =  location.pathname.replace('/Get-all-leave-details', '');
+    const response = await axiosInstance.get('/leave/Get-all-leave-details');
+    return response;
     
   } catch (error) {
     console.error('Error Getting leave request:', error);

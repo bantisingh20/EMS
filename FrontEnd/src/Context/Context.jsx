@@ -2,81 +2,68 @@ import React,{ Children, createContext, useContext, useEffect, useState} from 'r
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {config} from '../../config';
-import { loginClass } from '../utilis/login';
-import {UserDetailsClass} from '../utilis/userdetails'
-
 const UserContext = createContext('');
 
-const AuthContextProvider = ({children}) =>{
-  const login = new loginClass();
-  const UserDetails = new UserDetailsClass()
-  const [user,setUser] = useState({}); 
-  const [token,setToken] = useState(""); 
+const AuthContextProvider = ({ children }) => {
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState('');
   const navigate = useNavigate();
 
-  useEffect( () => {
-    const token= localStorage.getItem("Token"); 
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
 
-    const verifyuser = async() =>{
-      if(token){
-        try {   
-          const response = await axios.get(`${config}/api/auth/verify-user`,{
-            headers:{
-              "Authorization" :`Bearer ${token}`
-            }
-   
-          })
-           
-          if(response.data.success){ 
-             
-               LoginSessionStart(response.data.user) 
-             //await UserDetails.setUserDetails(response.data.user)           
-          }
-          else{
-             navigate('/login')
-             console.log('invalid session')
+    const verifyuser = async () => {
+      if (token) {
+        try {
+          const response = await axios.get(`${config}/api/auth/verify-user`, {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+
+          if (response.data.success) {
+            LoginSessionStart(response.data.user);
+          } else {
+            navigate('/login');
+            console.log('invalid session');
           }
         } catch (error) {
-          //logout();
-          navigate('/login')
-          console.log('invalid session')
+          navigate('/login');
+          console.log('invalid session');
         }
+      } else {
+        navigate('/login');
       }
-      else{
-        navigate('/login')
-      }
-     
-    }
-    verifyuser()
-  },[])
+    };
 
-  
+    verifyuser();
+  }, []);
 
-
-  const LoginSessionStart =(user) =>{
+  const LoginSessionStart = (user) => {
     setUser(user);
-    //console.log(user);
-    localStorage.setItem("userid",user._id);
-    //console.log(user); 
-  }
+    localStorage.setItem("userid", user._id);
+  };
 
-
-  const logout =() =>{
-    UserDetails.clearUserDetails();
+  const logout = () => {
     localStorage.removeItem("Token");
     localStorage.removeItem("session");
     navigate('/login');
-     
-  }
+  };
 
-  return(
-     <UserContext.Provider value={{ user,LoginSessionStart, logout}}>
+  const getUserInfo = () => {
+    return {
+      employeeId: user._id || '',
+      role: user.role || '',
+      name: user.name || '',
+    };
+  };
+
+  return (
+    <UserContext.Provider value={{ user, LoginSessionStart, logout, getUserInfo }}>
       {children}
-     </UserContext.Provider>
-  )
-}
+    </UserContext.Provider>
+  );
+};
 
 export const sessiondata = () => useContext(UserContext);
 export default AuthContextProvider;
-
-

@@ -1,5 +1,4 @@
-const {DepartmentTable} = require("../Schemas/departmentSchema");
-
+const {DepartmentTable} = require("../models/department.model");
 
 // Insert department 
 const SaveDepartment = async (req, res) => {

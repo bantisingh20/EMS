@@ -1,7 +1,6 @@
-const {UserTable} = require("../Schemas/user");
 const bcrypt =require('bcrypt')
 const jwt = require("jsonwebtoken");
-const { EmployeeTable } = require("../Schemas/employeesSchema");
+const { EmployeeTable } = require("../models/employee.model");
 
 const Login = async(req,res) =>{
     try{       
