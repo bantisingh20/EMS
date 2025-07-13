@@ -98,28 +98,23 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from "./ErrorBoundary";
-
-// Eager imports (no lazy loading)
-import LoginPage from './Pages/login';
-import DefaultPage from './Pages/default';
-import AdminSummary from './Dashboard/AdminSummary';
 import LayOut from './LayOut/LayOut';
-
-import {DepartmentList, DepartmentPage} from './Masters/Department';
+import LoginPage from './Pages/login';
+import AdminSummary from './Dashboard/AdminSummary';
+import {DepartmentList ,DepartmentPage } from './Masters/Department';
 //import DepartmentPage from './Masters/Department';
-import {DesignationSubmitPage, DesignationListPage} from './Masters/DesignationNew';
+import {DesignationSubmitPage, DesignationListPage} from './Masters/Designation';
 import {EmployeeSubmitPage ,ListEmployeeNew} from './Masters/Employee';
-
-import Salary from './Masters/Salary/Salary';
+ import Salary from './Masters/Salary';
 import LeaveDashboard from './Pages/Leave/leavedashboard';
 import ChangePasswordModal from './Pages/ChangePassword';
-import StatsPanel from './Pages/Attendence/Attendence';
 import LeaveForm from './Pages/Leave/LeaveForm';
 import Setting from './Pages/Setting';
-import SalaryMasterPage from './Masters/Salary/SalaryNew';
-import RoleSubmitForm from './Masters/RoleSubmitForm';
-import ListRole from './Masters/ListRole';
+import SalaryMasterPage from './Masters/SalaryNew';
+import {RoleSubmitForm,ListRole} from './Masters/Role';
+import AttendancePage from './Pages/Attendence'; 
 import DocumentUpload from './Pages/DocumentUpload';
+
 
 function App() {
   const employee = {
@@ -136,8 +131,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/default" element={<DefaultPage />} />
-
+          
           <Route path="/dashboard" element={<LayOut />}>
             <Route index element={<AdminSummary />} />
             <Route path="change-password" element={<ChangePasswordModal />} />
@@ -161,7 +155,7 @@ function App() {
             <Route path="save/employee" element={<EmployeeSubmitPage />} />
             <Route path="edit-employee/:id" element={<EmployeeSubmitPage mode="edit" />} />
 
-            <Route path="attendence" element={<StatsPanel />} />
+            <Route path="attendence" element={<AttendancePage />} />
             <Route path="leaves/apply-leave" element={<LeaveForm />} />
             <Route path="setting" element={<Setting />} />
             <Route path="salarynew" element={<SalaryMasterPage />} />

@@ -35,11 +35,19 @@ export const EmployeeListConfig = {
     {
       label: 'Edit',
       color: 'info',
+      type: 'edit',
       onClick: () => navigate(`/dashboard/edit-employee/${row._id}`),
     },
     {
       label: 'Delete',
       color: 'error',
+      type: 'delete',
+      onClick: () => handleDelete(row._id),
+    },
+    {
+      label: 'View',
+      color: 'warning',
+      type: 'view',
       onClick: () => handleDelete(row._id),
     },
   ],

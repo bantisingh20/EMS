@@ -1,5 +1,11 @@
+
 import React from 'react';
-import { Logout, Lock, Person, VpnKey } from '@mui/icons-material';
+import {
+  ArrowRightOnRectangleIcon,
+  LockClosedIcon,
+  UserIcon,
+  KeyIcon,
+} from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import { sessiondata } from '../Context/Context';
 
@@ -17,26 +23,26 @@ const NavBar = () => {
           {/* Desktop */}
           <div className="hidden md:flex items-center gap-3 text-white text-sm">
             <button className="hover:bg-teal-700 p-2 rounded">
-              <Lock />
+              <LockClosedIcon className="h-5 w-5" />
             </button>
             <button className="hover:bg-teal-700 p-2 rounded">
-              <Person />
+              <UserIcon className="h-5 w-5" />
             </button>
             <Link to="/dashboard/change-password" className="hover:bg-teal-700 p-2 rounded">
-              <VpnKey />
+              <KeyIcon className="h-5 w-5" />
             </Link>
           </div>
 
           {/* Mobile */}
           <div className="flex md:hidden items-center gap-2">
             <button className="text-white">
-              <Person />
+              <UserIcon className="h-5 w-5" />
             </button>
             <button
               className="px-2 py-1 text-xs bg-teal-700 hover:bg-teal-900 rounded text-white"
               onClick={logout}
             >
-              <Logout fontSize="small" />
+              <ArrowRightOnRectangleIcon className="h-4 w-4" />
             </button>
           </div>
         </div>

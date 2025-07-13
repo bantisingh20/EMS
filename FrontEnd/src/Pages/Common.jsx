@@ -15,71 +15,71 @@ import DataTable from 'react-data-table-component';
 import { CustomLoader } from './loader';
 //import { Button, Typography } from '@mui/material'; 
 
-const FormInputField = ({ label, type, id, name, placeholder }) => {
-  return (
-    <>
-      <label className="block text-sm font-semibold mb-1" htmlFor="visitorName">
-        {label} <span className="text-red-500">*</span>
-      </label>
-      <Field type={type} id={id} name={name}
-        className="block w-full p-2 border border-gray-300 rounded-md"
-        placeholder={placeholder}
-      />
-      <ErrorMessage name={name} component="div" className=" font-bold text-red-500 text-xs mt-1" />
-    </>
-  );
-}
+// const FormInputField = ({ label, type, id, name, placeholder }) => {
+//   return (
+//     <>
+//       <label className="block text-sm font-semibold mb-1" htmlFor="visitorName">
+//         {label} <span className="text-red-500">*</span>
+//       </label>
+//       <Field type={type} id={id} name={name}
+//         className="block w-full p-2 border border-gray-300 rounded-md"
+//         placeholder={placeholder}
+//       />
+//       <ErrorMessage name={name} component="div" className=" font-bold text-red-500 text-xs mt-1" />
+//     </>
+//   );
+// }
 
-function FormLabels(label) {
-  return (
-    <Form.Label className={label.className} >{label.label}</Form.Label>
-  );
-}
+// function FormLabels(label) {
+//   return (
+//     <Form.Label className={label.className} >{label.label}</Form.Label>
+//   );
+// }
 
-function FormControl(formfield) {
-  return (
-    <Form.Control
-      type={formfield.type}
-      placeholder={formfield.placeholder}
-      className={formfield.className}
-      required={formfield.required == 1 ? true : false}
-      onChange={formfield.onChange}
-      name={formfield.name} />
-  );
-}
+// function FormControl(formfield) {
+//   return (
+//     <Form.Control
+//       type={formfield.type}
+//       placeholder={formfield.placeholder}
+//       className={formfield.className}
+//       required={formfield.required == 1 ? true : false}
+//       onChange={formfield.onChange}
+//       name={formfield.name} />
+//   );
+// }
 
 
-function TextFields({ type, label, name, onChange, className, value, required, placeholder }) {
-  return (
-    <>
-      <Input
-        variant="static"
-        color="teal"
-        label={label}
-        placeholder={placeholder}
-        // labelProps={{ className: "hidden",}}
-        containerProps={{ className: "min-w-[100px]" }}
-        type={type}
-        onChange={onChange}
-        name={name}
-        value={value}
-      />
+// function TextFields({ type, label, name, onChange, className, value, required, placeholder }) {
+//   return (
+//     <>
+//       <Input
+//         variant="static"
+//         color="teal"
+//         label={label}
+//         placeholder={placeholder}
+//         // labelProps={{ className: "hidden",}}
+//         containerProps={{ className: "min-w-[100px]" }}
+//         type={type}
+//         onChange={onChange}
+//         name={name}
+//         value={value}
+//       />
 
-    </>
-  );
-}
+//     </>
+//   );
+// }
 
-function Buttons(Fields) {
-  return (
-    // <Button type={Fields.type} className={Fields.className}>{Fields.text}</Button>
-    <Button
-      variant="outline-success"
-      type={Fields.type}
-      className={Fields.className}
-      onClick={Fields.onClick}
-    >{Fields.text}</Button>
-  );
-}
+// function Buttons(Fields) {
+//   return (
+//     // <Button type={Fields.type} className={Fields.className}>{Fields.text}</Button>
+//     <Button
+//       variant="outline-success"
+//       type={Fields.type}
+//       className={Fields.className}
+//       onClick={Fields.onClick}
+//     >{Fields.text}</Button>
+//   );
+// }
 
 function handleSuccess(message) {
   toast.success(message)
@@ -138,27 +138,27 @@ const WorkUnderProgress = () => {
 }
 
 
-function BasicSelectTag({ label, name, onChange, Data, value }) {
-  return (
-    <Select variant="static" label={label} name={name} onChange={onChange} value={value}>
-      {Data.map(option => (
-        <Option key={option.key} value={option.key}>
-          {option.name}
-        </Option>
-      ))}
-    </Select>
-  );
-}
+// function BasicSelectTag({ label, name, onChange, Data, value }) {
+//   return (
+//     <Select variant="static" label={label} name={name} onChange={onChange} value={value}>
+//       {Data.map(option => (
+//         <Option key={option.key} value={option.key}>
+//           {option.name}
+//         </Option>
+//       ))}
+//     </Select>
+//   );
+// }
 
-function BasicSearchInput({ onChange }) {
+// function BasicSearchInput({ onChange }) {
 
-  return (
-    <div className="w-full md:w-72">
-      <Input label="Search" onChange={onChange}
-        icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
-    </div>
-  );
-}
+//   return (
+//     <div className="w-full md:w-72">
+//       <Input label="Search" onChange={onChange}
+//         icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
+//     </div>
+//   );
+// }
 
 const LazyLoadingComponent = () => {
   return (
@@ -256,106 +256,7 @@ const AppDataTable = ({ columns, data, progressPending, totalRows, handlePageCha
     />
 
   );
-}
- 
-
-// const AppDataGrid = ({ columns, data, heading, showHeaderButton = false, headerButtonProps = {}, }) => {
-//   const [columnVisibilityModel, setColumnVisibilityModel] = useState(
-//     columns.reduce((acc, col) => {
-//       acc[col.field] = true;
-//       return acc;
-//     }, {})
-//   );
-
-//   const adjustedColumns = columns.map((col) => ({
-//     ...col,
-//     flex: columnVisibilityModel[col.field] ? 1 : 0,
-//   }));
-
-//   return (
-//     <Box mx={{ height: 'auto', width: '100%' }}>
-
-//       <div
-//         className="flex justify-between items-center mb-3"
-//         style={{ flexWrap: 'wrap', gap: 10 }}
-//       >
-//         <Typography
-//           variant="subtitle1"
-//           sx={{ fontWeight: 'bold', color: '#0f766e', fontSize: '1rem' }}
-//         >
-//           {heading}
-//         </Typography>
-
-//         {showHeaderButton && (
-//           <Button
-//             variant="contained"
-//             color="primary"
-//             size="small"
-//             sx={{ fontSize: '0.8rem', padding: '5px 12px' }}
-//             onClick={headerButtonProps?.onClick}
-//           >
-//             {headerButtonProps?.label || 'Action'}
-//           </Button>
-
-//         )}
-//       </div>
-
-
-
-//       <DataGrid
-//         columns={adjustedColumns}
-//         rows={data}
-//         rowsPerPageOptions={[5]}
-//         checkboxSelection={false}
-//         disableSelectionOnClick
-//         initialState={{
-//           pagination: {
-//             paginationModel: {
-//               pageSize: 10,
-//             },
-//           },
-//           ...data.initialState,
-//           filter: {
-//             filterModel: {
-//               items: [],
-//             },
-//           },
-//         }}
-//         slots={{ toolbar: GridToolbar }}
-//         slotProps={{
-//           toolbar: {
-//             showQuickFilter: true,
-//           },
-//         }}
-//         pageSizeOptions={[5, 10, 20, 50, 100]}
-//         columnVisibilityModel={columnVisibilityModel}
-//         onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-//         sx={{
-//           '& .MuiDataGrid-columnHeader': {
-//             backgroundColor: '#00897b',
-//             textAlign: 'center',
-//             color: 'black',
-//             fontWeight: 'bold',
-//           },
-//           '& .MuiDataGrid-row': {
-//             '&:nth-of-type(even)': {
-//               backgroundColor: '#f5f5f5',
-//             },
-//             '&:nth-of-type(odd)': {
-//               backgroundColor: '#e0f7fa',
-//             },
-//           },
-//           '& .MuiDataGrid-cell': {
-//             fontSize: '14px',
-//             whiteSpace: 'normal',
-//             wordWrap: 'break-word',
-//           },
-//         }}
-//       />
-//     </Box>
-//   );
-// };
- 
+} 
  const AppDataGrid = ({
   columns,
   data,
@@ -450,4 +351,4 @@ const AppDataTable = ({ columns, data, progressPending, totalRows, handlePageCha
 };
 
 //module.exports = {}
-export { FormInputField, LazyLoadingComponent, AppDataTable, FormLabels, TextFields, BasicSearchInput, FormControl, BasicSelectTag, Buttons, handleSuccess, handleError, DashboardCards, WorkUnderProgress, AppDataGrid }
+export {  LazyLoadingComponent, AppDataTable,  handleSuccess, handleError, DashboardCards, WorkUnderProgress, AppDataGrid }

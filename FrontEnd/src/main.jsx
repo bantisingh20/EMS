@@ -10,12 +10,12 @@ import { LocationProvider } from './Context/LocationContext.jsx'
 
 createRoot(document.getElementById('root')).render(
    
-  <React.StrictMode>
+  // <React.StrictMode> //iske wajah se 2 baar mount ho rha tha
     <BrowserRouter>
       <AuthContextProvider>          
         <App />     
       </AuthContextProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
   
 )

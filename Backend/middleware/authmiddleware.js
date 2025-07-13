@@ -41,7 +41,7 @@ const verifyuser = async(req,res,next) => {
         else{
 
             //console.log(decode._id);
-            const user = await EmployeeTable.findById({_id: decode._id}).select('-password');
+            const user = await EmployeeTable.findById({_id: decode._id}).select('-password').populate('role');
             //console.log(user);
             if(!user){
                 console.log("user not found");
@@ -49,10 +49,11 @@ const verifyuser = async(req,res,next) => {
             }
             else{
  
+                console.log(user);
                 const userResponse = {
                     _id : user._id,
                     emailid: user.emailid,
-                    role: user.role,
+                    role: user.role.name,
                     name: user.firstname
                 };
 
