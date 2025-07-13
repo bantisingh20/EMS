@@ -39,5 +39,5 @@ const initializeRoles = async () => {
   }
 };
 
-initializeRoles();
+//initializeRoles();
 module.exports = { Role, initializeRoles };

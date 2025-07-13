@@ -1,29 +1,36 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  FaBuilding, FaCalendarAlt, FaUsers, FaTachometerAlt,
-  FaSteam, FaBars, FaTimes
-} from 'react-icons/fa';
-import { FaLock, FaUser, FaKey } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-
-
+  BuildingOffice2Icon,
+  CalendarDaysIcon,
+  UsersIcon,
+  ChartBarIcon,
+  Cog6ToothIcon,
+  Bars3Icon,
+  XMarkIcon,
+  LockClosedIcon,
+  UserIcon,
+  KeyIcon
+} from '@heroicons/react/24/outline';
 import { sessiondata } from '../Context/Context';
 
 const SideBar = () => {
+  const { getUserInfo } = sessiondata();
+  const user = getUserInfo();
+  console.log(user);
   const [isOpen, setIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([
-    { link: '/dashboard', icon: <FaTachometerAlt />, label: 'Dashboard' },
-    { link: 'list-role', icon: <FaUsers />, label: 'Roles' },
-    { link: 'list-department', icon: <FaBuilding />, label: 'Department' },
-    { link: 'list-designation', icon: <FaBuilding />, label: 'Designation' },
-    { link: 'list-employee', icon: <FaUsers />, label: 'Employees' },
-    { link: 'leave/leavedashboard', icon: <FaCalendarAlt />, label: 'Leave' },
-    { link: 'attendence', icon: <FaCalendarAlt />, label: 'Attendance' },
-    { link: 'document', icon: <FaSteam />, label: 'Document' },
+    { link: '/dashboard', icon: <ChartBarIcon className="h-5 w-5" />, label: 'Dashboard' },
+    { link: 'list-role', icon: <UsersIcon className="h-5 w-5" />, label: 'Roles' },
+    { link: 'list-department', icon: <BuildingOffice2Icon className="h-5 w-5" />, label: 'Department' },
+    { link: 'list-designation', icon: <BuildingOffice2Icon className="h-5 w-5" />, label: 'Designation' },
+    { link: 'list-employee', icon: <UsersIcon className="h-5 w-5" />, label: 'Employees' },
+    { link: 'leave/leavedashboard', icon: <CalendarDaysIcon className="h-5 w-5" />, label: 'Leave' },
+    { link: 'attendence', icon: <CalendarDaysIcon className="h-5 w-5" />, label: 'Attendance' },
+    { link: 'document', icon: <Cog6ToothIcon className="h-5 w-5" />, label: 'Document' },
     {
       link: 'Report',
-      icon: <FaCalendarAlt />,
+      icon: <CalendarDaysIcon className="h-5 w-5" />,
       label: 'Report',
       expanded: false,
       children: [
@@ -50,7 +57,7 @@ const SideBar = () => {
         onClick={toggleSidebar}
         className={`fixed top-2 ${isOpen ? 'left-44' : 'left-4'} z-50 text-white bg-teal-700 p-2 rounded-md md:hidden`}
       >
-        {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+        {isOpen ? <XMarkIcon className="h-5 w-5" /> : <Bars3Icon className="h-5 w-5" />}
       </button>
 
       {/* Sidebar */}
@@ -123,49 +130,5 @@ const SideBar = () => {
     </>
   );
 };
-
- 
-
-//  const NavBar = () => {
-//   const { user, logout } = sessiondata();
-
-//   return (
-//     <header className="w-full bg-teal-800 border-b border-teal-900 z-30">
-//       <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
-//         <p className="text-white text-sm sm:text-lg font-semibold">
-//           Welcome{user ? `, ${user.name}` : ' Guest'}
-//         </p>
-
-//         <div className="flex items-center gap-3 sm:gap-4">
-//           {/* Desktop */}
-//           <div className="hidden md:flex items-center gap-3 text-white text-sm">
-//             <button className="hover:bg-teal-700 p-2 rounded">
-//               <FaLock />
-//             </button>
-//             <button className="hover:bg-teal-700 p-2 rounded">
-//               <FaUser />
-//             </button>
-//             <Link to="/dashboard/change-password" className="hover:bg-teal-700 p-2 rounded">
-//               <FaKey />
-//             </Link>
-//           </div>
-
-//           {/* Mobile */}
-//           <div className="flex md:hidden items-center gap-2">
-//             <button className="text-white">
-//               <FaUser />
-//             </button>
-//             <button
-//               className="px-2 py-1 text-xs bg-teal-700 hover:bg-teal-900 rounded text-white"
-//               onClick={logout}
-//             >
-//               Logout
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </header>
-//   );
-// };
 
 export default SideBar;

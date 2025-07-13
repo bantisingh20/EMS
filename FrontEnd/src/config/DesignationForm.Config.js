@@ -47,11 +47,13 @@ export const DesignationListConfig = {
     {
       label: 'Edit',
       color: 'info',
+      type: 'edit',
       onClick: () => navigate(`/dashboard/edit-designation/${row._id}`)
     },
     {
       label: 'Delete',
       color: 'error',
+      type: 'delete',  
       onClick: () => handleDelete(row._id)
     }
   ]

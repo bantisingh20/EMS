@@ -53,11 +53,13 @@ export const RoleListConfig = {
     {
       label: 'Edit',
       color: 'info',
+      type: 'edit',
       onClick: () => navigate(`/dashboard/role/submit/${row._id}`)
     },
     {
       label: 'Delete',
       color: 'error',
+      type: 'delete',
       onClick: () => handleDelete(row._id)
     }
   ]

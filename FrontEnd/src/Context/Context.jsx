@@ -51,6 +51,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const getUserInfo = () => {
+    console.log(user);
     return {
       employeeId: user._id || '',
       role: user.role || '',

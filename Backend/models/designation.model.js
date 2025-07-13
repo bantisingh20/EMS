@@ -33,5 +33,5 @@ const initializeDepartment = async () => {
   }
 };
 
-initializeDepartment();
+//initializeDepartment();
 module.exports = {DesignationTable, initializeDepartment};

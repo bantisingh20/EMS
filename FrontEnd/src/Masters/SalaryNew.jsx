@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { TextField, Button, Autocomplete, Box } from '@mui/material';
-import axiosInstance from '../../axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 const SalaryMasterPage = () => {
     // List of employees (could be fetched dynamically from an API)

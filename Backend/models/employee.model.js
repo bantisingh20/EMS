@@ -82,7 +82,7 @@ const insertDefaultEmployees = async () => {
     //}
   }
 
-insertDefaultEmployees();
+//insertDefaultEmployees();
 
 const storage = multer.diskStorage({
     destination :(req,file,cb) =>{

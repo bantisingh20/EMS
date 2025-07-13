@@ -1,8 +1,8 @@
 // src/forms/MasterSubmitForm.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; 
-import FormikFormComponent from '../Components/FormikFormComponent'; 
-import { handleSuccess, handleError } from './Common';
+import FormikFormComponent from './FormikFormComponent'; 
+import { handleSuccess, handleError } from '../Pages/Common';
 
 const MasterSubmitForm = ({ config }) => {
   const navigate = useNavigate();

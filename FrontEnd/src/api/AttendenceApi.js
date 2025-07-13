@@ -1,16 +1,22 @@
 import {useLocation} from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-
+import { handleSuccess ,handleError } from '../Pages/Common';
 
 
 const UserPunchIn = async (now) => {
   try {
-    const response = await axiosInstance.post('/attendence/Employee-Punch-In', { CheckinDate: now });
-    console.log(response);
-
+    const response = await axiosInstance.post('/attendence/punch-in', { CheckinDate: now });
+    if (response.data.success) {
+      console.log(response.data);
+      handleSuccess(response.data.message);
+    } else {
+      console.log('ete')
+      handleError(response.data.message);
+    }
     return response; 
 
   } catch (error) {
+  
     console.error('Error saving leave request:', error.response);
     throw error.response;  
   }
@@ -20,7 +26,7 @@ const UserPunchOut = async (currentTime,punchInTime) => {
     try {
        
       const diff = calculateTimeDifference(punchInTime,currentTime);
-      const response = await axiosInstance.post('/attendence/Employee-Punch-Out',{
+      const response = await axiosInstance.post('/attendence/punch-out',{
         currentTime,punchInTime,diff
       });
   
@@ -36,9 +42,9 @@ const UserPunchOut = async (currentTime,punchInTime) => {
 const GetEmployeePuchDetails = async() =>{
   try {
     
-    const response = await axiosInstance.get('/attendence/GetAttendenceData');
+    const response = await axiosInstance.get('/attendence/attendance-details');
      
-    return response;
+    return response.data;
     
   } catch (error) {
     console.error('Error Getting Attendence request:', error.response.data);

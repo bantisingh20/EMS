@@ -48,11 +48,13 @@ export const DepartmentListConfig = {
     {
       label: 'Edit',
       color: 'info',
+      type: 'edit',
       onClick: () => navigate(`/dashboard/edit-department/${row._id}`)
     },
     {
       label: 'Delete',
       color: 'error',
+      type: 'delete',
       onClick: () => handleDelete(row._id)
     }
   ]

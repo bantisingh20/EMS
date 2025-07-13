@@ -6,9 +6,7 @@ const Login = async(req,res) =>{
     try{       
         const { email, password } = req.body;
         console.log(email,password);
-
-        const user = await EmployeeTable.findOne({emailid: email});
-         
+        const user = await EmployeeTable.findOne({emailid: email});         
         if(!user){
             return  res.status(400).json({success:false,message:"User not exists"});
         }

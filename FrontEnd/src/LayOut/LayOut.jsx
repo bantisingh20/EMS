@@ -5,7 +5,7 @@ import NavBar from './Navbar';
 
 const LayOut = () => {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-none">
       <SideBar />
       <div className="flex flex-col flex-1">
         <NavBar />

@@ -1,12 +1,12 @@
 import { GetUserWiseLeaveData } from '../../api/LeaveApi';
-import MasterDataGridPage from '../MasterListPage';
+import MasterlistPage from '../../Components/MasterListPage';
  
 const Leave = () => {
 
 
   return (
     <> 
-      <MasterDataGridPage config={{
+      <MasterlistPage config={{
         title: 'Manage Leaves',
         fetchData: GetUserWiseLeaveData,
         getId: (row, index) => row._id,
@@ -38,7 +38,14 @@ const Leave = () => {
           
           {
             label: 'Edit',
-            color: 'primary',
+            color: 'primary', 
+            type :'edit',
+            onClick: () => navigate(`/dashboard/leave/edit/${row.leaveid}`),
+          },
+          {
+            label: 'view',
+            color: 'warning', 
+            type :'view',
             onClick: () => navigate(`/dashboard/leave/edit/${row.leaveid}`),
           },
           
