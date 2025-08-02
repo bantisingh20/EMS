@@ -36,13 +36,13 @@ const RoleFormConfig = (mode) => ({
 
 
 export const RoleListConfig = {
-  title: 'Manage Roles',
+  title: 'Manages Roles',
   fetchData: GetAllRoles,
   deleteData: DeleteRoleById,
   getId: (row,index) => row._id,
   actions : true,
   columns: [
-    { field:'srNo', headerName: 'Sr.No', width: 80 },
+    // { field:'srNo', headerName: 'Sr.No', width: 80 },
     { field: 'name', headerName: 'Role Name', flex: 1 }
   ],
   addButton: {

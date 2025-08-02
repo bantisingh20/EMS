@@ -35,7 +35,7 @@ export const DesignationListConfig = {
   deleteData: DeleteDesignationById,
   getId: (row) => row._id,
   columns: [
-    { field: 'id', headerName: 'Sr.No', width: 80 },
+    // { field: 'id', headerName: 'Sr.No', width: 80 },
     { field: 'designationname', headerName: 'Designation Name', flex: 1 }
   ],
   addButton: {

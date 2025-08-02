@@ -11,7 +11,7 @@ const Leave = () => {
         fetchData: GetUserWiseLeaveData,
         getId: (row, index) => row._id,
         columns: [
-          { field: 'id', headerName: 'Sr.No'},
+          // { field: 'id', headerName: 'Sr.No'},
           { field: 'employeeName', headerName: 'Employee Name' },
           { field: 'leaveType', headerName: 'Leave Type' },
           { field: 'fromDate', headerName: 'From Date'},

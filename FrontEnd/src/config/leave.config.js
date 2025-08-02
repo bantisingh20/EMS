@@ -8,7 +8,7 @@ export const LeaveListConfig = {
   getId: (row, index) => row._id,
   actions: false,
   columns: [
-    { field: "id", headerName: "Sr.No", width: 80 },
+     { field: "id", headerName: "Sroio", width: 80 },
     { field: "employeeName", headerName: "Employee Name", flex: 1 },
     { field: "leaveType", headerName: "Leave Type", flex: 1 },
     { field: "fromDate", headerName: "Start Date", flex: 1 },

@@ -19,7 +19,7 @@ export const EmployeeListConfig = {
   deleteData: DeleteEmployeeById,
   getId: (row) => row._id,
   columns: [
-    { field: 'id', headerName: 'Sr.No', width: 80 },
+    // { field: 'id', headerName: 'Sr.No', width: 80 },
     { field: 'employeecode', headerName: 'Code', width: 100 },
     { field: 'firstname', headerName: 'First Name', flex: 1 },
     { field: 'lastName', headerName: 'Last Name', flex: 1 },

@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* src/index.css */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #134e4a; /* teal-900 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #2dd4bf, #06b6d4); /* teal-400 to cyan-500 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #14b8a6, #0ea5e9);
+}

@@ -15,15 +15,7 @@ const SaveRole = async (req, res) => {
     res.status(500).json({ message: 'Error saving role', error });
   }
 }
-
-// const GetAllRoles = async (req, res) => {
-//   try {
-//     const roles = await RoleTable.find({});
-//     res.status(200).json({success:true, message:"Roles retrieving successfully" , data:roles})
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error fetching roles', error });
-//   }
-// }   
+ 
 const GetAllRoles = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -38,7 +30,7 @@ const GetAllRoles = async (req, res) => {
  
     const rolesWithSrNo = roles.map((role, index) => ({
       ...role.toObject(),
-      srNo: skip + index + 1, // Serial number starts from 1
+      srNo: skip + index + 1, 
     }));
 
     res.status(200).json({

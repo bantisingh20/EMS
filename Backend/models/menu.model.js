@@ -82,6 +82,11 @@ const MenuSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+     moduleid: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Module",
+      default: null,
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt & updatedAt fields

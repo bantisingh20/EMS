@@ -5,15 +5,18 @@ import './index.css'
 import AuthContextProvider from './Context/Context.jsx'
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';  
-import { LocationProvider } from './Context/LocationContext.jsx'
+import { AppSessionProvider } from './Context/AppSessionContext.jsx'
 
 
 createRoot(document.getElementById('root')).render(
    
   // <React.StrictMode> //iske wajah se 2 baar mount ho rha tha
     <BrowserRouter>
-      <AuthContextProvider>          
-        <App />     
+      <AuthContextProvider>      
+        <AppSessionProvider>
+          <App /> 
+          </AppSessionProvider>    
+            
       </AuthContextProvider>
     </BrowserRouter>
   // </React.StrictMode>

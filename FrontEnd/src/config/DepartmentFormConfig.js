@@ -37,7 +37,7 @@ export const DepartmentListConfig = {
   getId: (row) => row._id,
   actions: true,
   columns: [
-    { field: 'id', headerName: 'Sr.No', width: 80 },
+    // { field: 'id', headerName: 'Sr.No', width: 80 },
     { field: 'departmentname', headerName: 'Department Name', flex: 1 }
   ],
   addButton: {
