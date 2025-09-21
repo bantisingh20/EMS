@@ -159,8 +159,7 @@ function App() {
             <Route path="leaves/apply-leave" element={<LeaveForm />} />
             <Route path="setting" element={<Setting />} />
             <Route path="salarynew" element={<SalaryMasterPage />} />
-
-                        <Route path="document" element={<DocumentUpload />} />
+            <Route path="document" element={<DocumentUpload />} />
 
           </Route>
         </Routes>
