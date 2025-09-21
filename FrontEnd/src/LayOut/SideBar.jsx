@@ -60,6 +60,12 @@ const SideBar = () => {
       moduleId: 2
     },
     {
+      link: 'leave/leavedashboard',
+      icon: <CalendarDaysIcon className="h-5 w-5" />,
+      label: 'Reports',
+      moduleId: 2
+    },
+    {
       link: 'attendence',
       icon: <CalendarDaysIcon className="h-5 w-5" />,
       label: 'Attendance',
@@ -79,14 +85,15 @@ const SideBar = () => {
       link: 'Tasks Management',
       icon: <CalendarDaysIcon className="h-5 w-5" />,
       label: 'Tasks Management',
-      expanded: false,
+      expanded: true,
       moduleId: 5,
       children: [
         {
           label: 'Master',
           link: 'Master',
           icon: <CalendarDaysIcon className="h-5 w-5" />,
-          expanded: false,
+          moduleId: 5,
+          expanded: true,
           children: [
             { label: 'Priority', link: '/tasks/master/priority' },
             { label: 'Task Status', link: '/tasks/master/status' }

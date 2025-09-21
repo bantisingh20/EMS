@@ -12,25 +12,25 @@ import { useAppContext } from '../Context/AppSessionContext';
 
 const NavBar = () => {
   const ModuleList = [
-    { value:1 , name:'Administration' }
-    ,{ value:2 , name:'Leave Management' }
-    ,{ value:3 , name:'Attendece Management' }
-    ,{ value:4 , name:'Document Management' }
-    ,{ value:5 , name:'Task Management' }
-    ,{ value:6 , name:'Salary' }
-    ,{ value: 7 , name:'Report' }
-    ,{ value:8 , name:'Trends' }
-  
+    { value: 1, name: 'Administration' }
+    // ,{ value:2 , name:'Leave Management' }
+    // ,{ value:3 , name:'Attendece Management' }
+    , { value: 4, name: 'Document Management' }
+    , { value: 5, name: 'Task Management' }
+    // ,{ value:6 , name:'Salary' }
+    // ,{ value: 7 , name:'Report' }
+    // ,{ value:8 , name:'Trends' }
+
   ]
   const { user, logout, getUserInfo } = sessiondata();
-  const {setCurrentModule} = useAppContext();
+  const { setCurrentModule } = useAppContext();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedModule, setSelectedModule] = useState("administration");  
+  const [selectedModule, setSelectedModule] = useState("administration");
   const handleModuleChange = (moduleId) => {
     setSelectedModule(moduleId);
-    setCurrentModule(moduleId); 
-    setIsDropdownOpen(false); 
+    setCurrentModule(moduleId);
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -58,15 +58,15 @@ const NavBar = () => {
                   <ul className="text-white text-sm">
                     {/* List of available modules */}
 
-                    {ModuleList.map((menu,index)=>(
-                       <li key={index}
-                      className={`cursor-pointer px-4 py-2 hover:bg-teal-600 ${selectedModule === "administration" ? 'bg-teal-600' : ''}`}
-                      onClick={() => handleModuleChange(menu.value)}
-                    >
-                      {menu.name} 
-                    </li>
+                    {ModuleList.map((menu, index) => (
+                      <li key={index}
+                        className={`cursor-pointer px-4 py-2 hover:bg-teal-600 ${selectedModule === "administration" ? 'bg-teal-600' : ''}`}
+                        onClick={() => handleModuleChange(menu.value)}
+                      >
+                        {menu.name}
+                      </li>
                     ))}
-                    
+
                   </ul>
                 </div>
               )}
